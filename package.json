@@ -7,6 +7,11 @@
   },
   "dependencies": {
     "express": "3.3.5",
-    "jade": "*"
+    "jade": "*",
+    "mongoose": "*",
+    "connect-flash": "*",
+    "validator": "*",
+    "bcrypt": "*",
+    "nodemailer": "0.5.2"
   }
 }

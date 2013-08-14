@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+      .row-fluid
+        .span9.left
+          .container-box
+            form.form-horizontal(action='/login', method='POST')
+              fieldset
+                #legend.mb50
+                  legend 登录
+                if notice
+                  .errors.alert.alert-error
+                    = notice
+                .control-group
+                  // E-mail
+                  label.control-label(for='email') E-mail
+                  .controls
+                    if email
+                      input#email.input-xlarge(type='text', name='email', placeholder='', value="#{email}")
+                    else 
+                      input#email.input-xlarge(type='text', name='email', placeholder='')
+                    p.help-block 请输入您注册时所填邮箱
+                .control-group
+                  // Password
+                  label.control-label(for='password') 密码
+                  .controls
+                    input#password.input-xlarge(type='password', name='password', placeholder='')
+                    p.help-block 请输入您的密码（不少于4个字符）
+                .control-group
+                  // Button
+                  .controls
+                    button.btn.btn-success 登录
+                    a.ml10.mr10.btn(href='/register') 注册账号
+                    a.btn(href='/forgot') 忘记密码了
+              input(type='hidden', name='_xsrf', value='b04a4f3563f246a58548786846dbce79')
+        .span3.right
+          .sidenav.container-box
+            ul
+              li.current
+                a(href='/setting') 用户中心
+              li
+                a(href='/setting/avatar') 设置头像
+              li
+                a(href='/setting/password') 设置密码
+              li
+                a(href='/') 返回首页

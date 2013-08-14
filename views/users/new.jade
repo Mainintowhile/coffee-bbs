@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+    .container-fluid.container.mt15
+      .row-fluid
+        .span9.left
+          .container-box
+            p= success
+            form.form-horizontal(action='/users/create', method='POST')
+              fieldset
+                #legend.mb50
+                  legend 注册
+                if notices && notices.length != 0
+                  ul.errors.alert.alert-error
+                    each notice in notices 
+                      li= notice
+                p= infos
+                .control-group
+                  // Username
+                  label.control-label(for='username') 用户名
+                  .controls
+                    if username
+                      input#username.input-xlarge(type='text', name='user[username]',placeholder='', value="#{username}")
+                    else
+                      input#username.input-xlarge(type='text', name='user[username]',placeholder='')
+                    p.help-block 用户名由字母开头，只能含有字母、数字或者下划线
+                .control-group
+                  // E-mail
+                  label.control-label(for='email') E-mail
+                  .controls
+                    if email
+                      input#email.input-xlarge(type='text', name='user[email]', placeholder='', value="#{email}")
+                    else
+                      input#email.input-xlarge(type='text', name='user[email]', placeholder='')
+                    p.help-block 请输入你的E-mail，便于登录和找回密码
+                .control-group
+                  // Password
+                  label.control-label(for='password') 密码
+                  .controls
+                    input#password.input-xlarge(type='password', name='user[password]', placeholder='')
+                    p.help-block 密码不少于4个字符
+                .control-group
+                  // Password
+                  label.control-label(for='password_confirm') 密码（确认）
+                  .controls
+                    input#password_confirm.input-xlarge(type='password', name='user[password_confirm]', placeholder='')
+                    p.help-block 请再次输入密码
+                .control-group
+                  // Button
+                  .controls
+                    button.btn.btn-success 注册
+              input(type='hidden', name='_xsrf', value='85aaf9d98ea340f09945adcd9ee75192')
+        .span3.right
+          .intro.container-box.sidebox
+            .ui-header
+              span.title 关于
+            .ui-content
+              p
+                | F2E 是一个前端技术社区。我们试图将前端工程师解读为博学的Focus在前端领域的工程师，他不仅在前端领域颇有建树，还能在其它方面都有涉猎。加入到社区中来，参与分享，学习，不断提高吧。

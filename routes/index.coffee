@@ -1,8 +1,9 @@
+mongoose = require 'mongoose'
 
-#
-# * GET home page.
-# 
+# Get "/"
 exports.index = (req, res) ->
-  res.render "index",
-    title: "xxsds"
+  Topic = mongoose.model('Topic')
 
+  Topic.find().limit(100).exec (err, coll) ->
+    res.render "index",
+      title: "index page", topics: coll
