@@ -33,7 +33,8 @@ exports.create = (req, res) ->
         user.save (err, user, numberAffected) ->
           console.log err if err
           mail.sendActiveMail(user.email, md5(user.email), user.username)
-          res.redirect '/'
+          req.flash 'success', 'register success, a mail has send, Please check your email'
+          res.redirect '/login'
       else
         res.render 'users/new',
           notices: ["username or email has exists"]
@@ -57,8 +58,8 @@ exports.active_account = (req, res) ->
       return res.redirect '/forgot'
 
     if user.active
-      req.flash 'success', "account has active"
-      return res.redirect '/'
+      req.flash 'success', "account has active, Please login"
+      return res.redirect '/login'
 
     user.active = true
     # user.confirmed_at = Date.now

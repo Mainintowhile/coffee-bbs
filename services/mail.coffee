@@ -1,6 +1,9 @@
 nodemailer = require "nodemailer"
-settings = require("../settings")('development')
-#TODO get env
+
+env = process.env.NODE_ENV or 'development'
+settings = require("../settings")(env)
+
+#TODO move to settings
 mail_options = 
   host: "smtp.gmail.com"
   secureConnection: true
@@ -11,14 +14,11 @@ mail_options =
 
 smtpTransport = nodemailer.createTransport "SMTP", mail_options
 
-# params: email mail receive 
-# params: token hash token string 
-# params: name user name
 exports.sendActiveMail = (user_email, token, name) ->
   from = mail_options.auth.user
   to = user_email
   subject = "Active Your Account"
-  content = "<p>  hello </p>
+  content = "<p>  hello #{name}</p>
   <a href=#{settings.root_url}/active_account?token=#{token}&name=#{name}>Active Account links </a> "
 
   smtpTransport.sendMail
@@ -30,3 +30,9 @@ exports.sendActiveMail = (user_email, token, name) ->
         console.log err 
       else
         console.log response
+
+exports.resetPasswordMail = (user_email, token, name) ->
+  from = mail_options.auth.user
+  to = user_email
+  subject = "reset your password"
+

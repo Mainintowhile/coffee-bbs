@@ -2,6 +2,9 @@ settings =
   development:
     site_name: "A2C"
 
+  test:
+    site_name: "A2C"
+
   production:
     site_name: "A2C"
 
