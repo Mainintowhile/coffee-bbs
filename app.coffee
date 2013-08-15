@@ -54,18 +54,23 @@ mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
 
 app.get "/", routes.index
 
+# users
 app.get  "/users", users.index
 app.get  "/u/:username", users.show
 app.get  "/register", users.new
 app.post "/users/create", users.create
-app.get  "/active_account", users.active_account
+app.get  "/active_account", users.activeAccount
 app.get  "/forgot", users.forgot
-app.post "/forgot", users.resetPassword
+app.post "/forgot", users.forgotPassword
+app.get  "/reset", users.reset
+app.post "/reset", users.resetPassword
+
 # sessions 
 app.get  "/login", sessions.new
 app.post "/login", sessions.create
 app.get  "/logout", sessions.destroy
 
+# topcis
 app.get  "/topics", topics.index
 app.get  "/topics/new", topics.new
 app.get  "/topics/:id", topics.show

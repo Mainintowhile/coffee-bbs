@@ -3,7 +3,8 @@ sanitize = require('validator').sanitize
 Validator = require('validator').Validator
 mongoose = require 'mongoose'
 mail = require '../services/mail'
-crypto = require 'crypto'
+bcrypt = require "bcrypt"
+#crypto = require 'crypto'
 
 exports.index = (req, res) ->
   res.send "respond with a resource"
@@ -30,9 +31,11 @@ exports.create = (req, res) ->
           email: user.email, 
           password: user.password
         }
+        token = bcrypt.genSaltSync(10)
+        user.confirmation_token = token
         user.save (err, user, numberAffected) ->
           console.log err if err
-          mail.sendActiveMail(user.email, md5(user.email), user.username)
+          mail.sendActiveMail(user.email, token, user.username)
           req.flash 'success', 'register success, a mail has send, Please check your email'
           res.redirect '/login'
       else
@@ -46,14 +49,15 @@ exports.create = (req, res) ->
       username: user.username
       email: user.email
 
-exports.active_account = (req, res) ->
+exports.activeAccount = (req, res) ->
   token = req.query.token
   name = req.query.name 
   User = mongoose.model('User')
 
   User.findOne username: name, (err, user) ->
     console.log err if err 
-    if !user || md5(user.email) != token
+
+    if !user || user.confirmation_token != token
       req.flash 'notices', "message wrong, Please repeat" 
       return res.redirect '/forgot'
 
@@ -62,21 +66,23 @@ exports.active_account = (req, res) ->
       return res.redirect '/login'
 
     user.active = true
-    # user.confirmed_at = Date.now
+    user.confirmed_at = new Date()
     user.save (err) ->
       console.log err if err 
       req.flash 'success', "account actived, Please login"
       res.redirect '/login'
 
 
-
+# get '/forgot' 
 exports.forgot = (req, res) ->
   res.render 'users/forgot',
     title: "reset password"
     success: req.flash 'success'
     notices: req.flash 'notices'
 
-exports.resetPassword = (req, res) ->
+# post '/forgot' 
+# params: username, email
+exports.forgotPassword = (req, res) ->
   username = sanitize(req.body.username).trim()
   email = sanitize(req.body.email).trim().toLowerCase()
   notices = []
@@ -85,14 +91,88 @@ exports.resetPassword = (req, res) ->
 
   if notices.length > 0
      return res.render 'users/forgot',
-      title: "reset password"
-      username: username
-      email: email
-      notices: notices
+       title: "reset password"
+       username: username
+       email: email
+       notices: notices
 
-  # send mail
-  req.flash('success', 'a mail send for you, Please check')
-  res.redirect '/forgot'
+  User = mongoose.model('User')
+  User.findOne email: email, username: username, (err, user) ->
+    unless user
+      return res.render 'users/forgot',
+        title: "reset password"
+        username: username
+        email: email
+        notices: ["the user not exists"]
+    # save reset token and reset time 
+    token = bcrypt.genSaltSync(10)
+    user.reset_password_token = token
+    user.reset_password_sent_at = new Date()
+    user.save (err) ->
+      console.log err if err
+      # send mail
+      mail.resetPasswordMail(user.email, token, user.username)
+      req.flash('success', 'a mail send for you, Please check')
+      res.redirect '/forgot'
+
+# get '/reset'
+exports.reset = (req, res) ->
+  username = req.query.name
+  token = req.query.token
+  #return res.send "username: #{username}, token: #{token}"
+
+  User = mongoose.model 'User'
+  User.findOne username: username, reset_password_token: token, (err, user) ->
+    unless user
+      req.flash 'notices', 'link errors, can not reset password'
+      return res.redirect '/forgot'
+    # check time
+    now = new Date().getTime()
+    reset_send_at = (new Date(user.reset_password_sent_at)).getTime()
+    if now - reset_send_at > 1000 * 60 * 60 * 24
+      req.flash 'notices', 'link is expired, please repeat'
+      return req.redirect '/forgot'
+
+    res.render 'users/reset',
+      title: 'reset password'
+      username: username
+      token: token
+    
+
+# post '/reset'
+# params: username, password, password_confirm, token
+exports.resetPassword = (req, res) ->
+  username = req.body.username
+  password = req.body.password
+  password_confirm = req.body.password_confirm
+  token = req.body.token
+
+  if !password || !password_confirm 
+    return res.render 'users/reset', 
+      title : 'reset password'
+      notices: ['please check your password']
+      username: username
+      token: token
+
+  if password_confirm != password
+    return res.render 'users/reset', 
+      title : 'reset password'
+      username: username
+      token: token
+
+  User = mongoose.model 'User'
+  User.findOne username: username, reset_password_token: token,  (err, user) ->
+    console.log err if err 
+    unless user
+      req.flash 'notices', ['link errors, can not reset password, please repeat']
+      req.redirect '/forgot'
+    user.reset_password_token = null 
+    user.reset_password_sent_at = null
+    user.password = password
+    user.save (err) ->
+      console.log err if err
+      req.flash 'success', 'you password has reset'
+      res.redirect '/login'
 
 # register validate 
 validate = (user) ->
@@ -113,8 +193,8 @@ validate = (user) ->
 
   return errors
 
-md5 = (str) ->
-  md5sum = crypto.createHash 'md5'
-  md5sum.update str
-  str = md5sum.digest 'hex'
-  return str
+#md5 = (str) ->
+#  md5sum = crypto.createHash 'md5'
+#  md5sum.update str
+#  str = md5sum.digest 'hex'
+#  return str

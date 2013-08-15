@@ -12,7 +12,7 @@ block content
                 if notice 
                   .errors.alert.alert-error
                     = notice
-                if success
+                if success && success.length != 0
                   .alert.alert-success
                     = success
                 .control-group

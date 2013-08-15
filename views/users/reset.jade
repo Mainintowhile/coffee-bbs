@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+      .row-fluid
+        .span9.left
+          .container-box
+            form.form-horizontal(action='', method='POST')
+              fieldset
+                #legend.mb50
+                  legend 重置密码
+                if success && success.length > 0
+                  ul.alert.alert-success
+                    each info in success
+                      li= info
+                if notices && notices.length > 0
+                  ul.errors.alert.alert-error
+                    each notice in notices
+                      li= notice
+                .control-group
+                  // Username
+                  label.control-label(for='password') 密码
+                  .controls
+                    input#password.input-xlarge(type='password', name='password', placeholder='')
+                    p.help-block 密码不少于4个字符
+                .control-group
+                  // Password
+                  label.control-label(for='password_confirm') 密码（确认）
+                  .controls
+                    input#password_confirm.input-xlarge(type='password', name='password_confirm', placeholder='')
+                    p.help-block 请再次输入密码
+                .control-group
+                  // Button
+                  .controls
+                    button.btn.btn-success 重置密码
+              input(type='hidden', name='username', value="#{username}")
+              input(type='hidden', name='token', value="#{token}")
+        .span3.right
+          .sidenav.container-box
+            ul
+              li.current
+                a(href='/setting') 用户中心
+              li
+                a(href='/setting/avatar') 设置头像
+              li
+                a(href='/setting/password') 设置密码
+              li
+                a(href='/') 返回首页
