@@ -27,8 +27,12 @@ UserSchema.pre 'save', (next) ->
     return next(err) if err
     bcrypt.hash user.password, salt, (err, hash) ->
       return next(err) if err
-      user.password = hash;
-      next();
+      user.password = hash
+      next()
+
+UserSchema.pre 'save', (next) ->
+  @updated_at = new Date()
+  next()
 
 # auth password
 UserSchema.methods.comparePassword = (candidatePassword, callback) ->
