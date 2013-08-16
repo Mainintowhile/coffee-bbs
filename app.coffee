@@ -7,6 +7,7 @@ routes = require("./routes")
 users = require("./routes/users")
 topics = require("./routes/topics")
 sessions = require("./routes/sessions")
+passwords = require("./routes/passwords")
 
 http = require("http")
 path = require("path")
@@ -56,15 +57,20 @@ app.get "/", routes.index
 
 # users
 app.get  "/members", users.index
+app.get  "/setting", users.setting
 app.get  "/u/:username", users.show
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
 
-app.get  "/forgot", users.forgot
-app.post "/forgot", users.forgotPassword
-app.get  "/reset", users.reset
-app.post "/reset", users.resetPassword
+# app.get  "/forgot", users.forgot
+# app.post "/forgot", users.forgotPassword
+# app.get  "/reset", users.reset
+# app.post "/reset", users.resetPassword
+app.get  "/forgot", passwords.new
+app.post "/forgot", passwords.create
+app.get  "/reset",  passwords.edit
+app.post "/reset",  passwords.update
 
 # sessions 
 app.get  "/login", sessions.new
