@@ -1,0 +1,104 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .container-box
+          form.form-horizontal.setting(action='', method='POST')
+            fieldset
+              #legend
+                legend 用户信息设置
+                .control-group
+                  // Avatar
+                  label.control-label(for='username') 头像
+                  .controls
+                    img.avatar(src='/static/avatar/b_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.70169012032', alt='')
+                    img.avatar(src='/static/avatar/m_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.145900793084', alt='')
+                    img.avatar(src='/static/avatar/s_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.624504083503', alt='')
+                    a.btn.btn-block.set-avatar-btn(href='/setting/avatar') 设置头像
+                .control-group
+                  // Username
+                  label.control-label(for='username') 用户名
+                  .controls
+                    input#username.input-xlarge(type='text', name='username', placeholder='', value='lidashuang', readonly='')
+                    p.help-block 用户名由字母开头，只能含有字母、数字或者下划线
+                .control-group
+                  // E-mail
+                  label.control-label(for='email') E-mail
+                  .controls
+                    input#email.input-xlarge(type='text', name='email', placeholder='', value='ldshuang@gmail.com', readonly='')
+                    p.help-block 你的E-mail，便于登录和找回密码
+                .control-group
+                  // Nickname
+                  label.control-label(for='nickname') 昵称
+                  .controls
+                    input#nickname.input-xlarge(type='text', name='nickname', placeholder='', value='')
+                    p.help-block 你的昵称，便于其他人更好的认识你
+                .control-group
+                  // E-mail
+                  label.control-label(for='signature') 个性签名
+                  .controls
+                    input#signature.input-xlarge(type='text', name='signature', placeholder='', value='')
+                    p.help-block 你的签名，将展示在你的个人资料页面
+                .control-group
+                  // Location
+                  label.control-label(for='location') 城市
+                  .controls
+                    input#location.input-xlarge(type='text', name='location', placeholder='', value='')
+                    p.help-block 你的城市，有助于后续你在社区的交友
+                .control-group
+                  // E-mail
+                  label.control-label(for='website') 个人网站
+                  .controls
+                    input#website.input-xlarge(type='text', name='website', placeholder='', value='')
+                    p.help-block 你的个人网站，让你的朋友了解你更多一点
+                .control-group
+                  // E-mail
+                  label.control-label(for='company') 所在公司
+                  .controls
+                    input#company.input-xlarge(type='text', name='company', placeholder='', value='')
+                    p.help-block 你所在的公司，让你的朋友了解你更多一点
+                .control-group
+                  // E-mail
+                  label.control-label(for='github') Github用户名：
+                  .controls
+                    input#github.input-xlarge(type='text', name='github', placeholder='', value='')
+                    p.help-block 你的Github用户名，用以在你的个人页面展示你的开源项目。
+                .control-group
+                  // E-mail
+                  label.control-label(for='twitter') Twitter用户名：
+                  .controls
+                    input#twitter.input-xlarge(type='text', name='twitter', placeholder='', value='')
+                    p.help-block 你的Twitter用户名，用以在你的个人页面展示你的Twitter地址。
+                .control-group
+                  // E-mail
+                  label.control-label(for='douban') 豆瓣用户名：
+                  .controls
+                    input#douban.input-xlarge(type='text', name='douban', placeholder='', value='lidashuang')
+                    p.help-block 你的豆瓣用户名，用以在你的个人页面展示你正在读的书。
+                .control-group
+                  // E-mail
+                  label.control-label(for='self_intro') 个人简介：
+                  .controls
+                    textarea#self_intro.input-xlarge(type='text', name='self_intro', placeholder='')
+                      p.help-block 可以稍微详细的介绍自己。
+                .control-group
+                  // Button
+                  .controls
+                    button.btn.btn-success 保存改动
+                    a.ml10.btn(href='/setting/password') 设置密码
+              input(type='hidden', name='_xsrf', value='80ee9b8c853945ddba5a3df5759347fd')
+       .span3.right
+         .sidenav.container-box
+           ul
+             li.current
+               a(href='/setting') 用户中心
+              li
+                a(href='/setting/avatar') 设置头像
+              li
+                a(href='/setting/password') 设置密码
+              li
+                a(href='/') 返回首页
+
+

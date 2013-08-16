@@ -57,11 +57,12 @@ app.get "/", routes.index
 
 # users
 app.get  "/members", users.index
-app.get  "/setting", users.setting
 app.get  "/u/:username", users.show
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
+app.get  "/setting", users.setting
+app.get  "/setting/avatar", users.avatar
 
 # app.get  "/forgot", users.forgot
 # app.post "/forgot", users.forgotPassword

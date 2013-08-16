@@ -85,6 +85,10 @@ exports.setting = (req, res) ->
   res.render 'users/setting',
     title: 'user setting'
 
+exports.avatar = (req, res) ->
+  res.render 'users/avatar',
+    title: 'user setting'
+
 # register validate 
 validate = (user) ->
   v = new Validator()
