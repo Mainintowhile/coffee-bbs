@@ -34,7 +34,7 @@ app.use (req, res, next) ->
   next()
 
 helper = require("./routes/helper")
-siteSettings = require("./site_settings")
+siteSettings = require("./site_settings")(app.get('env'))
 app.locals(helper)
 app.locals(siteSettings)
 
@@ -55,11 +55,12 @@ mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
 app.get "/", routes.index
 
 # users
-app.get  "/users", users.index
+app.get  "/members", users.index
 app.get  "/u/:username", users.show
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
+
 app.get  "/forgot", users.forgot
 app.post "/forgot", users.forgotPassword
 app.get  "/reset", users.reset

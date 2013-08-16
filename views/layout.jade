@@ -1,7 +1,11 @@
 doctype 5
 html
   head
-    title= title
+    if title 
+      title= title + " | " + locals.site_name
+    else
+      title= locals.site_name
+
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/main.css')
   body
