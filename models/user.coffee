@@ -7,7 +7,16 @@ UserSchema = Schema
   username: { type: String, required: true, index: { unique: true } }
   password: { type: String, required: true}
   email: { type: String, required: true, index: {unique: true}}
-  reg_id: Number
+  reg_id: { type: Number, required: true}
+  nickname: String
+  signature: String
+  location: String
+  website: String
+  company: String
+  github: String
+  twitter: String
+  douban: String
+  self_intro: String
   avatar: String
   active: { type: Boolean, default: false}
   confirmation_token: String

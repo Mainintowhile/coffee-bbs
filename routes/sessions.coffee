@@ -4,7 +4,7 @@ sanitize = require('validator').sanitize
 mongoose = require 'mongoose'
 
 exports.new = (req, res) ->
-  res.render 'sessions/new', 
+  res.render 'sessions/new',
     title: "login"
     success: req.flash 'success'
 
@@ -47,5 +47,5 @@ exports.create = (req, res) ->
 
 exports.destroy = (req, res) ->
   req.session.destroy()
-  # req.flash('success', 'logout success')
+  req.flash('success', 'logout success')
   res.redirect '/'

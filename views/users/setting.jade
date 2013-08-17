@@ -21,74 +21,85 @@ block content
                   // Username
                   label.control-label(for='username') 用户名
                   .controls
-                    input#username.input-xlarge(type='text', name='username', placeholder='', value='lidashuang', readonly='')
+                    input#username.input-xlarge(type='text', name='user[username]', placeholder='', value="#{locals.user.username}", disabled="disabled")
                     p.help-block 用户名由字母开头，只能含有字母、数字或者下划线
                 .control-group
                   // E-mail
                   label.control-label(for='email') E-mail
                   .controls
-                    input#email.input-xlarge(type='text', name='email', placeholder='', value='ldshuang@gmail.com', readonly='')
+                    input#email.input-xlarge(type='text', name='user[email]', placeholder='', value='#{locals.user.email}', disabled="disabled")
                     p.help-block 你的E-mail，便于登录和找回密码
                 .control-group
                   // Nickname
                   label.control-label(for='nickname') 昵称
                   .controls
-                    input#nickname.input-xlarge(type='text', name='nickname', placeholder='', value='')
+                    if user.nickname
+                      input#nickname.input-xlarge(type='text', name='user[nickname]', placeholder='', value='#{user.nickname}')
+                    else
+                      input#nickname.input-xlarge(type='text', name='user[nickname]', placeholder='', value='')
                     p.help-block 你的昵称，便于其他人更好的认识你
                 .control-group
                   // E-mail
                   label.control-label(for='signature') 个性签名
                   .controls
-                    input#signature.input-xlarge(type='text', name='signature', placeholder='', value='')
+                    if user.signature
+                      input#signature.input-xlarge(type='text', name='user[signature]', placeholder='', value='#{user.signature}')
+                    else
+                      input#signature.input-xlarge(type='text', name='user[signature]', placeholder='', value='')
                     p.help-block 你的签名，将展示在你的个人资料页面
                 .control-group
                   // Location
                   label.control-label(for='location') 城市
                   .controls
-                    input#location.input-xlarge(type='text', name='location', placeholder='', value='')
+                    if user.location
+                      input#location.input-xlarge(type='text', name='user[location]', placeholder='', value='#{user.location}')
+                    else
+                      input#location.input-xlarge(type='text', name='user[location]', placeholder='', value='')
                     p.help-block 你的城市，有助于后续你在社区的交友
                 .control-group
-                  // E-mail
                   label.control-label(for='website') 个人网站
                   .controls
-                    input#website.input-xlarge(type='text', name='website', placeholder='', value='')
+                    if user.website
+                      input#website.input-xlarge(type='text', name='user[website]', placeholder='', value='#{user.website}')
+                    else
+                      input#website.input-xlarge(type='text', name='user[website]', placeholder='', value='')
                     p.help-block 你的个人网站，让你的朋友了解你更多一点
                 .control-group
-                  // E-mail
                   label.control-label(for='company') 所在公司
                   .controls
-                    input#company.input-xlarge(type='text', name='company', placeholder='', value='')
+                    if user.company
+                      input#company.input-xlarge(type='text', name='user[company]', placeholder='', value='#{user.company}')
+                    else
+                      input#company.input-xlarge(type='text', name='user[company]', placeholder='', value='')
                     p.help-block 你所在的公司，让你的朋友了解你更多一点
                 .control-group
-                  // E-mail
                   label.control-label(for='github') Github用户名：
                   .controls
-                    input#github.input-xlarge(type='text', name='github', placeholder='', value='')
+                    if user.github
+                      input#github.input-xlarge(type='text', name='user[github]', placeholder='', value='#{user.github}')
+                    else
+                      input#github.input-xlarge(type='text', name='user[github]', placeholder='', value='')
                     p.help-block 你的Github用户名，用以在你的个人页面展示你的开源项目。
                 .control-group
-                  // E-mail
                   label.control-label(for='twitter') Twitter用户名：
                   .controls
-                    input#twitter.input-xlarge(type='text', name='twitter', placeholder='', value='')
+                    input#twitter.input-xlarge(type='text', name='user[twitter]', placeholder='', value='')
                     p.help-block 你的Twitter用户名，用以在你的个人页面展示你的Twitter地址。
                 .control-group
-                  // E-mail
                   label.control-label(for='douban') 豆瓣用户名：
                   .controls
-                    input#douban.input-xlarge(type='text', name='douban', placeholder='', value='lidashuang')
+                    input#douban.input-xlarge(type='text', name='user[douban]', placeholder='', value='')
                     p.help-block 你的豆瓣用户名，用以在你的个人页面展示你正在读的书。
                 .control-group
-                  // E-mail
                   label.control-label(for='self_intro') 个人简介：
                   .controls
-                    textarea#self_intro.input-xlarge(type='text', name='self_intro', placeholder='')
-                      p.help-block 可以稍微详细的介绍自己。
+                    textarea#self_intro.input-xlarge(type='text', name='user[self_intro]', placeholder='')
+                    p.help-block 可以稍微详细的介绍自己。
                 .control-group
                   // Button
                   .controls
                     button.btn.btn-success 保存改动
                     a.ml10.btn(href='/setting/password') 设置密码
-              input(type='hidden', name='_xsrf', value='80ee9b8c853945ddba5a3df5759347fd')
        .span3.right
          .sidenav.container-box
            ul

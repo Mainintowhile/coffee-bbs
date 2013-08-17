@@ -34,9 +34,11 @@ app.use (req, res, next) ->
   res.locals.user = req.session.user
   next()
 
+# view helpers
 helper = require("./routes/helper")
-siteSettings = require("./site_settings")(app.get('env'))
 app.locals(helper)
+
+siteSettings = require("./site_settings")(app.get('env'))
 app.locals(siteSettings)
 
 app.use app.router
@@ -61,13 +63,10 @@ app.get  "/u/:username", users.show
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
-app.get  "/setting", users.setting
+app.get  "/setting", users.getSetting
+app.post "/setting", users.setting
 app.get  "/setting/avatar", users.avatar
 
-# app.get  "/forgot", users.forgot
-# app.post "/forgot", users.forgotPassword
-# app.get  "/reset", users.reset
-# app.post "/reset", users.resetPassword
 app.get  "/forgot", passwords.new
 app.post "/forgot", passwords.create
 app.get  "/reset",  passwords.edit

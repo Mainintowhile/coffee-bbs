@@ -14,38 +14,45 @@ block content
                   a(href='http://benben.cc') http://benben.cc
                 .user-number
                   .number F2E第1号成员
-                  .since 入住于2012-12-31
+                  .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
               .ui-content
                 dl
                   dt ID
                   dd= user.username
-                dl
-                  dt 名号
-                  dd 郭凯
-                dl
-                  dt 城市
-                  dd 北京
-                dl
-                  dt 公司
-                  dd 淘宝
+                if user.nickname
+                  dl
+                    dt 名号
+                    dd= user.nickname
+                if user.location
+                  dl
+                    dt 城市
+                    dd= user.location
+                if user.company
+                  dl
+                    dt 公司
+                    dd= user.company
                 dl
                   dt Email
-                  dd badkai***@gmail.com
-                dl
-                  dt Twitter
-                  dd
-                    a(href='http://twitter.com/guokai') http://twitter.com/guokai
-                dl
-                  dt Github
-                  dd
-                    a(href='http://github.com/paulguo') http://github.com/paulguo
-                dl
-                  dt Blog
-                  dd
-                    a(href='http://benben.cc') http://benben.cc
+                  dd= user.email
+                if user.twitter
+                  dl
+                    dt Twitter
+                    dd
+                      a(href='http://twitter.com/#{user.twitter}') http://twitter.com/#{user.twitter}
+                if user.github
+                  dl
+                    dt Github
+                    dd
+                      a(href='http://github.com/#{user.github}') http://github.com/#{user.github}
+                if user.website
+                  dl
+                    dt Blog
+                    dd
+                      a(href='#{user.website}')= user.website
+                if user.signature
                 dl
                   dt 签名
-                  dd 光线若要万分明亮，必须射进黑暗的世界。
+                  dd= user.signature
             .topic-lists.container-box.mt10
               .ui-header
                 span.title 主题列表
@@ -237,4 +244,4 @@ block content
               .ui-header
                 span.title 自我介绍
               .ui-content
-                p F2E @ Taobao
+                p= user.self_intro

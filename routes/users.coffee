@@ -81,9 +81,18 @@ exports.activeAccount = (req, res) ->
       req.flash 'success', "account actived, Please login"
       res.redirect '/login'
 
+exports.getSetting = (req, res) ->
+  User = mongoose.model('User')
+  
+  User.findOne username: req.session.user.username, (err, user) ->
+    console.log err if err
+    if user
+      res.render 'users/setting',
+        title: 'user setting'
+        user: user
+
 exports.setting = (req, res) ->
-  res.render 'users/setting',
-    title: 'user setting'
+  res.send req.body.user
 
 exports.avatar = (req, res) ->
   res.render 'users/avatar',
