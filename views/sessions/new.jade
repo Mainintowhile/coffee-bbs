@@ -9,12 +9,14 @@ block content
               fieldset
                 #legend.mb50
                   legend 登录
-                if notice 
-                  .errors.alert.alert-error
-                    = notice
+                if notices && notices.length != 0
+                  ul.errors.alert.alert-error
+                    each notice in notices 
+                      li= notice
                 if success && success.length != 0
-                  .alert.alert-success
-                    = success
+                  ul.alert.alert-success
+                    each suc in success
+                      li= suc
                 .control-group
                   // E-mail
                   label.control-label(for='email') E-mail

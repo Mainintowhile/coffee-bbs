@@ -92,8 +92,24 @@ exports.getSetting = (req, res) ->
         user: user
 
 exports.setting = (req, res) ->
-  res.send req.body.user
+  params = req.body.user
+  fields = ['nickname', 'signature', 'location', 'website','company', 'github', 'twitter', 'douban', 'self_intro']
 
+  for field in fields
+    params[field] = sanitize(sanitize(params[field]).trim()).xss()
+
+  User = mongoose.model('User')
+  User.findOne username: req.session.user.username, (err, user) ->
+    console.log err if err
+
+    for field in fields 
+      user[field] = params[field]
+
+    user.save (err) ->
+      console.log err if err
+      req.flash 'success', ['save setting success']
+      res.redirect '/setting'
+      
 exports.avatar = (req, res) ->
   res.render 'users/avatar',
     title: 'user setting'

@@ -1,13 +1,16 @@
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 bcrypt = require 'bcrypt'
+crypto = require 'crypto'
+
+Schema = mongoose.Schema
 SALT_WORK_FACTOR = 10
 
 UserSchema = Schema
   username: { type: String, required: true, index: { unique: true } }
   password: { type: String, required: true}
   email: { type: String, required: true, index: {unique: true}}
-  reg_id: { type: Number, required: true}
+  # reg_id: { type: Number, required: true}
+  reg_id: Number
   nickname: String
   signature: String
   location: String
@@ -48,5 +51,14 @@ UserSchema.methods.comparePassword = (candidatePassword, callback) ->
   bcrypt.compare candidatePassword, @password, (err, isMatch) ->
     return callback(err) if err 
     callback(null, isMatch)
+
+UserSchema.methods.avatarUrl = (size) ->
+  if @avatar
+    @avatar
+  else
+    md5 = crypto.createHash 'md5'
+    email_MD5 = md5.update(@email.toLowerCase()).digest('hex')
+    "http://www.gravatar.com/avatar/#{email_MD5}?s=#{size}"
+
 
 module.exports = mongoose.model('User', UserSchema)
