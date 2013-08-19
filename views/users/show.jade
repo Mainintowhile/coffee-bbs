@@ -10,8 +10,9 @@ block content
                 a(href='/u/#{user.username}')
                   img.avatar(src='#{locals.avatar(user.email)}', alt='')
                 .username= user.username
-                .website
-                  a(href='http://benben.cc') http://benben.cc
+                if  user.website
+                  .website
+                    a(href='#{user.website}')= user.website
                 .user-number
                   .number F2E第#{user.reg_id}号成员
                   .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
