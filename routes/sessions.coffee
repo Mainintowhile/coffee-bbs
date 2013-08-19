@@ -44,6 +44,7 @@ exports.create = (req, res) ->
           notices: ["password do not match"]
 
 exports.destroy = (req, res) ->
+  #TODO
   req.session.destroy()
-  req.flash('success', 'logout success')
+  # req.flash 'success', ['logout success']
   res.redirect '/'

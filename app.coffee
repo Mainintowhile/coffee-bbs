@@ -52,6 +52,7 @@ app.use express.errorHandler()  if "development" is app.get("env")
 mongoose = require('mongoose')
 require('./models/user')
 require('./models/topic')
+require('./models/counter')
 
 mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
   console.log err if err?

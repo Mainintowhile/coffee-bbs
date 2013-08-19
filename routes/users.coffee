@@ -43,10 +43,12 @@ exports.create = (req, res) ->
         token = bcrypt.genSaltSync(10)
         user.confirmation_token = token
         user.save (err, user, numberAffected) ->
-          console.log err if err
-          mail.sendActiveMail(user.email, token, user.username)
-          req.flash 'success', 'register success, a mail has send, Please check your email'
-          res.redirect '/login'
+          if err
+            console.log err 
+          else
+            mail.sendActiveMail(user.email, token, user.username)
+            req.flash 'success', 'register success, a mail has send, Please check your email'
+            res.redirect '/login'
       else
         res.render 'users/new',
           notices: ["username or email has exists"]

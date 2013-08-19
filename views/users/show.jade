@@ -13,7 +13,7 @@ block content
                 .website
                   a(href='http://benben.cc') http://benben.cc
                 .user-number
-                  .number F2E第1号成员
+                  .number F2E第#{user.reg_id}号成员
                   .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
               .ui-content
                 dl
