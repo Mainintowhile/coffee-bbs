@@ -1,11 +1,11 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
-CounterSchema = new Schema
+counterSchema = new Schema
   _id: { type: String, rquired: true, index: { unique: true } }
   count: { type: Number, require: true}
 
-CounterSchema.statics.incrementCounter = (schemaName, callback) ->
+counterSchema.statics.incrementCounter = (schemaName, callback) ->
   # @collection.findAndModify query, sort, doc, options, callback
   @collection.findAndModify {_id: schemaName}, [], {$inc: count: 1}, "new": true, upsert:true, (err, result)->
     if err
@@ -13,7 +13,7 @@ CounterSchema.statics.incrementCounter = (schemaName, callback) ->
     else
       callback null, result.count
 
-module.exports = mongoose.model('Counter', CounterSchema)
+module.exports = mongoose.model('Counter', counterSchema)
 
 
 

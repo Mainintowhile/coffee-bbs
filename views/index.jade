@@ -217,76 +217,7 @@ block content
                   a(href='/?p=5') 5
                 li
                   a(href='/?p=2') »
-          .nodes-cloud.container-box.mt10
-            h4.title
-              span.octicon.octicon-globe
-              | 常见节点导航
-            ul
-              li
-                label(for='') 语言
-                span.nodes
-                  a(href='/node/html') HTML
-                  a(href='/node/css') CSS
-                  a(href='/node/javascript') JavaScript
-                  a(href='/node/nodejs') NodeJS
-                  a(href='/node/ruby') Ruby
-                  a(href='/node/pyhton') Python
-                  a(href='/node/php') PHP
-              li
-                label(for='') 分享
-                span.nodes
-                  a(href='/node/opensource') 开源项目
-                  a(href='/node/algorithm') 算法
-                  a(href='/node/math') 数学
-                  a(href='/node/compatibility') 兼容性
-                  a(href='/node/mobile') Mobile
-                  a(href='/node/books') 书籍
-                  a(href='/node/jobs') 招聘
-                  a(href='/node/share') 分享
-                  a(href='/node/translate') 翻译
-                  a(href='/node/question') 问与答
-              li
-                label(for='') 编辑器
-                span.nodes
-                  a(href='/node/sublime') Sublime
-                  a(href='/node/vim') VIM
-                  a(href='/node/webstorm') WebStorm
-                  a(href='/node/notepad') Notepad++
-              li
-                label(for='') DSL
-                span.nodes
-                  a(href='/node/coffeescript') CoffeeScript
-                  a(href='/node/sass') Sass
-                  a(href='/node/less') Less
-                  a(href='/node/jade') Jade
-                  a(href='/node/haml') Haml
-              li
-                label(for='') 工具
-                span.nodes
-                  a(href='/node/git') Git
-                  a(href='/node/nginx') Nginx
-                  a(href='/node/apache') Apache
-              li
-                label(for='') 框架
-                span.nodes
-                  a(href='/node/jquery') jQuery
-                  a(href='/node/yui') YUI
-                  a(href='/node/bootstrap') Bootstrap
-                  a(href='/node/zepto') Zepto
-                  a(href='/node/kissy') Kissy
-                  a(href='/node/tornado') Tornado
-              li
-                label(for='') 规范
-                span.nodes
-                  a(href='/node/w3c') W3C
-                  a(href='/node/ecma') ECMA Script
-              li
-                label(for='') 社区
-                span.nodes
-                  a(href='/node/feedback') 意见反馈
-                  a(href='/node/placard') 公告
-                  a(href='/node/dev') 社区开发
-                  a(href='/node/help') 帮助
+          include share/nodes_cloud
         .span3.right
           if locals.user
             .usercard.container-box

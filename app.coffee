@@ -8,6 +8,7 @@ users = require "./routes/users"
 topics = require "./routes/topics"
 sessions = require "./routes/sessions"
 passwords = require "./routes/passwords"
+nodes = require "./routes/nodes"
 midderwares = require "./routes/midderwares"
 
 http = require "http"
@@ -52,6 +53,8 @@ app.use express.errorHandler()  if "development" is app.get("env")
 mongoose = require('mongoose')
 require('./models/user')
 require('./models/topic')
+require('./models/plane')
+require('./models/node')
 require('./models/counter')
 
 mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
@@ -79,6 +82,9 @@ app.post "/reset",  passwords.update
 app.get  "/login", sessions.new
 app.post "/login", sessions.create
 app.get  "/logout", sessions.destroy
+
+# nodes 
+app.get "/node/:key", nodes.show
 
 # topcis
 app.get  "/topics", topics.index
