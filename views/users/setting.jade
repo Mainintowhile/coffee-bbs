@@ -13,9 +13,9 @@ block content
                   // Avatar
                   label.control-label(for='username') 头像
                   .controls
-                    img.avatar(src='/static/avatar/b_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.70169012032', alt='')
-                    img.avatar(src='/static/avatar/m_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.145900793084', alt='')
-                    img.avatar(src='/static/avatar/s_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.624504083503', alt='')
+                    img.avatar(src='#{user.avatarUrl('96')}', alt='')
+                    img.avatar(src='#{user.avatarUrl('48')}', alt='')
+                    img.avatar(src='#{user.avatarUrl('32')}', alt='')
                     a.btn.btn-block.set-avatar-btn(href='/setting/avatar') 设置头像
                 .control-group
                   // Username
@@ -83,17 +83,23 @@ block content
                 .control-group
                   label.control-label(for='twitter') Twitter用户名：
                   .controls
-                    input#twitter.input-xlarge(type='text', name='user[twitter]', placeholder='', value='')
+                    if user.twitter
+                      input#twitter.input-xlarge(type='text', name='user[twitter]', placeholder='', value='#{user.twitter}')
+                    else
+                      input#twitter.input-xlarge(type='text', name='user[twitter]', placeholder='', value='')
                     p.help-block 你的Twitter用户名，用以在你的个人页面展示你的Twitter地址。
                 .control-group
                   label.control-label(for='douban') 豆瓣用户名：
                   .controls
-                    input#douban.input-xlarge(type='text', name='user[douban]', placeholder='', value='')
+                    if user.douban 
+                      input#douban.input-xlarge(type='text', name='user[douban]', placeholder='', value='#{user.douban}')
+                    else
+                      input#douban.input-xlarge(type='text', name='user[douban]', placeholder='', value='')
                     p.help-block 你的豆瓣用户名，用以在你的个人页面展示你正在读的书。
                 .control-group
                   label.control-label(for='self_intro') 个人简介：
                   .controls
-                    textarea#self_intro.input-xlarge(type='text', name='user[self_intro]', placeholder='')
+                    textarea#self_intro.input-xlarge(type='text', name='user[self_intro]', placeholder='')= user.self_intro
                     p.help-block 可以稍微详细的介绍自己。
                 .control-group
                   // Button

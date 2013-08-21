@@ -43,10 +43,12 @@ exports.create = (req, res) ->
         token = bcrypt.genSaltSync(10)
         user.confirmation_token = token
         user.save (err, user, numberAffected) ->
-          console.log err if err
-          mail.sendActiveMail(user.email, token, user.username)
-          req.flash 'success', 'register success, a mail has send, Please check your email'
-          res.redirect '/login'
+          if err
+            console.log err 
+          else
+            mail.sendActiveMail(user.email, token, user.username)
+            req.flash 'success', 'register success, a mail has send, Please check your email'
+            res.redirect '/login'
       else
         res.render 'users/new',
           notices: ["username or email has exists"]
@@ -92,8 +94,24 @@ exports.getSetting = (req, res) ->
         user: user
 
 exports.setting = (req, res) ->
-  res.send req.body.user
+  params = req.body.user
+  fields = ['nickname', 'signature', 'location', 'website','company', 'github', 'twitter', 'douban', 'self_intro']
 
+  for field in fields
+    params[field] = sanitize(sanitize(params[field]).trim()).xss()
+
+  User = mongoose.model('User')
+  User.findOne username: req.session.user.username, (err, user) ->
+    console.log err if err
+
+    for field in fields 
+      user[field] = params[field]
+
+    user.save (err) ->
+      console.log err if err
+      req.flash 'success', ['save setting success']
+      res.redirect '/setting'
+      
 exports.avatar = (req, res) ->
   res.render 'users/avatar',
     title: 'user setting'

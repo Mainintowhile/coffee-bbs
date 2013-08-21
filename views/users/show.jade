@@ -10,10 +10,11 @@ block content
                 a(href='/u/#{user.username}')
                   img.avatar(src='#{locals.avatar(user.email)}', alt='')
                 .username= user.username
-                .website
-                  a(href='http://benben.cc') http://benben.cc
+                if  user.website
+                  .website
+                    a(href='#{user.website}')= user.website
                 .user-number
-                  .number F2E第1号成员
+                  .number F2E第#{user.reg_id}号成员
                   .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
               .ui-content
                 dl
@@ -50,9 +51,9 @@ block content
                     dd
                       a(href='#{user.website}')= user.website
                 if user.signature
-                dl
-                  dt 签名
-                  dd= user.signature
+                  dl
+                    dt 签名
+                    dd= user.signature
             .topic-lists.container-box.mt10
               .ui-header
                 span.title 主题列表

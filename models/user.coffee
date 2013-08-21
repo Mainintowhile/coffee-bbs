@@ -1,13 +1,15 @@
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 bcrypt = require 'bcrypt'
+crypto = require 'crypto'
+
+Schema = mongoose.Schema
 SALT_WORK_FACTOR = 10
 
 UserSchema = Schema
-  username: { type: String, required: true, index: { unique: true } }
+  username: { type: String, unique: true, required: true, index: { unique: true } }
   password: { type: String, required: true}
-  email: { type: String, required: true, index: {unique: true}}
-  reg_id: { type: Number, required: true}
+  email: { type: String, unique: true, required: true, index: {unique: true}}
+  reg_id: { type: Number, unique: true, required: true}
   nickname: String
   signature: String
   location: String
@@ -29,7 +31,7 @@ UserSchema = Schema
 
 # encrypted password
 UserSchema.pre 'save', (next) ->
-	user = this
+	user = @ 
 	return next() unless user.isModified('password')
 	
 	bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) -> 
@@ -39,14 +41,38 @@ UserSchema.pre 'save', (next) ->
       user.password = hash
       next()
 
+# auto updated_time field 
 UserSchema.pre 'save', (next) ->
   @updated_at = new Date()
   next()
+
+# generate autoinc id
+UserSchema.pre 'validate', (next) ->
+  if @isNew 
+    user = @
+    Counter = mongoose.model('Counter')
+    Counter.incrementCounter "users", (err, res)->
+      if err
+        next(err)
+      else
+        user.reg_id = res
+        next()
+  else
+    next()
 
 # auth password
 UserSchema.methods.comparePassword = (candidatePassword, callback) ->
   bcrypt.compare candidatePassword, @password, (err, isMatch) ->
     return callback(err) if err 
     callback(null, isMatch)
+
+UserSchema.methods.avatarUrl = (size) ->
+  if @avatar
+    @avatar
+  else
+    md5 = crypto.createHash 'md5'
+    email_MD5 = md5.update(@email.toLowerCase()).digest('hex')
+    "http://www.gravatar.com/avatar/#{email_MD5}?s=#{size}"
+
 
 module.exports = mongoose.model('User', UserSchema)
