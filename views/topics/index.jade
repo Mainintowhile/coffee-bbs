@@ -42,16 +42,5 @@ block content
                 a(href='/?p=5') 5
               li
                 a(href='/?p=2') »
-
-        .nodes-cloud.container-box.mt10
-          h4.title
-            span.octicon.octicon-globe
-            | 常见节点导航
-          ul
-            each plane in planes
-              li
-                label(for='')= plane.name
-                span.nodes
-                  each node in plane.nodes 
-                    a(href='/node/#{node.key}')= node.name
+        include ../share/node_cloud
       include ../share/sidebar

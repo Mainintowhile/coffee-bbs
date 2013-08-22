@@ -1,5 +1,28 @@
 extends ../layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .topic-create.container-box
+          .ui-header
+            span.title 创建新主题
+          .ui-content
+            form.mt10(action='/nodes/#{node_key}/topics', method='post')
+              if notices && notices.length != 0
+                ul.errors.alert.alert-error
+                  each notice in notices
+                    li= notice
+              .input-prepend.mt10
+                span.add-on #
+                if title
+                  input#prependedInput.span11(type='text', placeholder='主题', name='title', value="#{title}")
+                else
+                  input#prependedInput.span11(type='text', placeholder='主题', name='title')
+              if content
+                textarea.content.mt5.smart-code-support(rows='3', placeholder='正文', name='content')= content
+              else
+                textarea.content.mt5.smart-code-support(rows='3', placeholder='正文', name='content')
+              input#checkall.btn.btn-small(type='submit', value='立即创建')
+      .span3.right
+        include ../share/user_info
