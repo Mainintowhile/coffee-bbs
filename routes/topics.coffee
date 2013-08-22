@@ -1,4 +1,6 @@
 mongoose = require 'mongoose'
+sanitize = require('validator').sanitize
+Validator = require('validator').Validator
 
 exports.index = (req, res) ->
   Topic = mongoose.model('Topic')
@@ -11,20 +13,32 @@ exports.index = (req, res) ->
       planes: nodes
       topics: topics
 
-
-exports.new = (req, res) ->
-	res.render "topics/new", 
-		title : "new page"
-
 exports.show = (req, res) ->
   Topic = mongoose.model('Topic')
   Topic.findById req.params.id, (err, topic) ->
-	  res.render "topics/show", 
-			title: "show page", topic: topic
+    res.render "topics/show", 
+      title: "show page", topic: topic
 
+exports.new = (req, res) ->
+	res.render "topics/new", node_key: req.params.key
+
+# path: nodes/:key/topics
+# params :title, :content
+# method: post
 exports.create = (req, res) ->
-	res.render "topics/show", 
-		title : "show page"
+  node_key = req.params.key
+  title = sanitize(req.body.title).xss()
+  content = sanitize(req.body.content).xss()
+  notices = []
+  notices.push "Please input title" unless title
+  notices.push "Please input content "unless content
+
+  unless notices.length == 0
+    res.render "topics/new", node_key: node_key, title: title, content: content, notices: notices
+  else
+    Topic = mongoose.model('Topic')
+    # topic = new Topic()
+    res.send "title: #{title}, content: #{content}"
 
 exports.update = (req, res) ->
 	res.render "topics/show", 

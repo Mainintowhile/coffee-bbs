@@ -84,16 +84,16 @@ app.post "/login", sessions.create
 app.get  "/logout", sessions.destroy
 
 # nodes 
-app.get "/node/:key", nodes.show
+app.get "/nodes/:key", nodes.show
 
 # topcis
 app.get  "/topics", topics.index
-app.get  "/node/:name/new", topics.new
-app.post "/node/:name/topics", topics.create
 app.get  "/topics/:id", topics.show
-app.get  "/topics/:id/edit", topics.edit
-app.put  "/topics/:id", topics.update
-app.delete "/topics/:id", topics.destroy
+app.get  "/nodes/:key/new", midderwares.requiredLogined, topics.new
+app.post "/nodes/:key/topics", midderwares.requiredLogined, topics.create
+app.get  "/topics/:id/edit", midderwares.requiredLogined, topics.edit
+app.put  "/topics/:id", midderwares.requiredLogined, topics.update
+app.delete "/topics/:id", midderwares.requiredLogined, topics.destroy
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port #{app.get("port")}"

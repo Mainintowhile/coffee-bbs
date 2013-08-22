@@ -10,6 +10,7 @@ UserSchema = Schema
   password: { type: String, required: true}
   email: { type: String, unique: true, required: true, index: {unique: true}}
   reg_id: { type: Number, unique: true, required: true}
+  topics: [{type: Schema.Types.ObjectId, ref: "Topic"}]
   nickname: String
   signature: String
   location: String

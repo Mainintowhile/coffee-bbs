@@ -1,9 +1,12 @@
-# mongoose = require 'mongoose'
+mongoose = require 'mongoose'
 # sanitize = require('validator').sanitize
 
 
 exports.index = (req, res) ->
-  res.send "#{req.params.key}"
+  res.send "#{req.params.name}"
 
 exports.show = (req, res) ->
-  res.render 'nodes/show'
+  Node = mongoose.model('Node')
+  Node.findByKeyWithTopics req.params.key, (err, node) ->
+    res.render 'nodes/show',
+      node: node
