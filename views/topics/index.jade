@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .topics.container-box.deprecated-mt10
+          .topic-item
+            a(href='/u/guokai')
+              img.avatar(src='http://f2e.im/static/avatar/m_b04965e6-a9bb-591f-8f8a-1adcb2c8dc39.png', alt='')
+            .main
+              h3.title
+                a(href='/t/162#reply3') 自己打造智能路由
+              .meta
+                span.node
+                  a(href='/node/share') 分享
+                | •
+                span.username
+                  a(href='/u/guokai') guokai
+                | •
+                span.last-touched 7 小时前
+                | •
+                span.last-reply-username
+                  | 最后回复来自
+                  a(href='/u/guokai')
+                    strong guokai
+            .count
+              a(href='/t/162#reply3') 3
+          .pagination
+            ul
+              li.disabled
+                a(href='/?p=1') «
+              li.active
+                a(href='javascript:;') 1
+              li
+                a(href='/?p=2') 2
+              li
+                a(href='/?p=3') 3
+              li
+                a(href='/?p=4') 4
+              li
+                a(href='/?p=5') 5
+              li
+                a(href='/?p=2') »
+
+        .nodes-cloud.container-box.mt10
+          h4.title
+            span.octicon.octicon-globe
+            | 常见节点导航
+          ul
+            each plane in planes
+              li
+                label(for='')= plane.name
+                span.nodes
+                  each node in plane.nodes 
+                    a(href='/node/#{node.key}')= node.name
+      include ../share/sidebar

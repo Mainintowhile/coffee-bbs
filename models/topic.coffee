@@ -15,5 +15,8 @@ topicSchema = new mongoose.Schema(
 	updated_at: { type: Date, default: Date.now }
 )
 
+topicSchema.statics.recentTopics = (count, callback) ->
+  @find().limit(count).exec (callback)
+
 Topic = mongoose.model 'Topic', topicSchema
-module.exports = Topic
+# module.exports = Topic

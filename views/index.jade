@@ -217,85 +217,16 @@ block content
                   a(href='/?p=5') 5
                 li
                   a(href='/?p=2') »
-          include share/nodes_cloud
-        .span3.right
-          if locals.user
-            .usercard.container-box
-              .ui-header
-                a(href='/u/#{locals.user.username}')
-                  img.avatar(src='#{locals.avatar(locals.user.email)}', alt='')
-                .username= locals.user.username
-                .website
-                  a(href='')
-              .ui-content
-                .status.status-topic
-                  strong
-                    a(href='/u/lidashuang/topics') 0
-                  | 主题
-                .status.status-reply
-                  strong
-                    a(href='/u/lidashuang/replies') 1
-                  | 回复
-                .status.status-favorite
-                  strong
-                    a(href='/u/lidashuang/favorites') 1
-                  | 收藏
-                .status.status-reputation
-                  strong 0
-                  | 威望
-          else
-            .login-box.container-box
-              .ui-content.tc
-                a.btn.btn-small.mr10(type='button', href='/login') 登录
-                a.btn.btn-small.mr10(type='button', href='/register') 注册
-                a.btn.btn-small(type='button', href='/forgot') 找回密码
-                        
-          .sidebox.container-box.mt10.hot-nodes
-            .ui-header
-              span.title 最热节点
-            .ui-content
-              a(href='/node/share') 分享
-              a(href='/node/help') 帮助
-              a(href='/node/sublime') Sublime
-              a(href='/node/translate') 翻译
-              a(href='/node/feedback') 意见反馈
-              a(href='/node/coffeescript') CoffeeScript
-              a(href='/node/javascript') JavaScript
-              a(href='/node/pyhton') Python
-              a(href='/node/yui') YUI
-              a(href='/node/webstorm') WebStorm
-              a(href='/node/opensource') 开源项目
-              a(href='/node/algorithm') 算法
-              a(href='/node/html') HTML
-              a(href='/node/dev') 社区开发
-              a(href='/node/question') 问与答
-              a(href='/node/vim') VIM
-          .sidebox.container-box.mt10.friends
-            .ui-header
-              span.title 友情社区
-            .ui-content
-              p
-                a(href='http://python-china.org')
-                  img(src='http://f2e.im/static/images/python_china_logo.jpg', alt='')
-              p
-                a(href='http://ruby-china.org')
-                  img(src='http://f2e.im/static/images/ruby_china_logo.png', alt='')
-              p
-                a(href='http://trans4fun.org')
-                  img(src='http://f2e.im/static/images/trans4fun.png', alt='')
-          .sidebox.container-box.mt10.community-status
-            .ui-header
-              span.title 运行状态
-            .ui-content
-              dl
-                dt 注册成员
-                dd 718
-              dl
-                dt 节点
-                dd 41
-              dl
-                dt 主题
-                dd 171
-              dl
-                dt 回复
-                dd 718
+
+          .nodes-cloud.container-box.mt10
+            h4.title
+              span.octicon.octicon-globe
+              | 常见节点导航
+            ul
+              each plane in planes
+                li
+                  label(for='')= plane.name
+                  span.nodes
+                    each node in plane.nodes 
+                      a(href='/node/#{node.key}')= node.name
+        include share/sidebar

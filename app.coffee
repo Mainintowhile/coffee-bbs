@@ -88,9 +88,9 @@ app.get "/node/:key", nodes.show
 
 # topcis
 app.get  "/topics", topics.index
-app.get  "/topics/new", topics.new
+app.get  "/node/:name/new", topics.new
+app.post "/node/:name/topics", topics.create
 app.get  "/topics/:id", topics.show
-app.post "/topics", topics.create
 app.get  "/topics/:id/edit", topics.edit
 app.put  "/topics/:id", topics.update
 app.delete "/topics/:id", topics.destroy

@@ -2,8 +2,15 @@ mongoose = require 'mongoose'
 
 exports.index = (req, res) ->
   Topic = mongoose.model('Topic')
-  res.render "index",
-    title: "topics index page"
+  Plane = mongoose.model('Plane')
+  Plane.allNodes  (err, nodes) -> 
+    return console.log err if err
+    Topic.recentTopics 100, (err, topics) ->
+      return console.log err if err 
+      res.render "topics/index", 
+      planes: nodes
+      topics: topics
+
 
 exports.new = (req, res) ->
 	res.render "topics/new", 

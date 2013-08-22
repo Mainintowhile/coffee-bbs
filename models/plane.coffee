@@ -9,4 +9,8 @@ planeSchema = new Schema(
   updated_at: { type: Date, default: Date.now }
 )
 
+planeSchema.statics.allNodes = (callback)->
+  @find().populate('nodes').exec(callback)
+
+
 mongoose.model("Plane", planeSchema)
