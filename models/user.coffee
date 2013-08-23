@@ -9,8 +9,10 @@ UserSchema = Schema
   username: { type: String, unique: true, required: true, index: { unique: true } }
   password: { type: String, required: true}
   email: { type: String, unique: true, required: true, index: {unique: true}}
+  email_md5: {type:String, unique: true, required: true, index: {unique: true}}
   reg_id: { type: Number, unique: true, required: true}
-  topics: [{type: Schema.Types.ObjectId, ref: "Topic"}]
+  avatar: String
+  # topics: [{type: Schema.Types.ObjectId, ref: "Topic"}]
   nickname: String
   signature: String
   location: String
@@ -20,7 +22,6 @@ UserSchema = Schema
   twitter: String
   douban: String
   self_intro: String
-  avatar: String
   active: { type: Boolean, default: false}
   confirmation_token: String
   confirmed_at: Date
