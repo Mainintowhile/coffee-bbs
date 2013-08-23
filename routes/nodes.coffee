@@ -7,6 +7,12 @@ exports.index = (req, res) ->
 
 exports.show = (req, res) ->
   Node = mongoose.model('Node')
+  Topic = mongoose.model('Topic')
+
   Node.findNodeByKey req.params.key, (err, node) ->
-    res.render 'nodes/show',
-      node: node
+    throw err if err
+    Topic.find node_id: node.id, (err, topics) ->
+      throw err if err
+      res.render 'nodes/show',
+        node: node
+        topics: topics

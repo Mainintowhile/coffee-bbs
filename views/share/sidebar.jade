@@ -1,35 +1,5 @@
 .span3.right
-  if locals.user
-    .usercard.container-box
-      .ui-header
-        a(href='/u/#{locals.user.username}')
-          img.avatar(src='#{locals.avatar(locals.user.email)}', alt='')
-        .username= locals.user.username
-        .website
-          a(href='')
-      .ui-content
-        .status.status-topic
-          strong
-            a(href='/u/lidashuang/topics') 0
-          | 主题
-        .status.status-reply
-          strong
-            a(href='/u/lidashuang/replies') 1
-          | 回复
-        .status.status-favorite
-          strong
-            a(href='/u/lidashuang/favorites') 1
-          | 收藏
-        .status.status-reputation
-          strong 0
-          | 威望
-  else
-    .login-box.container-box
-      .ui-content.tc
-        a.btn.btn-small.mr10(type='button', href='/login') 登录
-        a.btn.btn-small.mr10(type='button', href='/register') 注册
-        a.btn.btn-small(type='button', href='/forgot') 找回密码
-
+  include ./user_info
   .sidebox.container-box.mt10.hot-nodes
     .ui-header
       span.title 最热节点

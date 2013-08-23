@@ -9,48 +9,7 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/main.css')
   body
-    .navbar.navbar-inverse.navbar-fixed-top.top-navbar
-      .navbar-inner
-        .container
-          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.brand(href='/') F2E
-          .divider-vertical
-          a.notification-indicator.tooltipped.downwards(href='/notifications', title='暂时没有未读提醒')
-            span.mail-status
-          .divider-vertical
-          .nav-collapse.collapse
-            ul.nav
-              li
-                a(href='/topics') 社区
-              li
-                a(href='/members') 成员
-          // /.nav-collapse
-          form.navbar-search.pull-left.J_search
-            input.search-query(type='text', placeholder='', x-webkit-speech='')
-          .nav-collapse.collapse.pull-right
-            ul.nav.account-menu
-              unless locals.user
-                li
-                  a(href='/login')
-                    span.octicon.octicon-log-in
-                li
-                  a.btn.btn-small(href='/register') 注册
-              else
-                li
-                  a.avatar(href='/u/#{locals.user.username}')
-                    img(src="#{locals.avatar(locals.user.email)}", width='20', height='20')
-                    //- img(src='#{locals.hello)}', width='20', height='20')
-                li
-                  a(href='/u/#{locals.user.username}')= locals.user.username
-                li
-                  a(href='/setting')
-                    span.octicon.octicon-tools
-                li
-                  a(href='/logout')
-                    span.octicon.octicon-log-out 
+    include share/navbar
 
     block content
 

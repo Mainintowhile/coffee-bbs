@@ -9,27 +9,13 @@ block content
               a.btn.btn-small.fr(type='button', href='/nodes/#{node.key}/new') 创建新主题
               span.bread-nav F2E › #{node.name}
             .ui-content
-              .topic-item
-                a(href='/u/guokai')
-                  img.avatar(src='/static/avatar/m_b04965e6-a9bb-591f-8f8a-1adcb2c8dc39.png', alt='')
-                .main
-                  h3.title
-                    a(href='/t/42#reply1') 网络运营商注入到页面上的广告代码 r.js
-                  .meta
-                    span.node
-                      a(href='/node/javascript') JavaScript
-                    | •
-                    span.username
-                      a(href='/u/guokai') guokai
-                    | •
-                    span.last-touched 7 月前
-                    | •
-                    span.last-reply-username
-                      | 最后回复来自
-                      a(href='/u/ihuguowei')
-                        strong ihuguowei
-                .count
-                  a(href='/t/42#reply1') 1
+              if topics.length != 0
+                for topic in topics
+                  include ../share/topic
+              else 
+                .pl10.pr10
+                  .alert.mt20.no-topics
+                    该结点下暂时还没有主题，发出你的讨论吧。
             .ui-footer
         .span3.right
           include ../share/user_info

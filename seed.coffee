@@ -59,8 +59,8 @@ showAllFromMongo = () ->
     else  
       console.log doc
 
-showAllFromMongo()
+# showAllFromMongo()
 
-# saveToMongo(planes)
+saveToMongo(planes)
 
 # showFromMongo('语言')

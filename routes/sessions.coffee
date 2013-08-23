@@ -1,6 +1,4 @@
-# check = require('validator').check
 sanitize = require('validator').sanitize
-# Validator = require('validator').Validator
 mongoose = require 'mongoose'
 
 exports.new = (req, res) ->
