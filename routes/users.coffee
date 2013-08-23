@@ -11,18 +11,16 @@ exports.index = (req, res) ->
 
 exports.show = (req, res) ->
   username = req.params.username
-
   User = mongoose.model('User')
+
   User.findOne username: username, (err, user) ->
     console.log err if err
     unless user
       res.send('404')
     else
-      res.render 'users/show',
-      title: username
-      user: user
+      res.render 'users/show', user: user
 
-# Get 'register'
+# get 'register'
 exports.new = (req, res) ->
   res.render 'users/new',
     title: "register"

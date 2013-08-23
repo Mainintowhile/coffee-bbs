@@ -1,5 +1,7 @@
 extends ../layout
 
+block vars
+  - var title = user.username
 block content
   .container-fluid.container.mt15
       .row-fluid
@@ -8,7 +10,10 @@ block content
             .profile.container-box
               .ui-header
                 a(href='/u/#{user.username}')
-                  img.avatar(src='#{locals.avatar(user.email)}', alt='')
+                  if locals.user.upload_avatar
+                    img.avatar(src='#{locals.user.upload_avatar}', alt='')
+                  else
+                    img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
                 .username= user.username
                 if  user.website
                   .website
