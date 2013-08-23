@@ -9,6 +9,7 @@ topics = require "./routes/topics"
 sessions = require "./routes/sessions"
 passwords = require "./routes/passwords"
 nodes = require "./routes/nodes"
+replies = require "./routes/replies"
 midderwares = require "./routes/midderwares"
 
 http = require "http"
@@ -56,9 +57,10 @@ require('./models/topic')
 require('./models/plane')
 require('./models/node')
 require('./models/counter')
+require('./models/reply')
 
 mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
-  console.log err if err?
+  process.exit(1) if err
 
 
 app.get "/", routes.index
@@ -94,6 +96,10 @@ app.post "/nodes/:key/topics", midderwares.requiredLogined, topics.create
 app.get  "/topics/:id/edit", midderwares.requiredLogined, topics.edit
 app.put  "/topics/:id", midderwares.requiredLogined, topics.update
 app.delete "/topics/:id", midderwares.requiredLogined, topics.destroy
+
+# replies
+
+app.post "/topics/:topic_id/replies", midderwares.requiredLogined, replies.create
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port #{app.get("port")}"

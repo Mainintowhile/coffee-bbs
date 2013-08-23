@@ -1,2 +1,73 @@
-h1= topic.title
-p= topic.content
+
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .topic-detail.container-box
+          .ui-header
+            a(href='/u/#{topic.user.username}')
+              img.avatar(src='/static/avatar/m_f9e8a3d8-1a39-5d39-98c4-238ff44027bc.png?t=0.940227065274', alt='')
+            .main
+              h3.title= topic.title
+              .meta
+                span.node
+                  a(href='/node/question') 问与答
+                | •
+                span.username
+                  a(href='/u/#{topic.user.username}')= topic.user.username
+                | •
+                span.created-time 发表于 1 周前
+                if topic.replies_count != 0
+                  | •
+                  span.last-reply-username
+                    | 最后回复来自
+                    a(href='/u/#{topic.last_replied_by}')
+                      strong=topic.last_replied_by
+                  | •
+                  span.last-reply-time 18 小时前
+          .ui-content
+            p= topic.content
+          .ui-footer
+            a.J_topicFavorite(href='/favorite?topic_id=165', data-type='favorite') 加入收藏
+            a(href='#', onclick='window.open("https://twitter.com/intent/tweet?hashtags=question&text=F2E理论上能承载多大的在线访问量？&url=http://f2e.im/t/165");') Tweet
+            a(href='#', onclick='window.open("http://service.weibo.com/share/share.php?url=http://f2e.im/t/165&title=F2E%20-%20F2E理论上能承载多大的在线访问量？", "_blank", "width=550, height=370");') 新浪微博
+            a.J_topicVote(href='/vote?topic_id=165') 喜欢
+            span.hits.fr.mr10 #{topic.hit} 次点击
+        if topic.replies.length == 0
+          .alert.mt20.no-replies 暂无回复，说出你的观点吧
+        unless topic.replies.length == 0
+          .topic-reply.container-box.mt10
+            .ui-header
+              span共收到#{topic.replies.length}条回复
+            .ui-content
+              for reply, i in topic.replies
+                .reply-item
+                  a(href='/u/#{reply.username}')
+                    img.avatar(src='/static/avatar/m_91afd5f4-2f57-5af6-8c93-059436990c30.png?t=0.581142137661', alt='')
+                  .main
+                    .meta
+                      a.reply-username(href='/u/#{reply.username}')
+                        span.username= reply.username
+                      span.time= reply.created_at
+                      span.floor.fr ##{i+1}
+                      span.reply-to.fr.J_replyTo(data-username='yue365')
+                        img(src='/static/images/reply.png', alt='')
+                    span.content
+                      p= reply.content
+            .ui-footer
+        .topic-reply-create.container-box.mt10
+          .ui-header
+            span.title 创建新的回复
+          .ui-content
+            if locals.user
+              form.mt10(action='/topics/#{topic.id}/replies', method='post')
+                textarea.content.mt5.smart-code-support.J_replyContent(rows='3', placeholder='回复内容', name='content')
+                input(name='tid', type='hidden', value='165')
+                input#checkall.btn.btn-small(type='submit', value='立即回复')
+            else
+              a.btn.btn-small.mt5.mr10(type='button', href='/login') 登录
+              a.btn.btn-small.mt5(type='button', href='/register') 注册
+      .span3.right
+        include ../share/user_info

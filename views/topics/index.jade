@@ -5,27 +5,8 @@ block content
     .row-fluid
       .span9.left
         .topics.container-box.deprecated-mt10
-          .topic-item
-            a(href='/u/guokai')
-              img.avatar(src='http://f2e.im/static/avatar/m_b04965e6-a9bb-591f-8f8a-1adcb2c8dc39.png', alt='')
-            .main
-              h3.title
-                a(href='/t/162#reply3') 自己打造智能路由
-              .meta
-                span.node
-                  a(href='/node/share') 分享
-                | •
-                span.username
-                  a(href='/u/guokai') guokai
-                | •
-                span.last-touched 7 小时前
-                | •
-                span.last-reply-username
-                  | 最后回复来自
-                  a(href='/u/guokai')
-                    strong guokai
-            .count
-              a(href='/t/162#reply3') 3
+          each topic in topics
+            include ../share/topic
           .pagination
             ul
               li.disabled
