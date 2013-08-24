@@ -10,8 +10,8 @@ block content
             .profile.container-box
               .ui-header
                 a(href='/u/#{user.username}')
-                  if locals.user.upload_avatar
-                    img.avatar(src='#{locals.user.upload_avatar}', alt='')
+                  if user.upload_avatar
+                    img.avatar(src='#{user.upload_avatar}', alt='')
                   else
                     img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
                 .username= user.username
@@ -101,109 +101,6 @@ block content
                 .reply-item
                   .main
                     span.title
-                      | 回复了 huacnlee 创建的主题
-                      a(href='/t/164') jquery.qeditor - 简化的所见即所得编辑器
-                    .content
-                      p 很喜欢的简洁风，如果支持Markdown及互转就更好了，持续关注！
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 similar 创建的主题
-                      a(href='/t/160') where is conf?
-                    .content
-                      p 这部分现在还没放上去，下次Github更新我会一并提交上去。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 similar 创建的主题
-                      a(href='/t/159') f2e的生产环境是centos还是ubuntu？
-                    .content
-                      p F2E现在部署在CentOS 6.0上。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 similar 创建的主题
-                      a(href='/t/158') 威望是怎么算的？
-                    .content
-                      p
-                        | 威望大于0的用户发帖会扣除威望值，他人的收藏、喜欢或者回复会给发帖者增加威望。这是现在的逻辑，还不够完善，我在之前的帖子中也提到过威望值算法和依附威望值的激励机制会是最近功能改进的重点，另外关注某个人也会在近期很快加入，感谢关注。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 mayi18 创建的主题
-                      a(href='/t/157') 字体没有以前的漂亮了
-                    .content
-                      p 请帮忙回复下系统和浏览器版本信息。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 grapher 创建的主题
-                      a(href='/t/156') F2E的markdown支持上传本地图片么？
-                    .content
-                      p 暂时还不支持，我先记下来，可以利用API跟图床对接。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 coolzilj 创建的主题
-                      a(href='/t/155') AngularJS 与 Rails 结合的一些资料
-                    .content
-                      p 已收藏，感谢分享！
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 grapher 创建的主题
-                      a(href='/t/150') 登录界面的忘记密码没有用？
-                    .content
-                      p
-                        | @
-                        a(href='/u/grapher') grapher
-                        | 用户名和邮箱填完后，会将新密码发送到你的邮箱，此处有不合理之处，后续会改为发送密码重置链接。发帖内容新增了最少15字符的限制，为了避免无意义的水帖（如内容为
-                        code RT
-                        | 等）。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 grapher 创建的主题
-                      a(href='/t/148') 如果想新增节点，该怎么反馈？
-                    .content
-                      p
-                        | 已经添加
-                        code Tornado
-                        | 节点，后续会做单独页面提交节点新增的请求。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 grapher 创建的主题
-                      a(href='/t/149') 注意到URL的问题
-                    .content
-                      p URL末尾的hash是为了有新回复的时候在能够在帖子列表看到未读提醒，而未读提醒是CSS来实现的。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 colin21 创建的主题
-                      a(href='/t/143') 发现F2E在chrome下效果最好
-                    .content
-                      p IE已经做了些许调整，看起来不会有明显的不协调了。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 colin21 创建的主题
-                      a(href='/t/142') 这个开源项目会一直更新吗？
-                    .content
-                      p 欢迎加入，会持续但不定期更新的。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 guokai 创建的主题
-                      a(href='/t/140') 谈程序员的效率和其它
-                    .content
-                      p
-                        | @
-                        a(href='/u/Yunkou') Yunkou
-                        | 自己也推荐下Trello，一直在用。
-                .reply-item
-                  .main
-                    span.title
                       | 回复了 Yunkou 创建的主题
                       a(href='/t/141') 求助：关于canvas的问题
                     .content
@@ -233,11 +130,11 @@ block content
               .ui-content
                 .status.status-topic
                   strong
-                    a(href='/u/guokai/topics') 18
+                    a(href='/u/#{user.username}/topics')= user.topic_count
                   | 主题
                 .status.status-reply
                   strong
-                    a(href='/u/guokai/replies') 180
+                    a(href='/u/guokai/replies')= user.reply_count
                   | 回复
                 .status.status-favorite
                   strong

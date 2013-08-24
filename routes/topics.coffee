@@ -38,9 +38,7 @@ exports.show = (req, res) ->
 exports.new = (req, res) ->
 	res.render "topics/new", node_key: req.params.key
 
-# @path: nodes/:key/topics
-# @params :title, :content
-# @method: post
+# POST nodes/:key/topics
 exports.create = (req, res) ->
   node_key = req.params.key
   user_id = req.session.user._id
@@ -55,21 +53,23 @@ exports.create = (req, res) ->
   else
     Node = mongoose.model('Node')
     Topic = mongoose.model('Topic')
+    User = mongoose.model('User')
     Node.findNodeByKey node_key, (err, node) ->
-      return console.log err if err 
+      throw err if err 
       topic = new Topic {title: title, content: content, node_id: node.id, user_id: user_id }
       topic.save (err, topic) ->
-        return console.log err if err
+        throw err if err 
+        User.findById topic.user_id, (err, user) ->
+          user.topic_count++
+          user.save()
         node.topic_count++
-        node.save (err, doc) ->
-          return console.log err if err 
-          res.redirect "/topics/#{topic.id}"
+        node.save()
+        res.redirect "/topics/#{topic.id}"
 
-
+# 
 exports.update = (req, res) ->
 	res.render "topics/show", 
 		title : "show page"
-
 
 exports.edit = (req, res) ->
 	res.render "topics/show", 

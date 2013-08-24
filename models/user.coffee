@@ -11,6 +11,8 @@ userSchema = Schema
   email: { type: String, unique: true, required: true, index: {unique: true}}
   email_md5: {type:String, unique: true, required: true, index: {unique: true}}
   reg_id: { type: Number, unique: true, required: true}
+  topic_count: { type: Number, default: 0 }
+  reply_count: { type: Number, default: 0 }
   upload_avatar: String
   nickname: String
   signature: String
@@ -80,5 +82,10 @@ userSchema.methods.avatarUrl = () ->
   else
     "http://www.gravatar.com/avatar/#{@email_md5}"
 
+# userSchema.methods.topicCount = (callback) ->
+#   Topic = mongoose.model 'Topic'
+#   Topic.where(user_id: @id).count (err, count) ->
+#     return callback(err) if err
+#     callback(null, count)
 
 module.exports = mongoose.model('User', userSchema)

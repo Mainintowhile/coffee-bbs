@@ -5,10 +5,10 @@ exports.create = (req, res) ->
   topic_id = req.params.topic_id
   user = req.session.user
   content = sanitize(req.body.content).xss()
-  console.log "content is: #{content}"
 
   Topic = mongoose.model 'Topic'
   Reply = mongoose.model 'Reply'
+  User = mongoose.model 'User'
 
   unless content
     res.render 'topics/show', 
@@ -16,11 +16,14 @@ exports.create = (req, res) ->
 
   Topic.findById topic_id, (err, topic) ->
     return throw err if err 
-    console.log "content is: #{content}"
     reply = new Reply {user_id: user._id, topic_id: topic.id, content: content, username: user.username }
-    console.log "reply is: #{reply}"
     reply.save (err, doc) ->
       return throw err if err 
+      # update user reply count
+      User.findById user._id, (err, current_user) ->
+        current_user.reply_count++
+        current_user.save()
+        
       topic.replies_count++
       topic.last_replied_by = user.username
       topic.last_replied_at = new Date() 

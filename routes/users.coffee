@@ -13,7 +13,7 @@ exports.show = (req, res) ->
   User = mongoose.model('User')
 
   User.findOne username: username, (err, user) ->
-    console.log err if err
+    throw err if err
     unless user
       res.send('404')
     else

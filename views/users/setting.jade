@@ -13,21 +13,21 @@ block content
                   // Avatar
                   label.control-label(for='username') 头像
                   .controls
-                    img.avatar(src='#{user.avatarUrl('96')}', alt='')
-                    img.avatar(src='#{user.avatarUrl('48')}', alt='')
-                    img.avatar(src='#{user.avatarUrl('32')}', alt='')
+                    img.avatar(src='#{user.avatarUrl()}?s=96', alt='')
+                    img.avatar(src='#{user.avatarUrl()}?s=48', alt='')
+                    img.avatar(src='#{user.avatarUrl()}?s=32', alt='')
                     a.btn.btn-block.set-avatar-btn(href='/setting/avatar') 设置头像
                 .control-group
                   // Username
                   label.control-label(for='username') 用户名
                   .controls
-                    input#username.input-xlarge(type='text', name='user[username]', placeholder='', value="#{locals.user.username}", disabled="disabled")
+                    input#username.input-xlarge(type='text', name='user[username]', placeholder='', value="#{locals.current_user.username}", disabled="disabled")
                     p.help-block 用户名由字母开头，只能含有字母、数字或者下划线
                 .control-group
                   // E-mail
                   label.control-label(for='email') E-mail
                   .controls
-                    input#email.input-xlarge(type='text', name='user[email]', placeholder='', value='#{locals.user.email}', disabled="disabled")
+                    input#email.input-xlarge(type='text', name='user[email]', placeholder='', value='#{locals.current_user.email}', disabled="disabled")
                     p.help-block 你的E-mail，便于登录和找回密码
                 .control-group
                   // Nickname

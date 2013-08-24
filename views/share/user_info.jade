@@ -1,34 +1,26 @@
-if locals.user
-  .usercard.container-box
-    .ui-header
-      a(href='/u/#{locals.user.username}')
-        if locals.user.upload_avatar
-          img.avatar(src='#{locals.user.upload_avatar}', alt='')
-        else
-          img.avatar(src='#{locals.avatar(locals.user.email_md5)}', alt='')
-      .username= locals.user.username
-      .website
-        a(href='')
-    .ui-content
-      .status.status-topic
-        strong
-          a(href='/u/lidashuang/topics') 1
-        | 主题
-      .status.status-reply
-        strong
-          a(href='/u/lidashuang/replies') 2
-        | 回复
-      .status.status-favorite
-        strong
-          a(href='/u/lidashuang/favorites') 2
-        | 收藏
-      .status.status-reputation
-        strong 6
-        | 威望
-else
-  .login-box.container-box
-    .ui-content.tc
-      a.btn.btn-small(type='button', href='/login') 登录
-      a.btn.btn-small(type='button', href='/register') 注册
-      a.btn.btn-small(type='button', href='/forgot') 找回密码
-
+.usercard.container-box
+  .ui-header
+    a(href='/u/#{user.username}')
+      if user.upload_avatar
+        img.avatar(src='#{user.upload_avatar}', alt='')
+      else
+        img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
+    .username= user.username
+    .website
+      a(href='')
+  .ui-content
+    .status.status-topic
+      strong
+        a(href='/u/lidashuang/topics')= user.topic_count
+      | 主题
+    .status.status-reply
+      strong
+        a(href='/u/lidashuang/replies')= user.reply_count
+      | 回复
+    .status.status-favorite
+      strong
+        a(href='/u/lidashuang/favorites') 2
+      | 收藏
+    .status.status-reputation
+      strong 6
+      | 威望

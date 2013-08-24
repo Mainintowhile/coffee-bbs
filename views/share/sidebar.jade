@@ -1,5 +1,9 @@
 .span3.right
-  include ./user_info
+  if locals.current_user 
+    - var user = locals.current_user
+    include ./user_info
+  else
+    include ./login_box
   .sidebox.container-box.mt10.hot-nodes
     .ui-header
       span.title 最热节点

@@ -21,24 +21,24 @@
         input.search-query(type='text', placeholder='', x-webkit-speech='')
       .nav-collapse.collapse.pull-right
         ul.nav.account-menu
-          unless locals.user
+          if locals.current_user
             li
-              a(href='/login')
-                span.octicon.octicon-log-in
-            li
-              a.btn.btn-small(href='/register') 注册
-          else
-            li
-              a.avatar(href='/u/#{locals.user.username}')
-                if locals.user.upload_avatar
-                  img(src="#{locals.user.upload_avatar}", width='20', height='20')
+              a.avatar(href='/u/#{locals.current_user.username}')
+                if locals.current_user.upload_avatar
+                  img(src="#{locals.current_user.upload_avatar}", width='20', height='20')
                 else
-                  img(src="#{locals.avatar(locals.user.email_md5)}", width='20', height='20')
+                  img(src="#{locals.avatar(locals.current_user.email_md5)}", width='20', height='20')
             li
-              a(href='/u/#{locals.user.username}')= locals.user.username
+              a(href='/u/#{locals.current_user.username}')= locals.current_user.username
             li
               a(href='/setting')
                 span.octicon.octicon-tools
             li
               a(href='/logout')
                 span.octicon.octicon-log-out 
+          else
+            li
+              a(href='/login')
+                span.octicon.octicon-log-in
+            li
+              a.btn.btn-small(href='/register') 注册

@@ -7,7 +7,10 @@ block content
         .topic-detail.container-box
           .ui-header
             a(href='/u/#{topic.user.username}')
-              img.avatar(src='/static/avatar/m_f9e8a3d8-1a39-5d39-98c4-238ff44027bc.png?t=0.940227065274', alt='')
+              if topic.user.upload_avatar
+                img.avatar(src='#{topic.user.upload_avatar}', alt='')
+              else
+                img.avatar(src='#{topic.avatar(locals.current_user.email_md5)}', alt='')
             .main
               h3.title= topic.title
               .meta
@@ -52,7 +55,7 @@ block content
                       span.time= reply.created_at
                       span.floor.fr ##{i+1}
                       span.reply-to.fr.J_replyTo(data-username='yue365')
-                        img(src='/static/images/reply.png', alt='')
+                        img(src='/images/reply.png', alt='')
                     span.content
                       p= reply.content
             .ui-footer
@@ -60,7 +63,7 @@ block content
           .ui-header
             span.title 创建新的回复
           .ui-content
-            if locals.user
+            if locals.current_user
               form.mt10(action='/topics/#{topic.id}/replies', method='post')
                 textarea.content.mt5.smart-code-support.J_replyContent(rows='3', placeholder='回复内容', name='content')
                 input#checkall.btn.btn-small(type='submit', value='立即回复')
@@ -68,4 +71,8 @@ block content
               a.btn.btn-small.mt5.mr10(type='button', href='/login') 登录
               a.btn.btn-small.mt5(type='button', href='/register') 注册
       .span3.right
-        include ../share/user_info
+        if locals.current_user
+          - var user = locals.current_user
+          include ../share/user_info
+        else 
+          include ../share/login_box

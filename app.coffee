@@ -35,7 +35,7 @@ app.use express.bodyParser()
 app.use express.methodOverride()
 
 app.use (req, res, next) ->
-  res.locals.user = req.session.user
+  res.locals.current_user = req.session.user
   next()
 
 # view helpers
