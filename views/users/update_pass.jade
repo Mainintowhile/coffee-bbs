@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .container-box
+          form.form-horizontal(action='', method='POST')
+            fieldset
+              #legend
+                legend 用户密码设置
+              if notices && notices.length != 0
+                ul.error.alert.alert-error
+                  for notice in notices
+                    li= notice
+              .control-group
+                // Password
+                label.control-label(for='password_old') 当前密码
+                .controls
+                  input#password_old.input-xlarge(type='password', name='password_old', placeholder='')
+                  p.help-block 密码不少于4个字符
+              .control-group
+                // Password
+                label.control-label(for='password') 新密码
+                .controls
+                  input#password.input-xlarge(type='password', name='password', placeholder='')
+                  p.help-block 密码不少于4个字符
+              .control-group
+                // Password
+                label.control-label(for='password_confirm') 新密码（确认）
+                .controls
+                  input#password_confirm.input-xlarge(type='password', name='password_confirm', placeholder='')
+                  p.help-block 请再次输入新密码
+              .control-group
+                // Button
+                .controls
+                  button.btn.btn-success 保存改动
+                  a.ml10.btn(href='/setting') 返回设置页
+
+      include ../share/sidebar_links

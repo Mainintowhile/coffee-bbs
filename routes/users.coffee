@@ -114,6 +114,36 @@ exports.avatar = (req, res) ->
   res.render 'users/avatar',
     title: 'user setting'
 
+exports.getSettingPass = (req, res) ->
+  res.render 'users/update_pass'
+
+exports.settingPass = (req, res) ->
+  oldPass = req.body.password_old
+  password = req.body.password
+  password_confirm = req.body.password_confirm
+  User = mongoose.model('User')
+
+  unless oldPass && password && password_confirm
+    return res.render 'users/update_pass', notices: ["Please check your info"]
+
+  # check password_confirm 
+  if password != password_confirm
+    return res.render 'users/update_pass', notices: ['password and password_confirm not equal']
+
+  # get user  and check old password
+  console.log "user session is: #{req.session.user._id}"
+  User.findById req.session.user._id, (err, user) ->
+    throw err if err
+    user.comparePassword oldPass, (err, isMath) ->
+      throw err if err
+      if isMath
+        user.password = password
+        user.save (err, doc) ->
+          req.flash 'notices', ['update password success']
+          res.redirect '/setting/password'
+      else
+        res.render 'users/update_pass', notices: ['old password not match']
+
 # register validate 
 validate = (user) ->
   v = new Validator()

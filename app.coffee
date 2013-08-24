@@ -74,6 +74,8 @@ app.get  "/active_account", users.activeAccount
 app.get  "/setting", midderwares.requiredLogined, users.getSetting
 app.post "/setting", midderwares.requiredLogined, users.setting
 app.get  "/setting/avatar", midderwares.requiredLogined, users.avatar
+app.get  "/setting/password", midderwares.requiredLogined, users.getSettingPass
+app.post "/setting/password", midderwares.requiredLogined, users.settingPass
 
 app.get  "/forgot", passwords.new
 app.post "/forgot", passwords.create
