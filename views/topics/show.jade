@@ -63,7 +63,6 @@ block content
             if locals.user
               form.mt10(action='/topics/#{topic.id}/replies', method='post')
                 textarea.content.mt5.smart-code-support.J_replyContent(rows='3', placeholder='回复内容', name='content')
-                input(name='tid', type='hidden', value='165')
                 input#checkall.btn.btn-small(type='submit', value='立即回复')
             else
               a.btn.btn-small.mt5.mr10(type='button', href='/login') 登录

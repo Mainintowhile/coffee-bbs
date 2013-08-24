@@ -4,7 +4,6 @@ Validator = require('validator').Validator
 mongoose = require 'mongoose'
 mail = require '../services/mail'
 bcrypt = require "bcrypt"
-#crypto = require 'crypto'
 
 exports.index = (req, res) ->
   res.send "respond with a resource"
@@ -115,7 +114,7 @@ exports.avatar = (req, res) ->
     title: 'user setting'
 
 exports.getSettingPass = (req, res) ->
-  res.render 'users/update_pass'
+  res.render 'users/update_pass', success: req.flash 'success'
 
 exports.settingPass = (req, res) ->
   oldPass = req.body.password_old
@@ -131,7 +130,6 @@ exports.settingPass = (req, res) ->
     return res.render 'users/update_pass', notices: ['password and password_confirm not equal']
 
   # get user  and check old password
-  console.log "user session is: #{req.session.user._id}"
   User.findById req.session.user._id, (err, user) ->
     throw err if err
     user.comparePassword oldPass, (err, isMath) ->
@@ -139,7 +137,7 @@ exports.settingPass = (req, res) ->
       if isMath
         user.password = password
         user.save (err, doc) ->
-          req.flash 'notices', ['update password success']
+          req.flash 'success', ['update password success']
           res.redirect '/setting/password'
       else
         res.render 'users/update_pass', notices: ['old password not match']
@@ -160,11 +158,4 @@ validate = (user) ->
 
   if user.password != user.password_confirm
     errors.push "password do not match"
-
   return errors
-
-#md5 = (str) ->
-#  md5sum = crypto.createHash 'md5'
-#  md5sum.update str
-#  str = md5sum.digest 'hex'
-#  return str

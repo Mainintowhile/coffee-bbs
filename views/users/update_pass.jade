@@ -13,6 +13,10 @@ block content
                 ul.error.alert.alert-error
                   for notice in notices
                     li= notice
+              if success && success.length != 0
+                ul.alert.alert-success
+                  for succ in success
+                    li= succ
               .control-group
                 // Password
                 label.control-label(for='password_old') 当前密码

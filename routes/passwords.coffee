@@ -41,7 +41,7 @@ exports.create = (req, res) ->
       console.log err if err
       # send mail
       mail.resetPasswordMail(user.email, token, user.username)
-      req.flash('success', 'a mail send for you, Please check')
+      req.flash 'success', 'a mail send for you, Please check'
       res.redirect '/forgot'
 
 # get 'reset'
