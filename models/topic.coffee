@@ -17,12 +17,19 @@ topicSchema = new mongoose.Schema(
 	updated_at: { type: Date, default: Date.now }
 )
 
-# Find Node Topics
+# Find Topics with Node  by node_id
 topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
   @find({node_id: node_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
     async.map topics, getUser, (err, results) ->
       return callback err if err 
       callback null, topics
+
+# Find Topic with Node with user_id
+topicSchema.statics.findTopicsByUserId= (user_id, count, callback) ->
+  @find({user_id: user_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
+    async.map topics, getNode, (err, results) ->
+      return callback err if err 
+      callback null, results
 
 # Find recent Topics
 topicSchema.statics.recentTopics = (count, callback) ->

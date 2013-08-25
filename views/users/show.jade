@@ -19,7 +19,7 @@ block content
                   .website
                     a(href='#{user.website}')= user.website
                 .user-number
-                  .number F2E第#{user.reg_id}号成员
+                  .number 第#{user.reg_id}号成员
                   .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
               .ui-content
                 dl
@@ -63,65 +63,23 @@ block content
               .ui-header
                 span.title 主题列表
               .ui-content.topics
-                .topic-item
-                  .main
-                    h3.title
-                      a(href='/t/170#reply1') 被边缘化的前端
-                    .meta
-                      span.node
-                        a(href='/node/share') 分享
-                      | •
-                      span.username
-                        a(href='/u/guokai') guokai
-                      | •
-                      span.last-touched 13 小时前
-                      | •
-                      span.last-reply-username
-                        | 最后回复来自
-                        a(href='/u/aballam')
-                          strong aballam
-                  .count
-                    a(href='/t/170#reply1') 1
-              .ui-footer
-                a(href='/u/guokai/topics') ›› 查看更多主题
+                for topic in topics
+                  - var node = topic.node
+                  include ../share/topic
+                .ui-footer
+                  a(href='/u/guokai/topics') ›› 查看更多主题
             .replies-lists.container-box.mt10
               .ui-header
                 span.title 回复列表
               .ui-content.topics
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 guokai 创建的主题
-                      a(href='/t/162') 自己打造智能路由
-                    .content
-                      p
-                        | @
-                        a(href='/u/Glow') Glow
-                        | TP-Link 703n.
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 Yunkou 创建的主题
-                      a(href='/t/141') 求助：关于canvas的问题
-                    .content
-                      p
-                        | 粗看了下，
-                        code mousemove
-                        | 时的卡顿是由于
-                        code onmouse_move
-                        | 和
-                        code onmouse_out
-                        | 交替被触发导致的。感觉实现思路和代码实现上可以重新优化下。
-                .reply-item
-                  .main
-                    span.title
-                      | 回复了 colin21 创建的主题
-                      a(href='/t/138') 码农们，分享一个网站，也许你早就知道了
-                    .content
-                      p
-                        | @
-                        a(href='/u/colin21') colin21
-                        | 已经加入了重复提交的判断，有时候走网络代理可能会导致重复提交。
+                for reply in replies
+                  .reply-item
+                    .main
+                      span.title
+                        | 回复了 #{reply.topic.user.username}创建的主题
+                        a(href='/topics/#{reply.topic.id}')= reply.topic.title
+                      .content
+                        p= reply.content
               .ui-footer
                 a(href='/u/guokai/replies') ›› 查看更多回复
         .span3.right

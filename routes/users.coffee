@@ -21,15 +21,23 @@ exports.index = (req, res) ->
 
 
 exports.show = (req, res) ->
-  username = req.params.username
-  User = mongoose.model('User')
+  User = mongoose.model 'User'
+  Topic = mongoose.model 'Topic'
+  Reply = mongoose.model 'Reply'
 
-  User.findOne username: username, (err, user) ->
-    throw err if err
-    unless user
-      res.send('404')
-    else
-      res.render 'users/show', user: user
+  User.findOne username: req.params.username, (err, user) ->
+    throw err if err 
+    async.parallel
+      topics: (callback) ->
+        Topic.findTopicsByUserId user.id, 10, (err, topics) ->
+          return callback err if err 
+          callback null, topics
+      replies: (callback) ->
+        Reply.findReplyByUserWithTopic user.id, 10, (err, replies) ->
+          return callback err if err
+          callback null, replies
+      (err, results) ->
+        res.render 'users/show', user: user, topics: results.topics, replies: results.replies
 
 # get 'register'
 exports.new = (req, res) ->

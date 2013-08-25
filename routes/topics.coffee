@@ -7,11 +7,14 @@ exports.index = (req, res) ->
   Topic = mongoose.model('Topic')
   Plane = mongoose.model('Plane')
 
-  Plane.allNodes  (err, nodes) -> 
-    return throw err if err
-    Topic.recentTopics 100, (err, topics) ->
-      return console.log err if err 
-      res.render "topics/index", planes: nodes, topics: topics
+  async.parallel
+    nodes: (callback) ->
+      Plane.allNodes callback
+    topics: (callback) ->
+      Topic.recentTopics 100, callback
+    (err, results) ->
+      throw err if err
+      res.render "topics/index", planes: results.nodes, topics: results.topics
 
 exports.show = (req, res) ->
   Topic = mongoose.model('Topic')
