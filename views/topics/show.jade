@@ -7,10 +7,7 @@ block content
         .topic-detail.container-box
           .ui-header
             a(href='/u/#{topic.user.username}')
-              if topic.user.upload_avatar
-                img.avatar(src='#{topic.user.upload_avatar}', alt='')
-              else
-                img.avatar(src='#{topic.avatar(locals.current_user.email_md5)}', alt='')
+              img.avatar(src='#{topic.user.avatarUrl()}', alt='')
             .main
               h3.title= topic.title
               .meta

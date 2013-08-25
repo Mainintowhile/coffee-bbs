@@ -25,4 +25,8 @@ block content
                 textarea.content.mt5.smart-code-support(rows='3', placeholder='正文', name='content')
               input#checkall.btn.btn-small(type='submit', value='立即创建')
       .span3.right
-        include ../share/user_info
+        if locals.current_user
+          - var user = locals.current_user
+          include ../share/user_info
+        else
+          include ../share/login_box
