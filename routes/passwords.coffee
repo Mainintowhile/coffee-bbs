@@ -5,10 +5,7 @@ sanitize = require('validator').sanitize
 
 # get '/forgot'
 exports.new = (req, res) ->
-  res.render 'passwords/new',
-    title: "reset password"
-    success: req.flash 'success'
-    notices: req.flash 'notices'
+  res.render 'passwords/new', success: req.flash 'success', notices: req.flash 'notices'
 
 # post '/forgot'
 exports.create = (req, res) ->
@@ -19,20 +16,12 @@ exports.create = (req, res) ->
   notices.push "email can not blank" unless email
 
   if notices.length > 0
-     return res.render 'passwords/new',
-       title: "reset password"
-       username: username
-       email: email
-       notices: notices
+     return res.render 'passwords/new', username: username, email: email, notices: notices
 
   User = mongoose.model('User')
   User.findOne email: email, username: username, (err, user) ->
     unless user
-      return res.render 'passwords/new',
-        title: "reset password"
-        username: username
-        email: email
-        notices: ["the user not exists"]
+      return res.render 'passwords/new', username: username, email: email, notices: ["the user not exists"]
     # save reset token and reset time 
     token = bcrypt.genSaltSync(10)
     user.reset_password_token = token
@@ -62,7 +51,6 @@ exports.edit = (req, res) ->
       return req.redirect '/forgot'
 
     res.render 'passwords/edit',
-      title: 'reset password'
       username: username
       token: token
 
@@ -75,14 +63,12 @@ exports.update = (req, res) ->
 
   if !password || !password_confirm
     return res.render 'passwords/edit',
-      title : 'reset password'
       notices: ['please check your password']
       username: username
       token: token
 
   if password_confirm != password
     return res.render 'passwords/edit',
-      title : 'reset password'
       username: username
       token: token
 
