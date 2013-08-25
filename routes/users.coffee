@@ -6,8 +6,10 @@ mail = require '../services/mail'
 bcrypt = require 'bcrypt'
 async = require 'async'
 
+# GET /members
 exports.index = (req, res) ->
   User = mongoose.model 'User'
+
   async.parallel
     activeUsers: (callback) ->
       User.activeUsers(49, callback)
@@ -17,9 +19,6 @@ exports.index = (req, res) ->
       throw err if err
       res.render 'users/index', users: results
 
-  # User.find {}, (err, users) ->
-  #   throw err if err 
-  #   res.render 'users/index', users: users
 
 exports.show = (req, res) ->
   username = req.params.username

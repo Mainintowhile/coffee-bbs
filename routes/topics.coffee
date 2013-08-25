@@ -1,6 +1,7 @@
 mongoose = require 'mongoose'
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
+async = require 'async'
 
 exports.index = (req, res) ->
   Topic = mongoose.model('Topic')
@@ -16,22 +17,32 @@ exports.show = (req, res) ->
   Topic = mongoose.model('Topic')
   Reply = mongoose.model('Reply')
   User = mongoose.model('User')
+  Node = mongoose.model('Node')
 
   # get topic
   Topic.findById req.params.id, (err, topic) ->
-    return throw err if err
-    topic.hit++
-    topic.save()
-
-    # get topic replies
-    Reply.find topic_id: topic.id, (err, replies) ->
-      return throw err if err
-      topic.replies = replies
-
-      # get topic create user
-      User.findById topic.user_id, (err, user) -> 
-        return throw err if err
-        topic.user = user
+    throw err if err
+    async.parallel
+      topic: (callback) ->
+        topic.hit++
+        topic.save()
+        callback()
+      replies: (callback) ->
+        Reply.findRepliesByTopicId topic.id, (err, replies) ->
+          return callback err if err
+          callback null, replies
+      user: (callback) ->
+        User.findById topic.user_id, (err, user) -> 
+          return callback err if err
+          callback null, user
+      node: (callback) ->
+        Node.findById topic.node_id, (err, node) ->
+          return callback err if err
+          callback null, node
+      (err, results) ->
+        topic.user = results.user
+        topic.replies = results.replies
+        topic.node = results.node
         res.render "topics/show", 
           title: "show page", topic: topic
 

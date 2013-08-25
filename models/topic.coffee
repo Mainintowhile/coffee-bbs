@@ -29,11 +29,11 @@ topicSchema.statics.recentTopics = (count, callback) ->
   @find().limit(count).sort(created_at: 'desc').exec (err, topics) ->
     async.waterfall [
       (cb) ->
-        async.map topics, user, (err, results) ->
+        async.map topics, getUser, (err, results) ->
           return cb err if err
           cb null, results
       (topics, cb) ->
-        async.map topics, node, (err, results) ->
+        async.map topics, getNode, (err, results) ->
           return cb err if err
           cb null, results
     ],
@@ -41,14 +41,14 @@ topicSchema.statics.recentTopics = (count, callback) ->
       return callback err if err
       callback null, results
 
-user = (topic, callback) ->
+getUser = (topic, callback) ->
   User = mongoose.model 'User'
   User.findById topic.user_id, (err, user) ->
     return callback err if err
     topic.user = user
     callback null, topic
 
-node = (topic, callback) ->
+getNode = (topic, callback) ->
   Node = mongoose.model 'Node'
   Node.findById topic.node_id, (err, node) ->
     return callback err if err

@@ -12,7 +12,7 @@ block content
               h3.title= topic.title
               .meta
                 span.node
-                  a(href='/node/question') 问与答
+                  a(href='/nodes/#{topic.node.key}')= topic.node.name
                 | •
                 span.username
                   a(href='/u/#{topic.user.username}')= topic.user.username
@@ -42,15 +42,15 @@ block content
             .ui-content
               for reply, i in topic.replies
                 .reply-item
-                  a(href='/u/#{reply.username}')
-                    img.avatar(src='/static/avatar/m_91afd5f4-2f57-5af6-8c93-059436990c30.png?t=0.581142137661', alt='')
+                  a(href='/u/#{reply.user.username}')
+                    img.avatar(src='#{reply.user.avatarUrl()}', alt='')
                   .main
                     .meta
-                      a.reply-username(href='/u/#{reply.username}')
-                        span.username= reply.username
+                      a.reply-username(href='/u/#{reply.user.username}')
+                        span.username= reply.user.username
                       span.time= reply.created_at
                       span.floor.fr ##{i+1}
-                      span.reply-to.fr.J_replyTo(data-username='yue365')
+                      span.reply-to.fr.J_replyTo(data-username='#{reply.user.username}')
                         img(src='/images/reply.png', alt='')
                     span.content
                       p= reply.content
