@@ -3,9 +3,8 @@ async = require 'async'
 Schema = mongoose.Schema
 
 replySchema = new Schema(
-  user_id: Schema.Types.ObjectId
-  topic_id: Schema.Types.ObjectId
-  # username: { type: String, required: true }
+  user_id: { type: Schema.Types.ObjectId, index: true }
+  topic_id: { type: Schema.Types.ObjectId, index: true }
   content:  { type: String, required: true }
   created_at: { type: Date, default: Date.now }
   updated_at: { type: Date, default: Date.now }

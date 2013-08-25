@@ -13,4 +13,4 @@ planeSchema.statics.allNodes = (callback)->
   @find().populate('nodes').exec(callback)
 
 
-mongoose.model("Plane", planeSchema)
+mongoose.model "Plane", planeSchema

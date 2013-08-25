@@ -5,8 +5,8 @@ Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
 
 topicSchema = new mongoose.Schema(
-	user_id: { type: ObjectId, required: true }
-	node_id: { type: ObjectId, required: true }
+	user_id: { type: ObjectId, required: true, index: true }
+	node_id: { type: ObjectId, required: true , index: true }
 	title: String
 	content: String
 	hit: { type: Number, default: 0}
@@ -20,7 +20,7 @@ topicSchema = new mongoose.Schema(
 # Find Node Topics
 topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
   @find({node_id: node_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
-    async.map topics, user, (err, results) ->
+    async.map topics, getUser, (err, results) ->
       return callback err if err 
       callback null, topics
 
