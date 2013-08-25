@@ -1,12 +1,16 @@
 mongoose = require 'mongoose'
+async = require 'async'
 
 # Get "/"
 exports.index = (req, res) ->
   Topic = mongoose.model('Topic')
   Plane = mongoose.model('Plane')
 
-  Plane.allNodes  (err, nodes) -> 
-    throw err if err
-    Topic.recentTopics 100, (err, topics) ->
+  async.parallel 
+    nodes: (callback) ->
+      Plane.allNodes callback
+    topics: (callback) ->
+      Topic.recentTopics 100, callback
+    (err, result) ->
       throw err if err
-      res.render "index", planes: nodes, topics: topics
+      res.render "index", planes: result.nodes, topics: result.topics

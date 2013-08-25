@@ -11,6 +11,8 @@ block content
             .ui-content
               if topics.length != 0
                 for topic in topics
+                  //- - var node = node
+                  - var user = topic.user
                   include ../share/topic
               else 
                 .pl10.pr10
@@ -18,8 +20,8 @@ block content
                     该结点下暂时还没有主题，发出你的讨论吧。
             .ui-footer
         .span3.right
-          if current_user
-            - var user = current_user
+          if locals.current_user
+            - var user = locals.current_user
             include ../share/user_info
           else 
             include ../share/login_box

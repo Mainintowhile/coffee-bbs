@@ -6,6 +6,8 @@ block content
       .span9.left
         .topics.container-box.deprecated-mt10
           each topic in topics
+            - var user = topic.user
+            - var node = topic.node
             include ../share/topic
           .pagination
             ul

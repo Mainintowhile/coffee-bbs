@@ -1,4 +1,6 @@
 mongoose = require 'mongoose'
+async = require 'async'
+
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
 
@@ -15,39 +17,49 @@ topicSchema = new mongoose.Schema(
 	updated_at: { type: Date, default: Date.now }
 )
 
+# Find Node Topics
+topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
+  @find({node_id: node_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
+    async.map topics, user, (err, results) ->
+      return callback err if err 
+      callback null, topics
+
+# Find recent Topics
 topicSchema.statics.recentTopics = (count, callback) ->
-  @find().limit(count).exec callback
+  @find().limit(count).sort(created_at: 'desc').exec (err, topics) ->
+    async.waterfall [
+      (cb) ->
+        async.map topics, user, (err, results) ->
+          return cb err if err
+          cb null, results
+      (topics, cb) ->
+        async.map topics, node, (err, results) ->
+          return cb err if err
+          cb null, results
+    ],
+    (err, results) ->
+      return callback err if err
+      callback null, results
 
-# topicSchema.statics.recentTopics = (count, callback) ->
-#   @find().limit(count).exec (err, topics) ->
-#     return callback err if err 
-#     topics_count = topics.length 
-
-#     topics.forEach (topic) ->
-#       topics_count--
-#       topic.author (err, author) ->
-#         return callback err if err 
-#         console.log "author is #{author}"
-#         topic.user = author
-#         if topics_count == 0
-#           callback null, topics
-
-
-topicSchema.methods.author = (callback) ->
+user = (topic, callback) ->
   User = mongoose.model 'User'
-  User.findById @user_id, (err, user) ->
-    if err
-      callback err
-    else
-      callback null, user
+  User.findById topic.user_id, (err, user) ->
+    return callback err if err
+    topic.user = user
+    callback null, topic
+
+node = (topic, callback) ->
+  Node = mongoose.model 'Node'
+  Node.findById topic.node_id, (err, node) ->
+    return callback err if err
+    topic.node = node
+    callback null, topic
 
 topicSchema.methods.node = (callback) ->
   Node = mongoose.model 'Node'
   Node.findById @node_id, (err, node) ->
-    if err 
-      callback err
-    else
-      callback null, node
+    return callback err if err
+    callback null, node
 
 
 topicSchema.pre 'save', (next) ->

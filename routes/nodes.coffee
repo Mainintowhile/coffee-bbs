@@ -11,7 +11,7 @@ exports.show = (req, res) ->
 
   Node.findNodeByKey req.params.key, (err, node) ->
     throw err if err
-    Topic.find node_id: node.id, (err, topics) ->
+    Topic.findTopicsByNode node.id, 100, (err, topics) ->
       throw err if err
       res.render 'nodes/show',
         node: node
