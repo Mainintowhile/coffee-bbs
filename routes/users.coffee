@@ -3,10 +3,23 @@ sanitize = require('validator').sanitize
 Validator = require('validator').Validator
 mongoose = require 'mongoose'
 mail = require '../services/mail'
-bcrypt = require "bcrypt"
+bcrypt = require 'bcrypt'
+async = require 'async'
 
 exports.index = (req, res) ->
-  res.send "respond with a resource"
+  User = mongoose.model 'User'
+  async.parallel
+    activeUsers: (callback) ->
+      User.activeUsers(49, callback)
+    newUsers: (callback) ->
+      User.newUsers(49, callback)
+    (err, results) ->
+      throw err if err
+      res.render 'users/index', users: results
+
+  # User.find {}, (err, users) ->
+  #   throw err if err 
+  #   res.render 'users/index', users: users
 
 exports.show = (req, res) ->
   username = req.params.username

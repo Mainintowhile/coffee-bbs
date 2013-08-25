@@ -18,4 +18,8 @@ block content
                     该结点下暂时还没有主题，发出你的讨论吧。
             .ui-footer
         .span3.right
-          include ../share/user_info
+          if current_user
+            - var user = current_user
+            include ../share/user_info
+          else 
+            include ../share/login_box

@@ -70,6 +70,16 @@ userSchema.pre 'validate', (next) ->
   else
     next()
 
+userSchema.statics.newUsers = (count, callback) ->
+  @find({}).limit(count).sort(created_at: 'desc').exec (err, users) ->
+    return callback err if err
+    callback null, users
+
+userSchema.statics.activeUsers = (count, callback) ->
+  @find({}).limit(count).sort(topic_count: 'desc').exec (err, users) ->
+    return callback err if err 
+    callback null, users
+
 # auth password
 userSchema.methods.comparePassword = (candidatePassword, callback) ->
   bcrypt.compare candidatePassword, @password, (err, isMatch) ->

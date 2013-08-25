@@ -2,7 +2,6 @@ mongoose = require 'mongoose'
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
 
-
 topicSchema = new mongoose.Schema(
 	user_id: { type: ObjectId, required: true }
 	node_id: { type: ObjectId, required: true }
@@ -17,7 +16,39 @@ topicSchema = new mongoose.Schema(
 )
 
 topicSchema.statics.recentTopics = (count, callback) ->
-  @find().limit(count).exec (callback)
+  @find().limit(count).exec callback
+
+# topicSchema.statics.recentTopics = (count, callback) ->
+#   @find().limit(count).exec (err, topics) ->
+#     return callback err if err 
+#     topics_count = topics.length 
+
+#     topics.forEach (topic) ->
+#       topics_count--
+#       topic.author (err, author) ->
+#         return callback err if err 
+#         console.log "author is #{author}"
+#         topic.user = author
+#         if topics_count == 0
+#           callback null, topics
+
+
+topicSchema.methods.author = (callback) ->
+  User = mongoose.model 'User'
+  User.findById @user_id, (err, user) ->
+    if err
+      callback err
+    else
+      callback null, user
+
+topicSchema.methods.node = (callback) ->
+  Node = mongoose.model 'Node'
+  Node.findById @node_id, (err, node) ->
+    if err 
+      callback err
+    else
+      callback null, node
+
 
 topicSchema.pre 'save', (next) ->
   @updated_at = new Date()

@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  .container-fluid.container.mt15
+     .row-fluid
+       .span9.left
+         .member-lists.container-box
+           .ui-header
+             span.title 社区活跃成员 
+           .ui-content
+              for user in users.activeUsers
+               .member
+                 a(href='/u/#{user.username}')
+                   img.avatar(src='#{user.avatarUrl()}', alt='')
+                 span.username
+                   a(href='/u/#{user.username}')= user.username
+         .member-lists.container-box.mt10
+           .ui-header
+             span.title 最新加入成员
+           .ui-content
+              for user in users.newUsers
+               .member
+                 a(href='/u/#{user.username}')
+                   img.avatar(src='#{user.avatarUrl()}', alt='')
+                 span.username
+                   a(href='/u/#{user.username}')= user.username
+       .span3.right
+          if locals.current_user
+            - var user = current_user
+            include ../share/user_info
+          else
+            include ../share/login_box
