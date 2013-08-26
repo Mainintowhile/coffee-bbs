@@ -93,10 +93,4 @@ userSchema.methods.avatarUrl = () ->
   else
     "http://www.gravatar.com/avatar/#{@email_md5}"
 
-# userSchema.methods.topicCount = (callback) ->
-#   Topic = mongoose.model 'Topic'
-#   Topic.where(user_id: @id).count (err, count) ->
-#     return callback(err) if err
-#     callback(null, count)
-
 mongoose.model('User', userSchema)

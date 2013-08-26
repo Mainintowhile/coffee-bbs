@@ -45,6 +45,7 @@ app.locals(helper)
 siteSettings = require("./site_settings")(app.get('env'))
 app.locals(siteSettings)
 app.locals(devSettings)
+app.locals.runEnv = app.get('env')
 
 app.use app.router
 app.use express.static(path.join(__dirname, "public"))

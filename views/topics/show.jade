@@ -3,6 +3,41 @@ extends ../layout
 block vars
   - var title = topic.title
 
+block scripts
+  if locals.runEnv == 'development'
+    script(src="/javascripts/jquery-1.10.2.js")
+  if locals.runEnv == 'production'
+    script(src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js")
+
+  script
+    $(document).ready(function(){
+      $('.J_replyTo').click(function(e) {
+        username = $(this).attr('data-username');
+        index = $(this).attr('data-index');
+        replyContent = $('.J_replyContent');
+        oldContent = replyContent.val();
+        prefix = "#" + index + "楼 " + "@" + username + " ";
+        newContent = '';
+
+        if(oldContent.length > 0){
+          if (oldContent != prefix) {
+            newContent = oldContent + "\n" + prefix;
+          }
+        } else {
+            newContent = prefix;
+        }
+        replyContent.focus();
+        replyContent.val(newContent);
+        });
+
+        $('.J_replyContent').keydown(function(e) {
+          if((e.ctrlKey || e.metaKey) && e.which === 13) {
+            e.preventDefault();
+            $(e.currentTarget).parent('form').submit();
+          }
+        });
+    });
+
 block content
   .container-fluid.container.mt15
     .row-fluid
@@ -53,7 +88,7 @@ block content
                         span.username= reply.user.username
                       span.time= reply.created_at
                       span.floor.fr ##{i+1}
-                      span.reply-to.fr.J_replyTo(data-username='#{reply.user.username}')
+                      span.reply-to.fr.J_replyTo(data-username='#{reply.user.username}', data-index="#{i+1}")
                         img(src='/images/reply.png', alt='')
                     span.content
                       p= reply.content
