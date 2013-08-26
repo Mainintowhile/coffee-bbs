@@ -1,12 +1,12 @@
 settings =
   development:
-    site_name: "HEL-Hello World"
+    site_name: "shanliren"
 
   test:
-    site_name: "HEL-Hello World"
+    site_name: "shanliren"
 
   production:
-    site_name: "HEL-Hello World"
+    site_name: "shanliren"
 
 getSettings = (env) ->
   settings[env]

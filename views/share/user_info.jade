@@ -7,7 +7,8 @@
         img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
     .username= user.username
     .website
-      a(href='')
+      if user.website
+        a(href='#{user.website}')= user.website
   .ui-content
     .status.status-topic
       strong

@@ -72,6 +72,8 @@ app.get "/", routes.index
 # users
 app.get  "/members", users.index
 app.get  "/u/:username", users.show
+app.get  "/u/:username/topics", users.topics
+app.get  "/u/:username/replies", users.replies
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
@@ -80,6 +82,7 @@ app.post "/setting", midderwares.requiredLogined, users.setting
 app.get  "/setting/avatar", midderwares.requiredLogined, users.avatar
 app.get  "/setting/password", midderwares.requiredLogined, users.getSettingPass
 app.post "/setting/password", midderwares.requiredLogined, users.settingPass
+
 
 app.get  "/forgot", passwords.new
 app.post "/forgot", passwords.create

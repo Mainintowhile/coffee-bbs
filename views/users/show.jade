@@ -67,7 +67,7 @@ block content
                   - var node = topic.node
                   include ../share/topic
                 .ui-footer
-                  a(href='/u/guokai/topics') ›› 查看更多主题
+                  a(href='/u/#{user.username}/topics') ›› 查看更多主题
             .replies-lists.container-box.mt10
               .ui-header
                 span.title 回复列表
@@ -81,7 +81,7 @@ block content
                       .content
                         p= reply.content
               .ui-footer
-                a(href='/u/guokai/replies') ›› 查看更多回复
+                a(href='/u/#{user.username}/replies') ›› 查看更多回复
         .span3.right
           .user-page
             .usercard.container-box

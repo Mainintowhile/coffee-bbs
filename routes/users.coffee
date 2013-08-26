@@ -162,6 +162,27 @@ exports.settingPass = (req, res) ->
       else
         res.render 'users/update_pass', notices: ['old password not match']
 
+exports.topics = (req, res) ->
+  Topic = mongoose.model 'Topic'
+  User = mongoose.model 'User'
+
+  User.findOne username: req.params.username, (err, user) ->
+    throw err if err 
+    Topic.findTopicsByUserId user.id, 100, (err, topics) ->
+      throw err if err 
+      res.render 'users/topics_list', topics: topics, user: user
+
+exports.replies = (req, res) ->
+  Reply = mongoose.model 'Reply'
+  User = mongoose.model 'User'
+
+  User.findOne username: req.params.username, (err, user) ->
+    console.log "user is: #{user}"
+    throw err if err 
+    Reply.findReplyByUserWithTopic user.id, 100, (err, replies) ->
+      throw err if err
+      res.render 'users/replies_list', replies: replies,  user: user
+
 # register validate 
 validate = (user) ->
   v = new Validator()

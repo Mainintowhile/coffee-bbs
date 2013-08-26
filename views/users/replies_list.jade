@@ -1,0 +1,24 @@
+extends ../layout
+
+block vars
+  - var title = user.username + "的回复列表"
+
+block content
+ .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .replies-lists.container-box.user-replies
+          .ui-header
+            span.bread-nav #{locals.site_name} > #{user.username} > 回复列表
+          .ui-content.topics
+            for reply in replies
+              .reply-item
+                .main
+                  span.title
+                    | 回复了 #{reply.topic.user.username}创建的主题
+                    a(href='/topics/#{reply.topic.id}')= reply.topic.title
+                  .content
+                    p= reply.content
+
+      .span3.right
+        include ../share/user_info
