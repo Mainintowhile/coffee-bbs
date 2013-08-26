@@ -13,7 +13,7 @@ counterSchema.statics.incrementCounter = (schemaName, callback) ->
     else
       callback null, result.count
 
-module.exports = mongoose.model('Counter', counterSchema)
+mongoose.model('Counter', counterSchema)
 
 
 

@@ -98,4 +98,4 @@ userSchema.methods.avatarUrl = () ->
 #     return callback(err) if err
 #     callback(null, count)
 
-module.exports = mongoose.model('User', userSchema)
+mongoose.model('User', userSchema)

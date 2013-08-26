@@ -21,6 +21,7 @@ replySchema.statics.findRepliesByTopicId = (topic_id, callback) ->
 
 # get reply by userid and append topic info
 # @params user_id, count, callback
+# replies list 
 replySchema.statics.findReplyByUserWithTopic = (user_id, count, callback) ->
   @find(user_id: user_id).limit(count).sort(created_at: 'asc').exec (err, replies) ->
     return callback err if err 
@@ -43,14 +44,14 @@ getTopic = (reply, callback) ->
   User = mongoose.model 'User'
 
   async.waterfall [
-    (cb) ->
-      Topic.findById reply.topic_id, (err, topic) ->
-        return cb err if err
-        cb null, topic
-    (topic, cb) ->
-      User.findById topic.user_id, (err, user) ->
-        return cb err if err
-        cb null, topic, user
+    (next) ->
+      Topic.findById reply.topic_id, 'title user_id', (err, topic) ->
+        return next err if err
+        next null, topic
+    (topic, next) ->
+      User.findById topic.user_id, 'username', (err, user) ->
+        return next err if err
+        next null, topic, user
   ],
   (err, topic, user) ->
     return callback err if err

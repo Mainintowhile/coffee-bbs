@@ -4,27 +4,30 @@ async = require 'async'
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
 
-topicSchema = new mongoose.Schema(
-	user_id: { type: ObjectId, required: true, index: true }
-	node_id: { type: ObjectId, required: true , index: true }
-	title: String
-	content: String
-	hit: { type: Number, default: 0}
-	replies_count: { type: Number, default: 0}
-	last_replied_by: String
-	last_replied_at: { type: Date, default: Date.now}
-	created_at: { type: Date, default: Date.now }
-	updated_at: { type: Date, default: Date.now }
-)
+topicSchema = new mongoose.Schema
+  user_id: { type: ObjectId, required: true, index: true }
+  node_id: { type: ObjectId, required: true , index: true }
+  title: { type: String }
+  content: { type: String }
+  username: { type: String } # for cache
+  hit: { type: Number, default: 0}
+  replies_count: { type: Number, default: 0}
+  last_replied_by: String
+  last_replied_at: { type: Date, default: Date.now}
+  created_at: { type: Date, default: Date.now }
+  updated_at: { type: Date, default: Date.now }
+
 
 # Find Topics with Node  by node_id
+# example node show page
 topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
-  @find({node_id: node_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
+  @find({node_id: node_id}).limit(count).select('-content').sort(last_replied_at: -1).exec (err, topics) ->
     async.map topics, getUser, (err, results) ->
       return callback err if err 
       callback null, topics
 
 # Find Topic with Node with user_id
+# example user topic list page
 topicSchema.statics.findTopicsByUserId= (user_id, count, callback) ->
   @find({user_id: user_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
     async.map topics, getNode, (err, results) ->
@@ -32,17 +35,18 @@ topicSchema.statics.findTopicsByUserId= (user_id, count, callback) ->
       callback null, results
 
 # Find recent Topics
-topicSchema.statics.recentTopics = (count, callback) ->
-  @find().limit(count).sort(created_at: 'desc').exec (err, topics) ->
+# example topics index page
+topicSchema.statics.recentTopicsList = (count, callback) ->
+  @find().limit(count).select('-content').sort(last_replied_at: -1).exec (err, topics) ->
     async.waterfall [
-      (cb) ->
+      (next) ->
         async.map topics, getUser, (err, results) ->
-          return cb err if err
-          cb null, results
-      (topics, cb) ->
+          return next err if err
+          next null, results
+      (topics, next) ->
         async.map topics, getNode, (err, results) ->
-          return cb err if err
-          cb null, results
+          return next err if err
+          next null, results
     ],
     (err, results) ->
       return callback err if err
@@ -93,4 +97,4 @@ topicSchema.pre 'save', (next) ->
 #     user.save()
 
 
-Topic = mongoose.model 'Topic', topicSchema
+mongoose.model 'Topic', topicSchema

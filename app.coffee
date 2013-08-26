@@ -59,6 +59,7 @@ require('./models/plane')
 require('./models/node')
 require('./models/counter')
 require('./models/reply')
+require('./models/site')
 
 mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
   process.exit(1) if err
@@ -67,7 +68,8 @@ if "development" is app.get('env')
   mongoose.set('debug', true)
 
 
-app.get "/", routes.index
+# app.get "/", routes.index
+app.get "/", topics.index
 
 # users
 app.get  "/members", users.index

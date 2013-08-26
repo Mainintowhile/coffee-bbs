@@ -8,22 +8,8 @@
     .ui-header
       span.title 最热节点
     .ui-content
-      a(href='/node/share') 分享
-      a(href='/node/help') 帮助
-      a(href='/node/sublime') Sublime
-      a(href='/node/translate') 翻译
-      a(href='/node/feedback') 意见反馈
-      a(href='/node/coffeescript') CoffeeScript
-      a(href='/node/javascript') JavaScript
-      a(href='/node/pyhton') Python
-      a(href='/node/yui') YUI
-      a(href='/node/webstorm') WebStorm
-      a(href='/node/opensource') 开源项目
-      a(href='/node/algorithm') 算法
-      a(href='/node/html') HTML
-      a(href='/node/dev') 社区开发
-      a(href='/node/question') 问与答
-      a(href='/node/vim') VIM          
+      for node in hotNodes 
+        a(href='/nodes/#{node.key}')= node.name
   
   //- .sidebox.container-box.mt10.friends
   //-   .ui-header
@@ -45,13 +31,13 @@
     .ui-content
       dl
         dt 注册成员
-        dd 718
+        dd= siteInfos.user_count
       dl
         dt 节点
-        dd 41
+        dd= siteInfos.node_count
       dl
         dt 主题
-        dd 171
+        dd= siteInfos.topic_count
       dl
         dt 回复
-        dd 718          
+        dd= siteInfos.reply_count
