@@ -76,6 +76,7 @@ app.get  "/members", users.index
 app.get  "/u/:username", users.show
 app.get  "/u/:username/topics", users.topics
 app.get  "/u/:username/replies", users.replies
+app.get  "/u/:username/favorites", users.favorites
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
@@ -104,9 +105,11 @@ app.get  "/topics", topics.index
 app.get  "/topics/:id", topics.show
 app.get  "/nodes/:key/new", midderwares.requiredLogined, topics.new
 app.post "/nodes/:key/topics", midderwares.requiredLogined, topics.create
-app.get  "/topics/:id/edit", midderwares.requiredLogined, topics.edit
-app.put  "/topics/:id", midderwares.requiredLogined, topics.update
-app.delete "/topics/:id", midderwares.requiredLogined, topics.destroy
+app.post "/topics/:id/favorite", midderwares.requiredLogined, topics.favorite
+app.post "/topics/:id/unfavorite", midderwares.requiredLogined, topics.unfavorite
+# app.get  "/topics/:id/edit", midderwares.requiredLogined, topics.edit
+# app.put  "/topics/:id", midderwares.requiredLogined, topics.update
+# app.delete "/topics/:id", midderwares.requiredLogined, topics.destroy
 
 # replies
 

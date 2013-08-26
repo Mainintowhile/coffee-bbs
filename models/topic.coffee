@@ -18,6 +18,13 @@ topicSchema = new mongoose.Schema
   updated_at: { type: Date, default: Date.now }
 
 
+# get topic with Node topic ids
+topicSchema.statics.getTopicsWithNodeByIds = (topic_ids, callback) ->
+  @find(_id: $in: topic_ids).select('-content').sort(created_at: -1).exec (err, topics) ->
+    async.map topics, getNode, (err, results) ->
+      return callback err if err 
+      callback null, results
+
 # Find Topics with Node  by node_id
 # example node show page
 topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
@@ -26,10 +33,10 @@ topicSchema.statics.findTopicsByNode = (node_id, count, callback) ->
       return callback err if err 
       callback null, topics
 
-# Find Topic with Node with user_id
+# Find Topic with Node by user_id
 # example user topic list page
 topicSchema.statics.findTopicsByUserId= (user_id, count, callback) ->
-  @find({user_id: user_id}).limit(count).sort(created_at: 'desc').exec (err, topics) ->
+  @find({user_id: user_id}).limit(count).sort(created_at: -1).exec (err, topics) ->
     async.map topics, getNode, (err, results) ->
       return callback err if err 
       callback null, results

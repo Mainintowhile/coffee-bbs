@@ -69,10 +69,11 @@ exports.show = (req, res) ->
         res.render "topics/show", 
           title: "show page", topic: topic
 
+# GET /nodes/:key/new
 exports.new = (req, res) ->
 	res.render "topics/new", node_key: req.params.key
 
-# POST nodes/:key/topics
+# POST /nodes/:key/topics
 exports.create = (req, res) ->
   node_key = req.params.key
   user_id = req.session.user._id
@@ -111,7 +112,31 @@ exports.create = (req, res) ->
         (err, results) ->
           throw err if err 
           res.redirect "/topics/#{results.topic.id}"
-          
+
+# POST /topics/:id/favorite
+exports.favorite = (req, res) ->
+  topic_id = req.params.id
+  User = mongoose.mode 'User'
+
+  User.findById req.session.user._id, (err, user) ->
+    throw err if err 
+    user.favorite_topics.push topic_id
+    user.save (err, doc) ->
+      throw err if err 
+      res.send 'success'
+
+# POST /topics/:id/unfavorite
+exports.unfavorite = (req, res) ->
+  topic_id = req.params.id
+  User = mongoose.mode 'User'
+
+  User.findById req.session.user._id, (err, user) ->
+    throw err if err 
+    user.favorite_topics.pop topic_id
+    user.save (err, doc) ->
+      throw err if err 
+      res.send 'success'
+
 # 
 exports.update = (req, res) ->
 	res.render "topics/show", 

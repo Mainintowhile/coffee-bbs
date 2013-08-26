@@ -177,11 +177,21 @@ exports.replies = (req, res) ->
   User = mongoose.model 'User'
 
   User.findOne username: req.params.username, (err, user) ->
-    console.log "user is: #{user}"
     throw err if err 
     Reply.findReplyByUserWithTopic user.id, 100, (err, replies) ->
       throw err if err
       res.render 'users/replies_list', replies: replies,  user: user
+
+# GET /u/:username/favorites
+exports.favorites = (req, res) ->
+  User = mongoose.model 'User'
+  Topic = mongoose.model 'Topic'
+
+  User.findOne username: req.params.username, (err, user) ->
+    throw err if err
+    Topic.getTopicsWithNodeByIds user.favorite_topics, (err, topics) ->
+      throw err if err
+      res.render 'users/favorites_list', user: user, topics: topics
 
 # register validate 
 validate = (user) ->
