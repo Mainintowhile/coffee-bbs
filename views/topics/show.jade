@@ -86,7 +86,7 @@ block content
                 span.username
                   a(href='/u/#{topic.user.username}')= topic.user.username
                 | •
-                span.created-time 发表于 1 周前
+                span.created-time 发表于#{locals.human_datetime(topic.created_at)}
                 if topic.replies_count != 0
                   | •
                   span.last-reply-username
@@ -94,7 +94,7 @@ block content
                     a(href='/u/#{topic.last_replied_by}')
                       strong=topic.last_replied_by
                   | •
-                  span.last-reply-time 18 小时前
+                  span.last-reply-time= locals.human_datetime(topic.last_replied_at)
           .ui-content
             p= topic.content
           .ui-footer
@@ -117,7 +117,7 @@ block content
                     .meta
                       a.reply-username(href='/u/#{reply.user.username}')
                         span.username= reply.user.username
-                      span.time= reply.created_at
+                      span.time= locals.human_datetime(reply.created_at)
                       span.floor.fr ##{i+1}
                       span.reply-to.fr.J_replyTo(data-username='#{reply.user.username}', data-index="#{i+1}")
                         img(src='/images/reply.png', alt='')
