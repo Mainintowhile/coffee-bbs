@@ -139,11 +139,13 @@ exports.unfavorite = (req, res) ->
 
   User.findById req.session.user._id, (err, user) ->
     throw err if err 
-    #TODO 是否是pop方法
-    user.favorite_topics.pop topic_id
-    user.save (err, doc) ->
-      throw err if err 
-      res.send 'success'
+    if topic_id in user.favorite_topics.map((id) -> id.toString())
+      user.favorite_topics.remove(topic_id)
+      user.save (err, doc) ->
+        throw err if err 
+        res.json { success: 1}
+    else 
+      res.json { success: 0, message: 'topic_not_exist' }
 
 # 
 exports.update = (req, res) ->

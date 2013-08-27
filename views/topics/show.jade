@@ -11,24 +11,32 @@ block scripts
 
   script.
     $(document).ready(function(){
-      $('.J_topicFavorite').click(function(e) {
+      $('.ui-footer').on('click', '.J_topicFavorite', function(e) {
         var _node = $(this);
-          var _errorMap = {
-              topic_not_exist: '主题不存在',
-              can_not_favorite_your_topic: '不能收藏自己的主题',
-              already_favorited: '之前已经收藏过了',
-              please_signin: '请登录',
-          };
+        var _type = $(this).attr('data-type');
+        var _errorMap = {
+          topic_not_exist: '主题不存在',
+          can_not_favorite_your_topic: '不能收藏自己的主题',
+          already_favorited: '已经收藏过了',
+          please_signin: '请登录',
+        };
         e.preventDefault();
         $.ajax({
           type: "POST",
           url: _node.attr('href'),
-          //- data: data,
           success: function(data) {
             if(data.success) {
-              _node.html('<span class="f11 gray" style="text-shadow: 0px 1px 0px #fff;">收藏成功</span>');
+              if(_type == 'favorite'){
+                _node.replaceWith("<a href='/topics/#{topic.id}/unfavorite' data-type='unfavorite' class='J_topicFavorite'>收藏成功,点击取消</a>");
+              } else {
+                _node.replaceWith("<a href='/topics/#{topic.id}/favorite' data-type='favorite' class='J_topicFavorite'>取消成功,点击收藏</a>");
+              }
             } else {
-              _node.html('<span>' + _errorMap[data.message] + '</span>');
+              if(data.message == "already_favorited"){
+                _node.replaceWith("<a href='/topics/#{topic.id}/unfavorite' data-type='unfavorite' class='J_topicFavorite'>已经收藏过，取消收藏</a>");
+              } else {
+                _node.html('<span>' + _errorMap[data.message] + '</span>');
+              }
             }
           }
         });

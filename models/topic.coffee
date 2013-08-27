@@ -21,8 +21,18 @@ topicSchema = new mongoose.Schema
 # get topic with Node topic ids
 topicSchema.statics.getTopicsWithNodeByIds = (topic_ids, callback) ->
   @find(_id: $in: topic_ids).select('-content').sort(created_at: -1).exec (err, topics) ->
-    async.map topics, getNode, (err, results) ->
-      return callback err if err 
+    async.waterfall [
+      (next) ->
+        async.map topics, getUser, (err, results) ->
+          return next err if err
+          next null, results
+      (topics, next) ->
+        async.map topics, getNode, (err, results) ->
+          return next err if err
+          next null, results
+    ],
+    (err, results) ->
+      return callback err if err
       callback null, results
 
 # Find Topics with Node  by node_id
