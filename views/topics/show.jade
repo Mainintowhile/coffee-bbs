@@ -9,8 +9,31 @@ block scripts
   if locals.runEnv == 'production'
     script(src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js")
 
-  script
+  script.
     $(document).ready(function(){
+      $('.J_topicFavorite').click(function(e) {
+        var _node = $(this);
+          var _errorMap = {
+              topic_not_exist: '主题不存在',
+              can_not_favorite_your_topic: '不能收藏自己的主题',
+              already_favorited: '之前已经收藏过了',
+              please_signin: '请登录',
+          };
+        e.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: _node.attr('href'),
+          //- data: data,
+          success: function(data) {
+            if(data.success) {
+              _node.html('<span class="f11 gray" style="text-shadow: 0px 1px 0px #fff;">收藏成功</span>');
+            } else {
+              _node.html('<span>' + _errorMap[data.message] + '</span>');
+            }
+          }
+        });
+      });
+
       $('.J_replyTo').click(function(e) {
         username = $(this).attr('data-username');
         index = $(this).attr('data-index');
@@ -67,9 +90,9 @@ block content
           .ui-content
             p= topic.content
           .ui-footer
-            a.J_topicFavorite(href='/favorite?topic_id=165', data-type='favorite') 加入收藏
+            a.J_topicFavorite(href='/topics/#{topic.id}/favorite', data-type='favorite') 加入收藏
             a(href='#', onclick='window.open("http://service.weibo.com/share/share.php?url=#{locals.root_url}/topics/#{topic.id}&title=#{topic.title}", "_blank", "width=550, height=370");') 新浪微博
-            a.J_topicVote(href='/vote?topic_id=165') 喜欢
+            a.J_topicVote(href='/topics/#{topic.id}/vote') 喜欢
             span.hits.fr.mr10 #{topic.hit} 次点击
         if topic.replies.length == 0
           .alert.mt20.no-replies 暂无回复，说出你的观点吧

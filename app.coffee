@@ -10,7 +10,7 @@ sessions = require "./routes/sessions"
 passwords = require "./routes/passwords"
 nodes = require "./routes/nodes"
 replies = require "./routes/replies"
-midderwares = require "./routes/midderwares"
+filter = require "./routes/filter"
 
 http = require "http"
 path = require "path"
@@ -81,11 +81,11 @@ app.get  "/u/:username/favorites", users.favorites
 app.get  "/register", users.new
 app.post "/users/create", users.create
 app.get  "/active_account", users.activeAccount
-app.get  "/setting", midderwares.requiredLogined, users.getSetting
-app.post "/setting", midderwares.requiredLogined, users.setting
-app.get  "/setting/avatar", midderwares.requiredLogined, users.avatar
-app.get  "/setting/password", midderwares.requiredLogined, users.getSettingPass
-app.post "/setting/password", midderwares.requiredLogined, users.settingPass
+app.get  "/setting", filter.requiredLogined, users.getSetting
+app.post "/setting", filter.requiredLogined, users.setting
+app.get  "/setting/avatar", filter.requiredLogined, users.avatar
+app.get  "/setting/password", filter.requiredLogined, users.getSettingPass
+app.post "/setting/password", filter.requiredLogined, users.settingPass
 
 
 app.get  "/forgot", passwords.new
@@ -104,17 +104,17 @@ app.get "/nodes/:key", nodes.show
 # topcis
 app.get  "/topics", topics.index
 app.get  "/topics/:id", topics.show
-app.get  "/nodes/:key/new", midderwares.requiredLogined, topics.new
-app.post "/nodes/:key/topics", midderwares.requiredLogined, topics.create
-app.post "/topics/:id/favorite", midderwares.requiredLogined, topics.favorite
-app.post "/topics/:id/unfavorite", midderwares.requiredLogined, topics.unfavorite
-# app.get  "/topics/:id/edit", midderwares.requiredLogined, topics.edit
-# app.put  "/topics/:id", midderwares.requiredLogined, topics.update
-# app.delete "/topics/:id", midderwares.requiredLogined, topics.destroy
+app.get  "/nodes/:key/new", filter.requiredLogined, topics.new
+app.post "/nodes/:key/topics", filter.requiredLogined, topics.create
+app.post "/topics/:id/favorite", filter.requiredLogined, topics.favorite
+app.post "/topics/:id/unfavorite", filter.requiredLogined, topics.unfavorite
+# app.get  "/topics/:id/edit", filter.requiredLogined, topics.edit
+# app.put  "/topics/:id", filter.requiredLogined, topics.update
+# app.delete "/topics/:id", filter.requiredLogined, topics.destroy
 
 # replies
 
-app.post "/topics/:topic_id/replies", midderwares.requiredLogined, replies.create
+app.post "/topics/:topic_id/replies", filter.requiredLogined, replies.create
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port #{app.get("port")}"

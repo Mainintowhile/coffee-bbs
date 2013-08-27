@@ -116,22 +116,30 @@ exports.create = (req, res) ->
 # POST /topics/:id/favorite
 exports.favorite = (req, res) ->
   topic_id = req.params.id
-  User = mongoose.mode 'User'
+  User = mongoose.model 'User'
+  Topic = mongoose.model 'Topic'
 
   User.findById req.session.user._id, (err, user) ->
     throw err if err 
-    user.favorite_topics.push topic_id
-    user.save (err, doc) ->
+    Topic.findById topic_id, (err, topic) ->
       throw err if err 
-      res.send 'success'
+      if topic.id.toString() in user.favorite_topics.map((id) -> id.toString())
+        return res.json { success: 0, message: 'already_favorited' }
+      if topic.user_id.toString() == user.id.toString()
+        return res.json { success: 0, message: 'can_not_favorite_your_topic' }
+      user.favorite_topics.push topic.id
+      user.save (err, doc) ->
+        throw err if err 
+        res.json { success: 1 }
 
 # POST /topics/:id/unfavorite
 exports.unfavorite = (req, res) ->
   topic_id = req.params.id
-  User = mongoose.mode 'User'
+  User = mongoose.model 'User'
 
   User.findById req.session.user._id, (err, user) ->
     throw err if err 
+    #TODO 是否是pop方法
     user.favorite_topics.pop topic_id
     user.save (err, doc) ->
       throw err if err 

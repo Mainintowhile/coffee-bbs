@@ -19,7 +19,7 @@ block content
                   .website
                     a(href='#{user.website}')= user.website
                 .user-number
-                  .number 第#{user.reg_id}号成员
+                  .number 社区第#{user.reg_id}号成员
                   .since 入住于#{locals.momentTime(user.created_at.toString()).format("YYYY-MM-DD")}
               .ui-content
                 dl
@@ -92,11 +92,11 @@ block content
                   | 主题
                 .status.status-reply
                   strong
-                    a(href='/u/guokai/replies')= user.reply_count
+                    a(href='/u/#{user.username}/replies')= user.reply_count
                   | 回复
                 .status.status-favorite
                   strong
-                    a(href='/u/guokai/favorites') 7
+                    a(href='/u/#{user.username}/favorites')= user.favorite_topics.length
                   | 收藏
                 .status.status-reputation
                   strong 83

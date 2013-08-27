@@ -20,7 +20,7 @@
       | 回复
     .status.status-favorite
       strong
-        a(href='/u/lidashuang/favorites') 2
+        a(href='/u/lidashuang/favorites')= user.favorite_topics.length
       | 收藏
     .status.status-reputation
       strong 6
