@@ -19,7 +19,7 @@ exports.index = (req, res) ->
       throw err if err
       res.render 'users/index', users: results
 
-
+# GET /u/:username
 exports.show = (req, res) ->
   User = mongoose.model 'User'
   Topic = mongoose.model 'Topic'
@@ -39,11 +39,12 @@ exports.show = (req, res) ->
       (err, results) ->
         res.render 'users/show', user: user, topics: results.topics, replies: results.replies
 
-# get 'register'
+# GET '/register'
 exports.new = (req, res) ->
   res.render 'users/new',
     title: "register"
 
+# POST /users/create
 exports.create = (req, res) ->
   user = req.body.user
   notices = validate(user)
@@ -206,6 +207,8 @@ exports.gravatar = (req, res) ->
     user.save()
     res.redirect '/setting/avatar'
 
+exports.notifications = (req, res) ->
+  res.render 'users/notifications'
 
 # register validate 
 validate = (user) ->

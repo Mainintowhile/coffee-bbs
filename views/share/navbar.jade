@@ -7,9 +7,10 @@
         span.icon-bar
       a.brand(href='/')= locals.site_name
       .divider-vertical
-      a.notification-indicator.tooltipped.downwards(href='/notifications', title='暂时没有未读提醒')
-        span.mail-status
-      .divider-vertical
+      if current_user
+        a.notification-indicator.tooltipped.downwards(href='/notifications', title='暂时没有未读提醒')
+          span.mail-status
+        .divider-vertical
       .nav-collapse.collapse
         ul.nav
           li

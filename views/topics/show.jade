@@ -81,19 +81,19 @@ block content
               h3.title= topic.title
               .meta
                 span.node
-                  a(href='/nodes/#{topic.node.key}')= topic.node.name
-                | •
+                  a(href='/nodes/#{topic.node.key}')= topic.node.name  
+                |  • 
                 span.username
-                  a(href='/u/#{topic.user.username}')= topic.user.username
-                | •
-                span.created-time 发表于#{locals.humanDatetime(topic.created_at)}
+                  a(href='/u/#{topic.user.username}')= topic.user.username 
+                |  •  
+                span.created-time 发表于#{locals.humanDatetime(topic.created_at)}    
                 if topic.replies_count != 0
-                  | •
+                  |  •  
                   span.last-reply-username
-                    | 最后回复来自
+                    | 最后回复来自 
                     a(href='/u/#{topic.last_replied_by}')
-                      strong=topic.last_replied_by
-                  | •
+                      strong=topic.last_replied_by 
+                  |  •  
                   span.last-reply-time= locals.humanDatetime(topic.last_replied_at)
           .ui-content
             p= topic.content

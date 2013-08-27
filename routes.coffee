@@ -27,6 +27,7 @@ app.get  "/setting/avatar", filter.requiredLogined, users.avatar
 app.get  "/setting/avatar/gravatar", filter.requiredLogined, users.gravatar
 app.get  "/setting/password", filter.requiredLogined, users.getSettingPass
 app.post "/setting/password", filter.requiredLogined, users.settingPass
+app.get "/notifications", filter.requiredLogined, users.notifications
 
 # passwords 
 app.get  "/forgot", passwords.new

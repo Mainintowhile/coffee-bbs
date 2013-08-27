@@ -73,7 +73,7 @@ block content
                   .reply-item
                     .main
                       span.title
-                        | 回复了 #{reply.topic.user.username}创建的主题
+                        | 回复了 #{reply.topic.user.username} 创建的主题  
                         a(href='/topics/#{reply.topic.id}')= reply.topic.title
                       .content
                         p= reply.content

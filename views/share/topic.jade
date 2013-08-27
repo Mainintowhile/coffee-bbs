@@ -6,16 +6,16 @@
       a(href='/topics/#{topic.id}')= topic.title
     .meta
       span.node
-        a(href='/nodes/#{node.key}')= node.name
-      | •
+        a(href='/nodes/#{node.key}')= node.name 
+      | • 
       span.username
         a(href='/u/#{user.username}')= user.username
-      | •
+      | • 
       span.last-touched= locals.humanDatetime(topic.created_at)
       if topic.last_replied_by
-        | •
+        | • 
         span.last-reply-username
-          | 最后回复来自
+          | 最后回复来自 
           a(href='/u/#{topic.last_replied_by}')
             strong= topic.last_replied_by
   .count
