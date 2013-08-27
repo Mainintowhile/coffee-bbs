@@ -14,7 +14,8 @@ exports.index = (req, res) ->
         return callback err if err
         callback null, nodes
     topics: (callback) ->
-      Topic.recentTopicsList 100, (err, topics) ->
+      options = { sort: last_replied_at: -1, limit: 100 }
+      Topic.getTopicListWithNodeUser {}, options, (err, topics) ->
         return callback err if err
         callback null, topics
     hotNodes: (callback) ->

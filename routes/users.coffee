@@ -29,7 +29,7 @@ exports.show = (req, res) ->
     throw err if err 
     async.parallel
       topics: (callback) ->
-        Topic.findTopicsByUserId user.id, 10, (err, topics) ->
+        Topic.getTopicListWithNode user.id, 10, (err, topics) ->
           return callback err if err 
           callback null, topics
       replies: (callback) ->
@@ -168,7 +168,7 @@ exports.topics = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
-    Topic.findTopicsByUserId user.id, 100, (err, topics) ->
+    Topic.getTopicListWithNode user.id, 100, (err, topics) ->
       throw err if err 
       res.render 'users/topics_list', topics: topics, user: user
 
@@ -189,7 +189,8 @@ exports.favorites = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err
-    Topic.getTopicsWithNodeByIds user.favorite_topics, (err, topics) ->
+    options = { sort: { created_at: -1 } }
+    Topic.getTopicListWithNodeUser { _id: $in: user.favorite_topics }, options, (err, topics) ->
       throw err if err
       res.render 'users/favorites_list', user: user, topics: topics
 
