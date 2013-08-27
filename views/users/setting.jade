@@ -13,9 +13,9 @@ block content
                   // Avatar
                   label.control-label(for='username') 头像
                   .controls
-                    img.avatar(src='#{user.avatarUrl()}?s=96', alt='')
-                    img.avatar(src='#{user.avatarUrl()}?s=48', alt='')
-                    img.avatar(src='#{user.avatarUrl()}?s=32', alt='')
+                    img.avatar(src='#{user.avatarUrl("b")}', alt='')
+                    img.avatar(src='#{user.avatarUrl("m")}', alt='')
+                    img.avatar(src='#{user.avatarUrl("s")}', alt='')
                     a.btn.btn-block.set-avatar-btn(href='/setting/avatar') 设置头像
                 .control-group
                   // Username

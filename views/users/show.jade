@@ -10,17 +10,14 @@ block content
             .profile.container-box
               .ui-header
                 a(href='/u/#{user.username}')
-                  if user.upload_avatar
-                    img.avatar(src='#{user.upload_avatar}', alt='')
-                  else
-                    img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
+                  img.avatar(src="#{user.avatarUrl()}", alt='')
                 .username= user.username
                 if  user.website
                   .website
                     a(href='#{user.website}')= user.website
                 .user-number
                   .number 社区第#{user.reg_id}号成员
-                  .since 入住于#{locals.human_date(user.created_at)}
+                  .since 入住于#{locals.humanDate(user.created_at)}
               .ui-content
                 dl
                   dt ID

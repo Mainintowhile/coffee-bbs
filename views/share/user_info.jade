@@ -1,10 +1,7 @@
 .usercard.container-box
   .ui-header
     a(href='/u/#{user.username}')
-      if user.upload_avatar
-        img.avatar(src='#{user.upload_avatar}', alt='')
-      else
-        img.avatar(src='#{locals.avatar(user.email_md5)}', alt='')
+      img.avatar(src="#{locals.userAvatarUrl(user.gravatar_type, user.email_md5, 'm')}", alt='')
     .username= user.username
     .website
       if user.website

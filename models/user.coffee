@@ -14,7 +14,7 @@ userSchema = Schema
   topic_count: { type: Number, default: 0 }
   reply_count: { type: Number, default: 0 }
   favorite_topics: [{type: Schema.Types.ObjectId, ref: "Topic"}]
-  upload_avatar: String
+  gravatar_type: { type: Number, default: 0} # 0 default, 1 gravatar, 2 upload gravatar
   nickname: String
   signature: String
   location: String
@@ -50,7 +50,8 @@ userSchema.pre 'save', (next) ->
   @updated_at = new Date()
   next()
 
-# generate autoinc id
+# 生成唯一的id
+# 用户是新创建的时候生成id
 userSchema.pre 'validate', (next) ->
   if @isNew 
     user = @
@@ -87,10 +88,21 @@ userSchema.methods.comparePassword = (candidatePassword, callback) ->
     return callback(err) if err 
     callback(null, isMatch)
 
-userSchema.methods.avatarUrl = () ->
-  if @upload_avatar
-    @upload_avatar
-  else
-    "http://www.gravatar.com/avatar/#{@email_md5}"
+userSchema.methods.avatarUrl = (size = 'm') ->
+  # gravatar 服务
+  if @gravatar_type == 1
+    switch size
+      when 'b'
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=96" 
+      when 'm'
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=48" 
+      else
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=32" 
+  # upload 2
+  else if @gravatar_type == 2
+    "/images/avatar/#{size}_#{@email_md5}.png"
+  # default 0 
+  else 
+    "/images/#{size}_default.png"
 
 mongoose.model('User', userSchema)

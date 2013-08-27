@@ -21,15 +21,12 @@
         input.search-query(type='text', placeholder='', x-webkit-speech='')
       .nav-collapse.collapse.pull-right
         ul.nav.account-menu
-          if locals.current_user
+          if current_user
             li
-              a.avatar(href='/u/#{locals.current_user.username}')
-                if locals.current_user.upload_avatar
-                  img(src="#{locals.current_user.upload_avatar}", width='20', height='20')
-                else
-                  img(src="#{locals.avatar(locals.current_user.email_md5)}", width='20', height='20')
+              a.avatar(href='/u/#{current_user.username}')
+                img(src="#{userAvatarUrl(current_user.gravatar_type, current_user.email_md5, 'm')}", width='20', height='20')
             li
-              a(href='/u/#{locals.current_user.username}')= locals.current_user.username
+              a(href='/u/#{current_user.username}')= current_user.username
             li
               a(href='/setting')
                 span.octicon.octicon-tools

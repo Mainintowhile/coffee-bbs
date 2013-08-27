@@ -1269,8 +1269,7 @@ a.btn {
   line-height: 20px;
   padding: 8px 0 12px; }
   .footer .footer-bg {
-    padding: 15px 0 10px 10px;
-    background: transparent url("/static/images/linode_logo.png") no-repeat scroll 850px center; }
+    padding: 15px 0 10px 10px; }
     .footer .footer-bg a {
       color: #999; }
     .footer .footer-bg .fade-color {

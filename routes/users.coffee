@@ -129,10 +129,6 @@ exports.setting = (req, res) ->
       req.flash 'success', ['save setting success']
       res.redirect '/setting'
       
-exports.avatar = (req, res) ->
-  res.render 'users/avatar',
-    title: 'user setting'
-
 exports.getSettingPass = (req, res) ->
   res.render 'users/update_pass', success: req.flash 'success'
 
@@ -193,6 +189,23 @@ exports.favorites = (req, res) ->
     Topic.getTopicListWithNodeUser { _id: $in: user.favorite_topics }, options, (err, topics) ->
       throw err if err
       res.render 'users/favorites_list', user: user, topics: topics
+
+# GET /setting/avatar
+exports.avatar = (req, res) ->
+  User = mongoose.model 'User'
+  User.findById req.session.user._id, (err, user) ->
+    throw err if err 
+    res.render 'users/avatar', user: user
+
+# GET /setting/avatar/gravatar
+exports.gravatar = (req, res) ->
+  User = mongoose.model 'User'
+  User.findById req.session.user._id, (err, user) ->
+    throw err if err 
+    user.gravatar_type = 1
+    user.save()
+    res.redirect '/setting/avatar'
+
 
 # register validate 
 validate = (user) ->

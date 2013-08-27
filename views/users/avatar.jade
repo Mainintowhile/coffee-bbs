@@ -1,5 +1,8 @@
 extends ../layout
 
+block vars
+  - var title = "设置头像"
+
 block content
   .container-fluid.container.mt15
     .row-fluid
@@ -9,26 +12,23 @@ block content
             fieldset
               #legend
                 legend 用户头像设置
-                .control-group
-                  // Avatar
-                  label.control-label(for='username') 头像
-                  .controls
-                    img.avatar(src='/static/avatar/b_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.429752760659', alt='')
-                    img.avatar(src='/static/avatar/m_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.158963818535', alt='')
-                    img.avatar(src='/static/avatar/s_85c7d235-ae94-5c4f-8d56-c04b7f0d877b.png?t=0.389038550241', alt='')
-                    a(href='/setting/avatar') 设置头像
-                .control-group
-                  // Avatar
-                  label.control-label(for='avatar') 上传
-                  .controls
-                    input#avatar.input-xlarge(type='file', name='avatar', placeholder='')
-                    p.help-block 请选择要上传的头像文件
-                .control-group
-                  // Button
-                  .controls
-                    button.btn.btn-success 保存改动
-                    a.ml10.btn(href='/setting/avatar/gravatar') 从Gravatar获取
-                    a.ml10.btn(href='/setting') 返回设置页
+              .control-group
+                label.control-label(for='username') 头像
+                .controls
+                  img.avatar(src="#{user.avatarUrl('b')}", alt='')
+                  img.avatar(src="#{user.avatarUrl('m')}", alt='')
+                  img.avatar(src="#{user.avatarUrl('s')}", alt='')
+                  a(href='/setting/avatar') 设置头像
+              .control-group
+                label.control-label(for='avatar') 上传
+                .controls
+                  input#avatar.input-xlarge(type='file', name='avatar', placeholder='')
+                  p.help-block 请选择要上传的头像文件
+              .control-group
+                .controls
+                  button.btn.btn-success 保存改动
+                  a.ml10.btn(href='/setting/avatar/gravatar') 从Gravatar获取
+                  a.ml10.btn(href='/setting') 返回设置页
       .span3.right
         .sidenav.container-box
           ul

@@ -11,7 +11,7 @@
       span.username
         a(href='/u/#{user.username}')= user.username
       | •
-      span.last-touched= locals.human_datetime(topic.created_at)
+      span.last-touched= locals.humanDatetime(topic.created_at)
       if topic.last_replied_by
         | •
         span.last-reply-username
