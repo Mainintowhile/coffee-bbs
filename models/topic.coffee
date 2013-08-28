@@ -11,14 +11,15 @@ topicSchema = new mongoose.Schema
   content: { type: String }
   username: { type: String } # for cache
   hit: { type: Number, default: 0}
+  vote_users: [{ type: ObjectId, ref: "User" }]
   replies_count: { type: Number, default: 0}
   last_replied_by: String
   last_replied_at: { type: Date, default: Date.now}
   created_at: { type: Date, default: Date.now }
   updated_at: { type: Date, default: Date.now }
 
-# 获取 topic 列表
-# 获取 user 和 node 信息
+# 获取 topic 列表, 并获取 user 和 node 信息
+# 参数 conditions:查询条件, options: 选项, callback:回调
 topicSchema.statics.getTopicListWithNodeUser = (conditions, options, callback) ->
   @find conditions, '-content', options, (err, topics) ->
     return callback err if err

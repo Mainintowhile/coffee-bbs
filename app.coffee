@@ -10,15 +10,15 @@ flash = require "connect-flash"
 app = express()
 
 #get settings 
-devSettings = require('./settings')(app.get("env"))
+Settings = require('./settings')(app.get("env"))
 
 # all environments
-app.set "port", process.env.PORT or 3000
+app.set "port", process.env.PORT or Settings.port
 app.set "views", __dirname + "/views"
 app.set "view engine", "jade"
 app.use express.cookieParser()
-# app.use express.session(cookie: { maxAge: 60000 }, secret: devSettings.cookieSecret)
-app.use express.session(secret: devSettings.cookieSecret)
+# app.use express.session(cookie: { maxAge: 60000 }, secret: Settings.cookieSecret)
+app.use express.session(secret: Settings.cookieSecret)
 app.use flash()
 app.use express.favicon()
 app.use express.logger("dev")
@@ -32,10 +32,7 @@ app.use (req, res, next) ->
 # view helpers
 helper = require("./helper")
 app.locals(helper)
-
-siteSettings = require("./site_settings")(app.get('env'))
-app.locals(siteSettings)
-app.locals(devSettings)
+app.locals(Settings)
 app.locals.runEnv = app.get('env')
 
 app.use app.router
@@ -53,7 +50,7 @@ require('./models/counter')
 require('./models/reply')
 require('./models/site')
 
-mongoose.connect "mongodb://#{devSettings.host}/#{devSettings.db}", (err) ->
+mongoose.connect "mongodb://#{Settings.host}/#{Settings.db}", (err) ->
   process.exit(1) if err
 
 if "development" is app.get('env')

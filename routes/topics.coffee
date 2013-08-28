@@ -1,7 +1,8 @@
 mongoose = require 'mongoose'
+async = require 'async'
+settings = require("../settings")(process.env.NODE_ENV or 'development')
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
-async = require 'async'
 
 # Get "/topics"
 exports.index = (req, res) ->
@@ -9,17 +10,26 @@ exports.index = (req, res) ->
   Plane = mongoose.model 'Plane'
   Node = mongoose.model 'Node'
   Site = mongoose.model 'Site'
-  
+  currentPage = parseInt(req.query.p, 10) || 1
+  pageSize = settings.page_size
+
   async.parallel
     nodes: (callback) ->
       Plane.allNodes (err, nodes) ->
         return callback err if err
         callback null, nodes
     topics: (callback) ->
-      options = { sort: last_replied_at: -1, limit: 100 }
+      options = 
+        sort: { last_replied_at: -1 }
+        skip: pageSize * (currentPage - 1)
+        limit: pageSize
       Topic.getTopicListWithNodeUser {}, options, (err, topics) ->
         return callback err if err
         callback null, topics
+    pages: (callback) ->
+      Topic.count().exec (err, count) ->
+        callback err if err 
+        callback null, Math.ceil(count / pageSize)
     hotNodes: (callback) ->
       Node.hotNodes 15, (err, hotNodes) ->
         return callback err if err
@@ -35,6 +45,8 @@ exports.index = (req, res) ->
         topics: results.topics
         hotNodes: results.hotNodes
         siteInfos: results.siteInfos
+        pages: results.pages
+        currentPage: currentPage
 
 # Get "/topics/:topic_id"
 exports.show = (req, res) ->
@@ -145,9 +157,28 @@ exports.unfavorite = (req, res) ->
       user.favorite_topics.remove(topic_id)
       user.save (err, doc) ->
         throw err if err 
-        res.json { success: 1}
+        res.json { success: 1 }
     else 
       res.json { success: 0, message: 'topic_not_exist' }
+
+#  POST /topics/:id/vote
+exports.vote = (req, res) ->
+  topic_id = req.params.id
+  user_id = req.session.user._id
+  Topic = mongoose.model 'Topic'
+
+  Topic.findById topic_id, (err, topic) ->
+    throw err if err 
+    unless topic
+      return res.json { success: 0, message: 'topic_not_exist' }
+    if user_id in topic.vote_users.map((id) -> id.toString())
+      return res.json { success:0, message: 'already_voted' }
+    if user_id == topic.user_id.toString()
+      return res.json { success:0, message: 'can_not_vote_your_topic' }
+    topic.vote_users.push user_id
+    topic.save (err, doc) ->
+      throw err if err 
+      res.json { success:1 }
 
 # 
 exports.update = (req, res) ->

@@ -41,8 +41,7 @@ exports.show = (req, res) ->
 
 # GET '/register'
 exports.new = (req, res) ->
-  res.render 'users/new',
-    title: "register"
+  res.render 'users/new'
 
 # POST /users/create
 exports.create = (req, res) ->
@@ -52,21 +51,21 @@ exports.create = (req, res) ->
   if notices.length == 0
     User = mongoose.model('User')
     User.find $or: [username: user.username, email: user.email], (err, docs) ->
+      throw err if err 
       if docs.length == 0
         user = new User {
           username: user.username,
           email: user.email,
           password: user.password
         }
+        #TODO async
         token = bcrypt.genSaltSync(10)
         user.confirmation_token = token
-        user.save (err, user, numberAffected) ->
-          if err
-            console.log err 
-          else
-            mail.sendActiveMail(user.email, token, user.username)
-            req.flash 'success', 'register success, a mail has send, Please check your email'
-            res.redirect '/login'
+        user.save (err, user) ->
+          throw err if err 
+          mail.sendActiveMail(user.email, token, user.username)
+          req.flash 'success', 'register success, a mail has send, Please check your email'
+          res.redirect '/login'
       else
         res.render 'users/new',
           notices: ["username or email has exists"]
@@ -84,7 +83,7 @@ exports.activeAccount = (req, res) ->
   User = mongoose.model('User')
 
   User.findOne username: name, (err, user) ->
-    console.log err if err
+    throw err if err
 
     if !user || user.confirmation_token != token
       req.flash 'notices', "message wrong, Please repeat"
@@ -97,7 +96,7 @@ exports.activeAccount = (req, res) ->
     user.active = true
     user.confirmed_at = new Date()
     user.save (err) ->
-      console.log err if err
+      throw err if err
       req.flash 'success', "account actived, Please login"
       res.redirect '/login'
 
@@ -105,28 +104,20 @@ exports.getSetting = (req, res) ->
   User = mongoose.model('User')
   
   User.findOne username: req.session.user.username, (err, user) ->
-    console.log err if err
-    if user
-      res.render 'users/setting',
-        title: 'user setting'
-        user: user
+    throw err if err
+    res.render 'users/setting', user: user if user
 
 exports.setting = (req, res) ->
   params = req.body.user
   fields = ['nickname', 'signature', 'location', 'website','company', 'github', 'twitter', 'douban', 'self_intro']
-
-  for field in fields
-    params[field] = sanitize(sanitize(params[field]).trim()).xss()
+  params[field] = sanitize(sanitize(params[field]).trim()).xss() for field in fields
 
   User = mongoose.model('User')
   User.findOne username: req.session.user.username, (err, user) ->
-    console.log err if err
-
-    for field in fields 
-      user[field] = params[field]
-
+    throw err if err
+    user[field] = params[field] for field in fields
     user.save (err) ->
-      console.log err if err
+      throw err if err
       req.flash 'success', ['save setting success']
       res.redirect '/setting'
       

@@ -50,6 +50,7 @@ app.get  "/nodes/:key/new", filter.requiredLogined, topics.new
 app.post "/nodes/:key/topics", filter.requiredLogined, topics.create
 app.post "/topics/:id/favorite", filter.requiredLogined, topics.favorite
 app.post "/topics/:id/unfavorite", filter.requiredLogined, topics.unfavorite
+app.post "/topics/:id/vote", filter.requiredLogined, topics.vote
 # app.get  "/topics/:id/edit", filter.requiredLogined, topics.edit
 # app.put  "/topics/:id", filter.requiredLogined, topics.update
 # app.delete "/topics/:id", filter.requiredLogined, topics.destroy

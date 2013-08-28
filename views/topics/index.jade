@@ -5,25 +5,11 @@ block content
     .row-fluid
       .span9.left
         .topics.container-box.deprecated-mt10
-          each topic in topics
+          for topic in topics
             - var user = topic.user
             - var node = topic.node
             include ../share/topic
           .pagination
-            ul
-              li.disabled
-                a(href='/?p=1') «
-              li.active
-                a(href='javascript:;') 1
-              li
-                a(href='/?p=2') 2
-              li
-                a(href='/?p=3') 3
-              li
-                a(href='/?p=4') 4
-              li
-                a(href='/?p=5') 5
-              li
-                a(href='/?p=2') »
+            include ../share/paginate
         include ../share/node_cloud
       include ../share/sidebar
