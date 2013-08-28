@@ -11,14 +11,16 @@ exports.create = (req, res) ->
   User = mongoose.model 'User'
 
   unless content
-    res.render 'topics/show', 
-      Reply_notice: "Reply content not allow blank"
+    #TODO notice
+    res.render 'topics/show', notices: ["Reply content not allow blank"]
 
   Topic.findById topic_id, (err, topic) ->
-    return throw err if err 
-    reply = new Reply {user_id: user._id, topic_id: topic.id, content: content, username: user.username }
+    throw err if err 
+    res.status(404).send('Not found') unless topic
+
+    reply = new Reply user_id: user._id, topic_id: topic.id, content: content, username: user.username
     reply.save (err, doc) ->
-      return throw err if err 
+      throw err if err 
       # update user reply count
       User.findById user._id, (err, current_user) ->
         current_user.reply_count++

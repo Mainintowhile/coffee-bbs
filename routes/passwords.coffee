@@ -3,11 +3,11 @@ mail = require '../services/mail'
 bcrypt = require "bcrypt"
 sanitize = require('validator').sanitize
 
-# get '/forgot'
+# GET '/forgot'
 exports.new = (req, res) ->
-  res.render 'passwords/new', success: req.flash 'success', notices: req.flash 'notices'
+  res.render 'passwords/new', success: req.flash('success'), notices: req.flash('notices')
 
-# post '/forgot'
+# POST '/forgot'
 exports.create = (req, res) ->
   username = sanitize(req.body.username).trim()
   email = sanitize(req.body.email).trim().toLowerCase()
@@ -30,10 +30,10 @@ exports.create = (req, res) ->
       console.log err if err
       # send mail
       mail.resetPasswordMail(user.email, token, user.username)
-      req.flash 'success', 'a mail send for you, Please check'
+      req.flash 'success', ['a mail send for you, Please check']
       res.redirect '/forgot'
 
-# get 'reset'
+# GET 'reset'
 exports.edit = (req, res) ->
   username = req.query.name
   token = req.query.token
@@ -41,18 +41,16 @@ exports.edit = (req, res) ->
   User = mongoose.model 'User'
   User.findOne username: username, reset_password_token: token, (err, user) ->
     unless user
-      req.flash 'notices', 'link errors, can not reset password'
+      req.flash 'notices', ['link errors, can not reset password']
       return res.redirect '/forgot'
     # check time
     now = new Date().getTime()
     reset_send_at = (new Date(user.reset_password_sent_at)).getTime()
     if now - reset_send_at > 1000 * 60 * 60 * 24
-      req.flash 'notices', 'link is expired, please repeat'
+      req.flash 'notices', ['link is expired, please repeat']
       return req.redirect '/forgot'
 
-    res.render 'passwords/edit',
-      username: username
-      token: token
+    res.render 'passwords/edit', username: username, token: token
 
 # post "/reset"
 exports.update = (req, res) ->
@@ -62,19 +60,14 @@ exports.update = (req, res) ->
   token = req.body.token
 
   if !password || !password_confirm
-    return res.render 'passwords/edit',
-      notices: ['please check your password']
-      username: username
-      token: token
+    return res.render 'passwords/edit', notices: ['please check your password'], username: username, token: token
 
   if password_confirm != password
-    return res.render 'passwords/edit',
-      username: username
-      token: token
+    return res.render 'passwords/edit', username: username, token: token
 
   User = mongoose.model 'User'
   User.findOne username: username, reset_password_token: token,  (err, user) ->
-    console.log err if err
+    throw err if err 
     unless user
       req.flash 'notices', ['link errors, can not reset password, please repeat']
       req.redirect '/forgot'
@@ -82,6 +75,6 @@ exports.update = (req, res) ->
     user.reset_password_sent_at = null
     user.password = password
     user.save (err) ->
-      console.log err if err
-      req.flash 'success', 'you password has reset'
+      throw err if err 
+      req.flash 'success', ['you password has reset']
       res.redirect '/login'

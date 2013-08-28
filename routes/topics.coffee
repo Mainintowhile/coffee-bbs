@@ -77,11 +77,11 @@ exports.show = (req, res) ->
           return callback err if err
           callback null, node
       (err, results) ->
+        throw err if err
         topic.user = results.user
         topic.replies = results.replies
         topic.node = results.node
-        res.render "topics/show", 
-          title: "show page", topic: topic
+        res.render "topics/show", topic: topic
 
 # GET /nodes/:key/new
 exports.new = (req, res) ->
@@ -106,6 +106,8 @@ exports.create = (req, res) ->
 
     Node.findNodeByKey node_key, (err, node) ->
       throw err if err 
+      return res.status(404).send('Not found') unless node
+
       async.parallel
         topic: (callback) ->
           topic = new Topic {title: title, content: content, node_id: node.id, user_id: user_id }
@@ -135,12 +137,16 @@ exports.favorite = (req, res) ->
 
   User.findById req.session.user._id, (err, user) ->
     throw err if err 
+
     Topic.findById topic_id, (err, topic) ->
       throw err if err 
+      unless topic
+        return res.json { success: 0, message: 'topic_not_exist' }
       if topic.id.toString() in user.favorite_topics.map((id) -> id.toString())
         return res.json { success: 0, message: 'already_favorited' }
       if topic.user_id.toString() == user.id.toString()
         return res.json { success: 0, message: 'can_not_favorite_your_topic' }
+
       user.favorite_topics.push topic.id
       user.save (err, doc) ->
         throw err if err 
@@ -175,6 +181,7 @@ exports.vote = (req, res) ->
       return res.json { success:0, message: 'already_voted' }
     if user_id == topic.user_id.toString()
       return res.json { success:0, message: 'can_not_vote_your_topic' }
+      
     topic.vote_users.push user_id
     topic.save (err, doc) ->
       throw err if err 

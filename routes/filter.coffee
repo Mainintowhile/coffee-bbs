@@ -5,5 +5,5 @@ exports.requiredLogined = (req, res, next) =>
     if req.xhr
       res.json { success: 0, message: "please_signin" }
     else
-      req.flash 'notices', "Please Login"
+      req.flash 'notices', ["Please Signin"]
       res.redirect '/login'

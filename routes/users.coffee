@@ -27,6 +27,8 @@ exports.show = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
+    return res.status(404).send('Not found') unless user
+
     async.parallel
       topics: (callback) ->
         Topic.getTopicListWithNode user.id, 10, (err, topics) ->
@@ -37,6 +39,7 @@ exports.show = (req, res) ->
           return callback err if err
           callback null, replies
       (err, results) ->
+        throw err if err 
         res.render 'users/show', user: user, topics: results.topics, replies: results.replies
 
 # GET '/register'
@@ -64,18 +67,12 @@ exports.create = (req, res) ->
         user.save (err, user) ->
           throw err if err 
           mail.sendActiveMail(user.email, token, user.username)
-          req.flash 'success', 'register success, a mail has send, Please check your email'
+          req.flash 'success', ['register success, a mail has send, Please check your email']
           res.redirect '/login'
       else
-        res.render 'users/new',
-          notices: ["username or email has exists"]
-          username: user.username
-          email: user.email
+        res.render 'users/new', notices: ["username or email has exists"], username: user.username, email: user.email
   else
-    res.render 'users/new',
-      notices: notices
-      username: user.username
-      email: user.email
+    res.render 'users/new', notices: notices, username: user.username, email: user.email
 
 exports.activeAccount = (req, res) ->
   token = req.query.token
@@ -86,18 +83,18 @@ exports.activeAccount = (req, res) ->
     throw err if err
 
     if !user || user.confirmation_token != token
-      req.flash 'notices', "message wrong, Please repeat"
+      req.flash 'notices', ["message wrong, Please repeat"]
       return res.redirect '/forgot'
 
     if user.active
-      req.flash 'success', "account has active, Please login"
+      req.flash 'success', ["account has active, Please login"]
       return res.redirect '/login'
 
     user.active = true
     user.confirmed_at = new Date()
     user.save (err) ->
       throw err if err
-      req.flash 'success', "account actived, Please login"
+      req.flash 'success', ["account actived, Please login"]
       res.redirect '/login'
 
 exports.getSetting = (req, res) ->
@@ -122,7 +119,7 @@ exports.setting = (req, res) ->
       res.redirect '/setting'
       
 exports.getSettingPass = (req, res) ->
-  res.render 'users/update_pass', success: req.flash 'success'
+  res.render 'users/update_pass', success: req.flash('success')
 
 exports.settingPass = (req, res) ->
   oldPass = req.body.password_old
@@ -156,6 +153,7 @@ exports.topics = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
+    return res.status(404).send('Not found') unless user
     Topic.getTopicListWithNode user.id, 100, (err, topics) ->
       throw err if err 
       res.render 'users/topics_list', topics: topics, user: user
@@ -166,6 +164,7 @@ exports.replies = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
+    return res.status(404).send('Not found') unless user
     Reply.findReplyByUserWithTopic user.id, 100, (err, replies) ->
       throw err if err
       res.render 'users/replies_list', replies: replies,  user: user
@@ -177,6 +176,7 @@ exports.favorites = (req, res) ->
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err
+    return res.status(404).send('Not found') unless user
     options = { sort: { created_at: -1 } }
     Topic.getTopicListWithNodeUser { _id: $in: user.favorite_topics }, options, (err, topics) ->
       throw err if err

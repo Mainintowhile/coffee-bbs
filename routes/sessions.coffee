@@ -2,10 +2,7 @@ sanitize = require('validator').sanitize
 mongoose = require 'mongoose'
 
 exports.new = (req, res) ->
-  res.render 'sessions/new',
-    title: "login"
-    success: req.flash 'success'
-    notices: req.flash 'notices'
+  res.render 'sessions/new', success: req.flash('success'), notices: req.flash('notices')
 
 exports.create = (req, res) ->
   email = sanitize(req.body.email).trim().toLowerCase()
