@@ -67,70 +67,14 @@ getNode = (topic, callback) ->
     topic.node = node
     callback null, topic
 
-topicSchema.methods.node = (callback) ->
-  Node = mongoose.model 'Node'
-  Node.findById @node_id, (err, node) ->
-    return callback err if err
-    callback null, node
+# topicSchema.methods.node = (callback) ->
+#   Node = mongoose.model 'Node'
+#   Node.findById @node_id, (err, node) ->
+#     return callback err if err
+#     callback null, node
 
 topicSchema.pre 'save', (next) ->
   @updated_at = new Date()
   next()
-
-# Find recent Topics
-# example topics index page
-# topicSchema.statics.recentTopicsList = (count, callback) ->
-#   @find().limit(count).select('-content').sort(last_replied_at: -1).exec (err, topics) ->
-#     async.waterfall [
-#       (next) ->
-#         async.map topics, getUser, (err, results) ->
-#           return next err if err
-#           next null, results
-#       (topics, next) ->
-#         async.map topics, getNode, (err, results) ->
-#           return next err if err
-#           next null, results
-#     ],
-#     (err, results) ->
-#       return callback err if err
-#       callback null, results
-
-# get topic with Node topic ids
-#TODO
-# topicSchema.statics.getTopicsWithNodeByIds = (topic_ids, callback) ->
-#   @find(_id: $in: topic_ids).select('-content').sort(created_at: -1).exec (err, topics) ->
-#     async.waterfall [
-#       (next) ->
-#         async.map topics, getUser, (err, results) ->
-#           return next err if err
-#           next null, results
-#       (topics, next) ->
-#         async.map topics, getNode, (err, results) ->
-#           return next err if err
-#           next null, results
-#     ],
-#     (err, results) ->
-#       return callback err if err
-#       callback null, results
-      
-# update user topics_count field
-# topicSchema.post 'save', (topic) ->
-  # console.log "post is be saved: #{topic}"
-  # console.log "this is: #{@}"
-  # if @isNew
-  #   User = mongoose.model 'User'
-  #   User.findById topic.user_id, (err, user) ->
-  #     throw err if err
-  #     user.topics_count++
-  #     user.save()
-
-# update user topics_count when doc remove
-# topicSchema.post 'remove', (topic) ->
-#   User = mongoose.model 'User'
-#   User.findById topic.user_id, (err, user) ->
-#     throw err if err
-#     user.topics_count--
-#     user.save()
-
 
 mongoose.model 'Topic', topicSchema

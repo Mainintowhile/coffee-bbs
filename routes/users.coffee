@@ -56,17 +56,24 @@ exports.create = (req, res) ->
     User.find $or: [username: user.username, email: user.email], (err, docs) ->
       throw err if err 
       if docs.length == 0
-        user = new User {
-          username: user.username,
-          email: user.email,
-          password: user.password
-        }
-        #TODO async
-        token = bcrypt.genSaltSync(10)
-        user.confirmation_token = token
-        user.save (err, user) ->
+        async.waterfall [
+          (next) ->
+            bcrypt.genSalt 10, (err, salt) ->
+              return next err if err
+              user = new User 
+                username: user.username
+                email: user.email
+                password: user.password
+                confirmation_token: salt
+              next null, user
+          (user, next) ->
+            user.save (err, user) ->
+              throw err if err 
+              next null, user
+        ],
+        (err, user) ->
           throw err if err 
-          mail.sendActiveMail(user.email, token, user.username)
+          mail.sendActiveMail(user.email, user.confirmation_token, user.username)
           req.flash 'success', ['register success, a mail has send, Please check your email']
           res.redirect '/login'
       else

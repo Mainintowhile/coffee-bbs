@@ -76,7 +76,6 @@ exports.show = (req, res) ->
           return callback err if err
           callback null, user
       node: (callback) ->
-        #TODO replace with topic.node methods
         Node.findById topic.node_id, (err, node) ->
           return callback err if err
           callback null, node
