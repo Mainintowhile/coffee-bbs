@@ -4,21 +4,23 @@ sanitize = require('validator').sanitize
 exports.create = (req, res) ->
   topic_id = req.params.topic_id
   user = req.session.user
-  content = sanitize(req.body.content).xss()
 
   Topic = mongoose.model 'Topic'
   Reply = mongoose.model 'Reply'
   User = mongoose.model 'User'
 
-  unless content
-    #TODO notice
-    res.render 'topics/show', notices: ["Reply content not allow blank"]
+  unless req.body.content
+    req.flash 'notices', ["Reply content not allow blank"]
+    return res.redirect "topics/#{topic_id}"
+
+  content = sanitize(req.body.content).xss()
 
   Topic.findById topic_id, (err, topic) ->
     throw err if err 
-    res.status(404).send('Not found') unless topic
+    return res.status(404).send('Not found') unless topic
 
     reply = new Reply user_id: user._id, topic_id: topic.id, content: content, username: user.username
+    #TODO async
     reply.save (err, doc) ->
       throw err if err 
       # update user reply count

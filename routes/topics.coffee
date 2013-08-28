@@ -55,9 +55,13 @@ exports.show = (req, res) ->
   User = mongoose.model('User')
   Node = mongoose.model('Node')
 
+  return res.status(404).send('Not found') if req.params.id.length != 24
+
   # get topic
   Topic.findById req.params.id, (err, topic) ->
     throw err if err
+    return res.status(404).send('Not found') unless topic
+
     async.parallel
       topic: (callback) ->
         topic.hit++
@@ -81,7 +85,7 @@ exports.show = (req, res) ->
         topic.user = results.user
         topic.replies = results.replies
         topic.node = results.node
-        res.render "topics/show", topic: topic
+        res.render "topics/show", topic: topic, notices: req.flash('notices')
 
 # GET /nodes/:key/new
 exports.new = (req, res) ->

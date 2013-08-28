@@ -152,6 +152,10 @@ block content
           .ui-content
             if locals.current_user
               form.mt10(action='/topics/#{topic.id}/replies', method='post')
+                if notices && notices.length != 0
+                  ul.alert.errors.alert-error
+                    for notice in notices
+                      li= notice
                 textarea.content.mt5.smart-code-support.J_replyContent(rows='3', placeholder='回复内容', name='content')
                 input#checkall.btn.btn-small(type='submit', value='立即回复')
             else
