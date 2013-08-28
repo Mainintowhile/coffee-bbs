@@ -42,6 +42,28 @@ block scripts
         });
       });
 
+      $('.J_topicVote').click(function(e) {
+          var _node = $(this);
+          var _errorMap = {
+            topic_not_exist: '主题不存在',
+            can_not_vote_your_topic: '不能喜欢自己的主题',
+            already_voted: '感谢已经表示过',
+            please_signin: '请登录',
+          };
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: _node.attr('href'),
+            success: function(data) {
+              if(data.success) {
+                _node.html('<span class="f11 gray" style="text-shadow: 0px 1px 0px #fff;">感谢已表示</span>');
+              } else {
+                _node.html('<span>' + _errorMap[data.message] + '</span>');
+              }
+            }
+          });
+        });
+
       $('.J_replyTo').click(function(e) {
         username = $(this).attr('data-username');
         index = $(this).attr('data-index');
