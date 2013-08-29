@@ -3,6 +3,7 @@ mongoose = require 'mongoose'
 # exports.index = (req, res) ->
 #   res.send "#{req.params.name}"
 
+# GET /nodes/:key 
 exports.show = (req, res, next) ->
   Node = mongoose.model('Node')
   Topic = mongoose.model('Topic')

@@ -60,5 +60,5 @@ app.post "/topics/:topic_id/replies", filter.requiredLogined, replies.create
 
 # 
 
-app.get "*", (req, res) ->
-  res.status(404).send('Not found')
+app.get "*", (req, res) -> res.status(404).send('Not found')
+app.post "*", (req, res) -> res.status(404).send('Not found')

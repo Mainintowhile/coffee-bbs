@@ -2,6 +2,7 @@ mongoose = require 'mongoose'
 sanitize = require('validator').sanitize
 async = require 'async'
 
+# POST /topics/:id/replies
 exports.create = (req, res, next) ->
   topic_id = req.params.topic_id
   user = req.session.user
