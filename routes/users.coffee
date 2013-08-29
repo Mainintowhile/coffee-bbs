@@ -20,14 +20,14 @@ exports.index = (req, res) ->
       res.render 'users/index', users: results
 
 # GET /u/:username
-exports.show = (req, res) ->
+exports.show = (req, res, next) ->
   User = mongoose.model 'User'
   Topic = mongoose.model 'Topic'
   Reply = mongoose.model 'Reply'
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
-    return res.status(404).send('Not found') unless user
+    return next() unless user
 
     async.parallel
       topics: (callback) ->
@@ -154,36 +154,36 @@ exports.settingPass = (req, res) ->
       else
         res.render 'users/update_pass', notices: ['old password not match']
 
-exports.topics = (req, res) ->
+exports.topics = (req, res, next) ->
   Topic = mongoose.model 'Topic'
   User = mongoose.model 'User'
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
-    return res.status(404).send('Not found') unless user
+    return next() unless user
     Topic.getTopicListWithNode user.id, 100, (err, topics) ->
       throw err if err 
       res.render 'users/topics_list', topics: topics, user: user
 
-exports.replies = (req, res) ->
+exports.replies = (req, res, next) ->
   Reply = mongoose.model 'Reply'
   User = mongoose.model 'User'
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err 
-    return res.status(404).send('Not found') unless user
+    return next() unless user
     Reply.findReplyByUserWithTopic user.id, 100, (err, replies) ->
       throw err if err
       res.render 'users/replies_list', replies: replies,  user: user
 
 # GET /u/:username/favorites
-exports.favorites = (req, res) ->
+exports.favorites = (req, res, next) ->
   User = mongoose.model 'User'
   Topic = mongoose.model 'Topic'
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err
-    return res.status(404).send('Not found') unless user
+    return next() unless user
     options = { sort: { created_at: -1 } }
     Topic.getTopicListWithNodeUser { _id: $in: user.favorite_topics }, options, (err, topics) ->
       throw err if err

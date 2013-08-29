@@ -57,3 +57,8 @@ app.post "/topics/:id/vote", filter.requiredLogined, topics.vote
 
 # replies
 app.post "/topics/:topic_id/replies", filter.requiredLogined, replies.create
+
+# 
+
+app.get "*", (req, res) ->
+  res.status(404).send('Not found')

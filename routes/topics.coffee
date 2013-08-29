@@ -49,18 +49,18 @@ exports.index = (req, res) ->
         currentPage: currentPage
 
 # Get "/topics/:topic_id"
-exports.show = (req, res) ->
+exports.show = (req, res, next) ->
   Topic = mongoose.model('Topic')
   Reply = mongoose.model('Reply')
   User = mongoose.model('User')
   Node = mongoose.model('Node')
 
-  return res.status(404).send('Not found') if req.params.id.length != 24
+  return next() if req.params.id.length != 24
 
   # get topic
   Topic.findById req.params.id, (err, topic) ->
     throw err if err
-    return res.status(404).send('Not found') unless topic
+    return next() unless topic
 
     async.parallel
       topic: (callback) ->
@@ -91,7 +91,7 @@ exports.new = (req, res) ->
 	res.render "topics/new", node_key: req.params.key
 
 # POST /nodes/:key/topics
-exports.create = (req, res) ->
+exports.create = (req, res, next) ->
   node_key = req.params.key
   user_id = req.session.user._id
   title = sanitize(req.body.title).xss()
@@ -109,7 +109,7 @@ exports.create = (req, res) ->
 
     Node.findNodeByKey node_key, (err, node) ->
       throw err if err 
-      return res.status(404).send('Not found') unless node
+      return next() unless node
 
       async.parallel
         topic: (callback) ->

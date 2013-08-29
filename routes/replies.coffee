@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 sanitize = require('validator').sanitize
 async = require 'async'
 
-exports.create = (req, res) ->
+exports.create = (req, res, next) ->
   topic_id = req.params.topic_id
   user = req.session.user
 
@@ -18,7 +18,7 @@ exports.create = (req, res) ->
 
   Topic.findById topic_id, (err, topic) ->
     throw err if err 
-    return res.status(404).send('Not found') unless topic
+    return next() unless topic
 
     reply = new Reply user_id: user._id, topic_id: topic.id, content: content, username: user.username
     reply.save (err, doc) ->

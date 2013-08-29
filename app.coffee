@@ -35,8 +35,8 @@ app.locals(helper)
 app.locals(Settings)
 app.locals.runEnv = app.get('env')
 
-app.use app.router
 app.use express.static(path.join(__dirname, "public"))
+app.use app.router
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
