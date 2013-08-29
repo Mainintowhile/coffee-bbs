@@ -118,7 +118,7 @@ block content
                   |  •  
                   span.last-reply-time= locals.humanDatetime(topic.last_replied_at)
           .ui-content
-            p= topic.content
+            p!= topic.content_html
           .ui-footer
             a.J_topicFavorite(href='/topics/#{topic.id}/favorite', data-type='favorite') 加入收藏
             a(href='#', onclick='window.open("http://service.weibo.com/share/share.php?url=#{locals.root_url}/topics/#{topic.id}&title=#{topic.title}", "_blank", "width=550, height=370");') 新浪微博
@@ -144,7 +144,7 @@ block content
                       span.reply-to.fr.J_replyTo(data-username='#{reply.user.username}', data-index="#{i+1}")
                         img(src='/images/reply.png', alt='')
                     span.content
-                      p= reply.content
+                      p!= reply.content_html
             .ui-footer
         .topic-reply-create.container-box.mt10
           .ui-header

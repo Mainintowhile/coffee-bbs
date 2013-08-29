@@ -104,6 +104,7 @@ exports.activeAccount = (req, res) ->
       req.flash 'success', ["account actived, Please login"]
       res.redirect '/login'
 
+# GET /setting
 exports.getSetting = (req, res) ->
   User = mongoose.model('User')
   
@@ -111,6 +112,7 @@ exports.getSetting = (req, res) ->
     throw err if err
     res.render 'users/setting', user: user if user
 
+# POST /setting
 exports.setting = (req, res) ->
   params = req.body.user
   fields = ['nickname', 'signature', 'location', 'website','company', 'github', 'twitter', 'douban', 'self_intro']
@@ -125,9 +127,11 @@ exports.setting = (req, res) ->
       req.flash 'success', ['save setting success']
       res.redirect '/setting'
       
+# GET /setting/password
 exports.getSettingPass = (req, res) ->
   res.render 'users/update_pass', success: req.flash('success')
 
+# POST /setting/password
 exports.settingPass = (req, res) ->
   oldPass = req.body.password_old
   password = req.body.password
@@ -154,6 +158,7 @@ exports.settingPass = (req, res) ->
       else
         res.render 'users/update_pass', notices: ['old password not match']
 
+# GET /u/:username/topics
 exports.topics = (req, res, next) ->
   Topic = mongoose.model 'Topic'
   User = mongoose.model 'User'
@@ -165,6 +170,7 @@ exports.topics = (req, res, next) ->
       throw err if err 
       res.render 'users/topics_list', topics: topics, user: user
 
+# GET /u/:username/replies
 exports.replies = (req, res, next) ->
   Reply = mongoose.model 'Reply'
   User = mongoose.model 'User'
@@ -205,6 +211,7 @@ exports.gravatar = (req, res) ->
     user.save()
     res.redirect '/setting/avatar'
 
+# GET /notifications
 exports.notifications = (req, res) ->
   res.render 'users/notifications'
 

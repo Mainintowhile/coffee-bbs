@@ -94,11 +94,13 @@ exports.new = (req, res) ->
 exports.create = (req, res, next) ->
   node_key = req.params.key
   user_id = req.session.user._id
-  title = sanitize(req.body.title).xss()
+  # title = sanitize(req.body.title).xss()
+  title = req.body.title
   content = sanitize(req.body.content).xss()
+  # content = req.body.content
   notices = []
   notices.push "Please input title" unless title
-  notices.push "Please input content "unless content
+  notices.push "Please input content" unless content
 
   unless notices.length == 0
     res.render "topics/new", node_key: node_key, title: title, content: content, notices: notices

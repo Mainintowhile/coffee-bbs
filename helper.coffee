@@ -1,6 +1,8 @@
 # view helper 
 crypto = require 'crypto'
 moment = require "moment"
+marked = require 'marked'
+
 moment.lang('zh-cn')
 
 module.exports =
@@ -25,3 +27,6 @@ module.exports =
       "/images/avatar/#{size}_#{email_md5}.png"
     else 
       "/images/#{size}_default.png"
+
+  markdown: (text) ->
+    marked(text)

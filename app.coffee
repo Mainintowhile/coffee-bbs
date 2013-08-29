@@ -8,6 +8,7 @@ path = require "path"
 flash = require "connect-flash"
 
 app = express()
+module.exports.app = app
 
 #get settings 
 Settings = require('./settings')(app.get("env"))
@@ -25,6 +26,7 @@ app.use express.logger("dev")
 app.use express.bodyParser()
 app.use express.methodOverride()
 
+# current user
 app.use (req, res, next) ->
   res.locals.current_user = req.session.user
   next()
@@ -35,29 +37,16 @@ app.locals(helper)
 app.locals(Settings)
 app.locals.runEnv = app.get('env')
 
+# routes
 app.use express.static(path.join(__dirname, "public"))
 app.use app.router
+
+routes = require './routes'
+db = require './db'
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
 
-mongoose = require('mongoose')
-require('./models/user')
-require('./models/topic')
-require('./models/plane')
-require('./models/node')
-require('./models/counter')
-require('./models/reply')
-require('./models/site')
-
-mongoose.connect "mongodb://#{Settings.host}/#{Settings.db}", (err) ->
-  process.exit(1) if err
-
-if "development" is app.get('env')
-  mongoose.set('debug', true)
-
-module.exports.app = app
-routes = require './routes'
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port #{app.get("port")}"

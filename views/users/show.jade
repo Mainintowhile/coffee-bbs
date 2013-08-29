@@ -76,7 +76,7 @@ block content
                         | 回复了 #{reply.topic.user.username} 创建的主题  
                         a(href='/topics/#{reply.topic.id}')= reply.topic.title
                       .content
-                        p= reply.content
+                        p!= reply.content_html
               .ui-footer
                 a(href='/u/#{user.username}/replies') ›› 查看更多回复
         .span3.right

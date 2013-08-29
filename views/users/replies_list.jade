@@ -9,7 +9,9 @@ block content
       .span9.left
         .replies-lists.container-box.user-replies
           .ui-header
-            span.bread-nav #{locals.site_name} > #{user.username} > 回复列表
+            span.bread-nav #{locals.site_name} > 
+              a(href='/u/#{user.username}')= user.username
+              > 回复列表
           .ui-content.topics
             for reply in replies
               .reply-item
@@ -18,7 +20,7 @@ block content
                     | 回复了 #{reply.topic.user.username} 创建的主题 
                     a(href='/topics/#{reply.topic.id}')= reply.topic.title
                   .content
-                    p= reply.content
+                    p!= reply.content_html
 
       .span3.right
         include ../share/user_info

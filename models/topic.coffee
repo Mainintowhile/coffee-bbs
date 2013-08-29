@@ -1,5 +1,6 @@
 mongoose = require 'mongoose'
 async = require 'async'
+marked = require 'marked'
 
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
@@ -7,9 +8,10 @@ ObjectId = Schema.Types.ObjectId
 topicSchema = new mongoose.Schema
   user_id: { type: ObjectId, required: true, index: true }
   node_id: { type: ObjectId, required: true , index: true }
-  title: { type: String }
+  title: { type: String, required: true }
   content: { type: String }
-  username: { type: String } # for cache
+  content_html: { type: String }
+  # username: { type: String } # for cache
   hit: { type: Number, default: 0}
   vote_users: [{ type: ObjectId, ref: "User" }]
   replies_count: { type: Number, default: 0}
@@ -75,6 +77,8 @@ getNode = (topic, callback) ->
 
 topicSchema.pre 'save', (next) ->
   @updated_at = new Date()
+  if @isModified 'content' 
+    @content_html = marked @content
   next()
 
 mongoose.model 'Topic', topicSchema
