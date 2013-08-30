@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 async = require 'async'
-marked = require 'marked'
+lib = require './lib'
 
 Schema = mongoose.Schema
 
@@ -63,19 +63,10 @@ getTopic = (reply, callback) ->
     callback null, reply
 
 
-marked.setOptions
-  gfm: true
-  breaks: true
-
 replySchema.pre 'save', (next) ->
   @updated_at = new Date()
   if @isModified 'content' 
-    # 处理 #12楼 => <a href="#reply12">12楼</a>
-    replyFloor = /#(\d+)\u697c/g
-    @content = @content.replace replyFloor, "<a href=#reply$1 class='at_floor'>#$1楼</a>"
-
-    # 处理 @hello => <a href="/u/hello"> hello </a>
-    @content_html = marked @content
+    @content_html = lib.replyToHtml(@content)
   next()
 
 mongoose.model 'Reply', replySchema

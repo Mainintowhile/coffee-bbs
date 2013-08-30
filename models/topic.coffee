@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 async = require 'async'
-marked = require 'marked'
+lib = require './lib'
 
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
@@ -78,7 +78,7 @@ getNode = (topic, callback) ->
 topicSchema.pre 'save', (next) ->
   @updated_at = new Date()
   if @isModified 'content' 
-    @content_html = marked @content
+    @content_html = lib.topicToHtml @content
   next()
 
 mongoose.model 'Topic', topicSchema
