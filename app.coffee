@@ -41,12 +41,19 @@ app.locals.runEnv = app.get('env')
 app.use express.static(path.join(__dirname, "public"))
 app.use app.router
 
+# error handle
+app.use (err, req, res, next) ->
+  if err 
+    console.error(err)
+    res.send(500, 'Something broke!')
+  else
+    next()
+
 routes = require './routes'
 db = require './db'
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
-
 
 http.createServer(app).listen app.get("port"), ->
   console.log "Express server listening on port #{app.get("port")}"
