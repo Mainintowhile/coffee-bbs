@@ -1,15 +1,16 @@
 app = module.parent.exports.app
 
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 Settings = require('./settings')(app.get("env"))
 
-require('./models/user')
-require('./models/topic')
-require('./models/plane')
-require('./models/node')
-require('./models/counter')
-require('./models/reply')
-require('./models/site')
+require './models/user'
+require './models/topic'
+require './models/plane'
+require './models/node'
+require './models/counter'
+require './models/reply'
+require './models/site'
+require './models/notification'
 
 mongoose.connect "mongodb://#{Settings.host}/#{Settings.db}", (err) ->
   process.exit(1) if err
