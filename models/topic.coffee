@@ -69,6 +69,48 @@ getNode = (topic, callback) ->
     topic.node = node
     callback null, topic
 
+# 获取用户的id, async map中迭代用
+getUserIdByUsername = (username, callback) ->
+  User = mongoose.model 'User'
+  User.findOne username: username, (err, user) ->
+    return callback err if err 
+    return callback null, null unless user
+    callback null, user.id 
+
+# 获取topic提到的用户id，返回数组
+topicSchema.methods.getMentionUserIds = (callback) ->
+  usernames = lib.findMentionUsers(@content)
+  async.map usernames, getUserIdByUsername, (err, ids) ->
+    return callback err if err
+    callback null, ids
+
+# async each 发送提醒
+# replySchema.methods.sendNotification = (who, callback) ->
+# 将reply实例context绑定
+sendNotification = (who, callback) ->
+  # user 不存在
+  return callback null unless who 
+  # 排除自己
+  return callback null if who.toString() == @user_id.toString()
+
+  Notification = mongoose.model 'Notification'
+  notification = new Notification
+    user_id: who
+    notifiable_id: @id
+    action: 'topic_mention'
+    action_user_id: @user_id
+    content: @content_html
+
+  notification.save (err, doc) ->
+    return callback err if err 
+    callback null
+
+topicSchema.methods.sendMentionNotification = (user_ids, callback) ->
+  topic = @
+  async.each user_ids, sendNotification.bind(topic), (err) ->
+    return callback err if err 
+    return callback null
+
 # topicSchema.methods.node = (callback) ->
 #   Node = mongoose.model 'Node'
 #   Node.findById @node_id, (err, node) ->

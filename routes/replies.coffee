@@ -45,7 +45,9 @@ exports.create = (req, res, next) ->
             callback null, topic
         #创建提醒
         (callback) ->
+          # 排除topic作者自己回复
           return callback null, null if topic.user_id.toString() == user._id
+
           reply.sendReplyNotification topic.user_id, (err, notifiation) ->
             return callback err if err 
             callback null, notifiation
@@ -53,6 +55,7 @@ exports.create = (req, res, next) ->
         (callback) ->
           reply.getMentionUserIds (err, ids) ->
             return callback err if err 
+            return callback null, null if ids.length == 0
             reply.sendReplyMentionNotification ids, (err) ->
               return callback err if err 
               callback null, null

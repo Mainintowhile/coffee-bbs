@@ -80,19 +80,10 @@ replySchema.methods.sendReplyNotification = (who, callback) ->
     callback null, doc
 
 # 获取回复中提到的用户名，返回数组
-replySchema.methods.getMentionUsers =  () ->
-  re = /@([a-zA-Z0-9]{1,20})/g
-  mentioned_users = @content.match(re)
-  if mentioned_users != null
-    # 去重
-    output = {}
-    output[mentioned_users[key]] = mentioned_users[key] for key in [0...mentioned_users.length]
-    value.replace(/@/, '') for key, value of output
-  else
-    []
+# replySchema.methods.getMentionUsers =  () -> lib.findMentionUsers(@content)
 
 # 获取用户的id, async map中迭代用
-getUserId = (username, callback) ->
+getUserIdByUsername = (username, callback) ->
   User = mongoose.model 'User'
   User.findOne username: username, (err, user) ->
     return callback err if err 
@@ -100,29 +91,33 @@ getUserId = (username, callback) ->
     callback null, user.id 
 
 replySchema.methods.getMentionUserIds = (callback) ->
-  usernames = @getMentionUsers()
-  async.map usernames, getUserId, (err, ids) ->
+  # 获取回复中提到的用户名，返回数组
+  usernames = lib.findMentionUsers(@content)
+
+  async.map usernames, getUserIdByUsername, (err, ids) ->
     return callback err if err
     callback null, ids
 
 # async each 发送提醒
 # replySchema.methods.sendNotification = (who, callback) ->
+# 将reply实例context绑定
 sendNotification = (who, callback) ->
-  return callback null unless who
-  
+  # user 不存在
+  return callback null unless who 
+  # 排除自己
+  return callback null if who.toString() == @user_id.toString()
+
   Notification = mongoose.model 'Notification'
   notification = new Notification
     user_id: who
     notifiable_id: @topic_id
     action: 'reply_mention'
     action_user_id: @user_id
-    # content: lib.replyToHtml(@content)
     content: @content_html
 
   notification.save (err, doc) ->
     return callback err if err 
     callback null
-
 
 # 回复中提到的发送提醒
 replySchema.methods.sendReplyMentionNotification = (user_ids, callback) ->

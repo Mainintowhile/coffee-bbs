@@ -117,8 +117,14 @@ exports.create = (req, res, next) ->
         topic: (callback) ->
           topic = new Topic {title: title, content: content, node_id: node.id, user_id: user_id }
           topic.save (err, topic) ->
-            return callback err if err 
-            callback null, topic
+            return callback err if err
+            #发送提醒
+            topic.getMentionUserIds (err, ids) ->
+              return callback err if err
+              return callback null, topic if ids.length == 0
+              topic.sendMentionNotification ids, (err) ->
+                return callback err if err
+                callback null, topic
         user: (callback) ->
           User.findById user_id, (err, user) ->
             user.topic_count++
