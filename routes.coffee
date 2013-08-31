@@ -5,10 +5,13 @@ sessions = require "./routes/sessions"
 passwords = require "./routes/passwords"
 nodes = require "./routes/nodes"
 replies = require "./routes/replies"
+notifications = require "./routes/notifications"
 filter = require "./routes/filter"
 
 app = module.parent.exports.app
 
+
+app.all "*", filter.notifications
 # app.get "/", routes.index
 app.get "/", topics.index
 
@@ -27,7 +30,7 @@ app.get  "/setting/avatar", filter.requiredLogined, users.avatar
 app.get  "/setting/avatar/gravatar", filter.requiredLogined, users.gravatar
 app.get  "/setting/password", filter.requiredLogined, users.getSettingPass
 app.post "/setting/password", filter.requiredLogined, users.settingPass
-app.get "/notifications", filter.requiredLogined, users.notifications
+app.get "/notifications", filter.requiredLogined, notifications.index
 
 # passwords 
 app.get  "/forgot", passwords.new

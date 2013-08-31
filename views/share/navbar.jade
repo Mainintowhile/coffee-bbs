@@ -8,8 +8,12 @@
       a.brand(href='/')= locals.site_name
       .divider-vertical
       if current_user
-        a.notification-indicator.tooltipped.downwards(href='/notifications', title='暂时没有未读提醒')
-          span.mail-status
+        if notification_count > 0
+          a.notification-indicator.tooltipped.downwards.contextually-unread(href='/notifications', title='你有#{notification_count}条未读提醒，去看看吧')
+            span.mail-status.unread
+        else 
+          a.notification-indicator.tooltipped.downwards(href='/notifications', title='暂时没有未读提醒')
+            span.mail-status
         .divider-vertical
       .nav-collapse.collapse
         ul.nav

@@ -4,3 +4,37 @@ block vars
   - var title = "提醒"
 
 block content
+  .container-fluid.container.mt15
+    .row-fluid
+      .span9.left
+        .notifications.container-box
+          .ui-header
+            span.bread-nav #{locals.site_name} › 提醒消息
+          .ui-content
+            for notification in notifications
+              .notification-item
+                a(href='/u/#{notification.user.username}')
+                  img.avatar(src='#{notification.user.avatarUrl()}', alt='')
+                .main
+                  span.title
+                    if notification.action == 'reply'
+                      a(href='/u/#{notification.user.username}')= notification.user.username
+                      |  回复了你的主题  
+                      a(href='/topics/#{notification.topic.id}')= notification.topic.title
+                    if notification.action == 'reply_mention'
+                      a(href='/u/#{notification.user.username}')= notification.user.username
+                      |  在主题的   
+                      a(href='/topics/#{notification.topic.id}')= notification.topic.title  
+                      |  回复中提到了你  
+                    if notification.action == 'topic_mention'
+                      a(href='/u/#{notification.user.username}')= notification.user.username
+                      |  在主题的   
+                      a(href='/topics/#{notification.topic.id}')= notification.topic.title  
+                      |  中提到了你  
+                  .content
+                    p!= notification.content
+          .ui-footer
+            .pagination
+      .span3.right
+        - var user = locals.current_user
+          include ../share/user_info

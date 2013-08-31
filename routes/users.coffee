@@ -211,10 +211,6 @@ exports.gravatar = (req, res) ->
     user.save()
     res.redirect '/setting/avatar'
 
-# GET /notifications
-exports.notifications = (req, res) ->
-  res.render 'users/notifications'
-
 # register validate 
 validate = (user) ->
   v = new Validator()
