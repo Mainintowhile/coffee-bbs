@@ -11,7 +11,6 @@ exports.index = (req, res) ->
 
   Notification.getByUser { user_id: user_id }, options, (err, notifications) ->
     # mark all read
-    # req.session.notification_count = 0 
     Notification.update {user_id: user_id}, {status: true}, {multi: true}, (err, numberAffected, raw) ->
       console.log "update #{numberAffected} docs"
 
