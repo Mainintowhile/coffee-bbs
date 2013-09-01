@@ -41,7 +41,7 @@ app.post "/reset",  passwords.update
 # sessions 
 app.get  "/login", sessions.new
 app.post "/login", sessions.create
-app.get  "/logout", sessions.destroy
+app.get  "/logout", filter.requiredLogined, sessions.destroy
 
 # nodes 
 app.get "/nodes/:key", nodes.show

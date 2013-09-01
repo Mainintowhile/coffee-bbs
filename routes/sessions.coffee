@@ -2,6 +2,7 @@ sanitize = require('validator').sanitize
 mongoose = require 'mongoose'
 
 exports.new = (req, res) ->
+  return res.redirect '/' if req.session && req.session.user
   res.render 'sessions/new', success: req.flash('success'), notices: req.flash('notices')
 
 exports.create = (req, res) ->
