@@ -10,6 +10,7 @@ settings =
     page_size: 10
     site_name: "SDUT"
     copyleft: "©2013-2014 SDUT"
+    about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   test:
     db: 'world'
@@ -22,6 +23,7 @@ settings =
     root: 'ldshuang@gmail.com'
     site_name: "SDUT"
     copyleft: "©2013-2014 SDUT"
+    about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   production:
     db: 'world'
@@ -34,5 +36,6 @@ settings =
     root: 'ldshuang@gmail.com'
     site_name: "SDUT"
     copyleft: "©2013-2014 SDUT"
+    about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
  
 module.exports =  (env) -> settings[env]
