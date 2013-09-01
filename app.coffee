@@ -44,6 +44,7 @@ app.use app.router
 # error handle
 app.use (err, req, res, next) ->
   if err 
+    #TODO loger
     console.error(err)
     res.send(500, 'Something broke!')
   else

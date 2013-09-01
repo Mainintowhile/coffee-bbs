@@ -20,5 +20,5 @@
         a(href='/u/#{user.username}/favorites')= user.favorite_topics.length
       | 收藏
     .status.status-reputation
-      strong 6
+      strong= user.reputation
       | 威望

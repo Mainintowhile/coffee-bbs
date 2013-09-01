@@ -13,6 +13,7 @@ require './models/site'
 require './models/notification'
 
 mongoose.connect "mongodb://#{Settings.host}/#{Settings.db}", (err) ->
+  console.log err
   process.exit(1) if err
 
 if "development" is app.get('env')

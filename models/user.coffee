@@ -13,6 +13,7 @@ userSchema = Schema
   reg_id: { type: Number, unique: true, required: true}
   topic_count: { type: Number, default: 0 }
   reply_count: { type: Number, default: 0 }
+  reputation: { type: Number, default: 10 }
   favorite_topics: [{type: Schema.Types.ObjectId, ref: "Topic"}]
   gravatar_type: { type: Number, default: 0} # 0 default, 1 gravatar, 2 upload gravatar
   nickname: String

@@ -96,7 +96,7 @@ block content
                     a(href='/u/#{user.username}/favorites')= user.favorite_topics.length
                   | 收藏
                 .status.status-reputation
-                  strong 83
+                  strong= user.reputation
                   | 威望
             .self-introduction.container-box.mt10
               .ui-header

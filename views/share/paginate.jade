@@ -1,36 +1,37 @@
-ul
-  if currentPage != 1  && pages > 1
-    li.disabled
-      a(href='?p=#{currentPage - 1}') «
-
-  - var startPage = currentPage - 2 > 0 ? currentPage - 2 : 1
-  - var endPage = startPage + 4 >= pages ? pages : startPage + 4
-
-  if currentPage != 1 && startPage != 1
-    li
-      a(href='?p=1')= 1
-
-  if startPage > 1
-    li
-      a(href='javascript:;') ...
-
-  - for (var i = startPage; i <= endPage; i++)
-    if currentPage == i
-      li.active
-        a(href='javascript:;')= i  
-    else
+if pages > 1
+  ul
+    if currentPage != 1  && pages > 1
+      li.disabled
+        a(href='?p=#{currentPage - 1}') «
+  
+    - var startPage = currentPage - 2 > 0 ? currentPage - 2 : 1
+    - var endPage = startPage + 4 >= pages ? pages : startPage + 4
+  
+    if currentPage != 1 && startPage != 1
       li
-        a(href='?p=#{i}')= i  
-
-  if endPage < pages
-    li
-      a(href='javascript:;') ...
-    li
-      a(href='?p=#{pages}')= pages
-
-  if currentPage != pages && pages > 1
-    li.disabled
-      a(href="?p=#{currentPage + 1}") »
-      
-    //- li.disabled
-    //-   a(href='?p=#{currentPage - 1}') ‹
+        a(href='?p=1')= 1
+  
+    if startPage > 1
+      li
+        a(href='javascript:;') ...
+  
+    - for (var i = startPage; i <= endPage; i++)
+      if currentPage == i
+        li.active
+          a(href='javascript:;')= i  
+      else
+        li
+          a(href='?p=#{i}')= i  
+  
+    if endPage < pages
+      li
+        a(href='javascript:;') ...
+      li
+        a(href='?p=#{pages}')= pages
+  
+    if currentPage != pages && pages > 1
+      li.disabled
+        a(href="?p=#{currentPage + 1}") »
+        
+      //- li.disabled
+      //-   a(href='?p=#{currentPage - 1}') ‹
