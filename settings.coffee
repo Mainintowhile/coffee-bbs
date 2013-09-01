@@ -4,6 +4,7 @@ settings =
     host: 'localhost'
     port: 3000
     root_url: 'http://localhost:3000'
+    domain_name: 'localhost:3000'
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'
     page_size: 10
@@ -15,6 +16,7 @@ settings =
     host: 'localhost'
     port: 3000
     root_url: 'http://localhost:3000'
+    domain_name: 'localhost:3000'
     page_size: 20
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'
@@ -26,6 +28,7 @@ settings =
     host: 'localhost'
     port: 3000
     root_url: 'http://localhost:3000'
+    domain_name: 'localhost:3000'
     page_size: 20
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'

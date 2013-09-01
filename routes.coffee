@@ -7,6 +7,7 @@ nodes = require "./routes/nodes"
 replies = require "./routes/replies"
 notifications = require "./routes/notifications"
 filter = require "./routes/filter"
+search = require "./routes/search"
 
 app = module.parent.exports.app
 
@@ -14,6 +15,9 @@ app = module.parent.exports.app
 app.all "*", filter.notifications
 # app.get "/", routes.index
 app.get "/", topics.index
+
+# search  
+app.get '/search', search.index
 
 # users
 app.get  "/members", users.index

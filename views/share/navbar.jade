@@ -22,8 +22,8 @@
           li
             a(href='/members') 成员
       // /.nav-collapse
-      form.navbar-search.pull-left.J_search
-        input.search-query(type='text', placeholder='', x-webkit-speech='')
+      form.navbar-search.pull-left.J_search(action='/search', method='get')
+        input.search-query(type='text', placeholder='', x-webkit-speech='', name='q')
       .nav-collapse.collapse.pull-right
         ul.nav.account-menu
           if current_user
