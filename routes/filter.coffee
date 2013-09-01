@@ -12,8 +12,9 @@ exports.requiredLogined = (req, res, next) ->
 
 exports.notifications = (req, res, next) ->
   if req.session && req.session.user
+    user_id = req.session.user._id 
     Notification = mongoose.model 'Notification'
-    Notification.unreadCount req.session.user._id, (err, count) ->
+    Notification.unreadCount user_id, (err, count) ->
       throw err if err
       res.locals.notification_count = count
       next()

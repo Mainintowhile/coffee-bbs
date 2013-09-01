@@ -21,7 +21,7 @@ notificationSchema = new mongoose.Schema
 
 # 获取用户未读提醒数
 notificationSchema.statics.unreadCount = (user_id, callback) ->
-  @count status: false, (err, count) ->
+  @count status: false, user_id: user_id, (err, count) ->
     return callback err if err 
     callback null, count
 
