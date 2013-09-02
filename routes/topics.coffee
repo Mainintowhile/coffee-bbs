@@ -128,6 +128,7 @@ exports.create = (req, res, next) ->
         user: (callback) ->
           User.findById user_id, (err, user) ->
             user.topic_count++
+            user.reputation = user.reputation + 3
             user.save (err, doc) ->
               return callback err if err 
               callback null, doc
@@ -183,20 +184,25 @@ exports.vote = (req, res) ->
   topic_id = req.params.id
   user_id = req.session.user._id
   Topic = mongoose.model 'Topic'
+  User = mongoose.model 'User'
 
   Topic.findById topic_id, (err, topic) ->
     throw err if err 
     unless topic
       return res.json { success: 0, message: 'topic_not_exist' }
     if user_id in topic.vote_users.map((id) -> id.toString())
-      return res.json { success:0, message: 'already_voted' }
+      return res.json { success: 0, message: 'already_voted' }
     if user_id == topic.user_id.toString()
-      return res.json { success:0, message: 'can_not_vote_your_topic' }
+      return res.json { success: 0, message: 'can_not_vote_your_topic' }
       
     topic.vote_users.push user_id
     topic.save (err, doc) ->
       throw err if err 
-      res.json { success:1 }
+      User.findById topic.user_id, (err, user) ->
+        user.reputation = user.reputation + 2
+        user.save (err, user) ->
+          throw err if err 
+          res.json { success: 1 }
 
 # 
 exports.update = (req, res) ->

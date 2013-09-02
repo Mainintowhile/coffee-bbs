@@ -104,7 +104,8 @@ sendNotification = (who, callback) ->
   notification.save (err, doc) ->
     return callback err if err 
     callback null
-
+ 
+# 文中提到的人发提醒
 topicSchema.methods.sendMentionNotification = (user_ids, callback) ->
   topic = @
   async.each user_ids, sendNotification.bind(topic), (err) ->

@@ -27,6 +27,7 @@ exports.create = (req, res, next) ->
     reply.save (err, reply) ->
       throw err if err 
       async.parallel [
+
         # 用户回复数加1 
         (callback) ->
           User.findById user._id, (err, user) ->
@@ -35,6 +36,7 @@ exports.create = (req, res, next) ->
             user.save (err, user) ->
               return callback err if err 
               callback null, user
+
         # 主题回复数加1 
         (callback) ->
           topic.replies_count++
@@ -43,6 +45,21 @@ exports.create = (req, res, next) ->
           topic.save (err, topic) ->
             return callback err if err
             callback null, topic
+
+        # 主题作者威望加1
+        (callback) ->
+          # 自己回复不加
+          return callback null, null if topic.user_id.toString() == user._id
+          # 只加一次
+          Reply.count user_id: reply.user_id, topic_id: topic.id, (err, reply_count) ->
+            return callback err if err 
+            return callback null, null if reply_count > 1
+            User.findById topic.user_id, (err, user) ->
+              user.reputation = user.reputation + 1
+              user.save (err, user) ->
+                return callback err if err 
+                callback null, null
+
         #创建提醒
         (callback) ->
           # 排除topic作者自己回复
