@@ -1,10 +1,12 @@
 sanitize = require('validator').sanitize
 mongoose = require 'mongoose'
 
+# GET '/login'
 exports.new = (req, res) ->
   return res.redirect '/' if req.session && req.session.user
-  res.render 'sessions/new', success: req.flash('success'), notices: req.flash('notices')
+  res.render 'sessions/new', success: req.flash('success'), notices: req.flash('notices'), next: req.query.next
 
+# POST '/login'
 exports.create = (req, res) ->
   email = sanitize(req.body.email).trim().toLowerCase()
   password = sanitize(req.body.password).trim()
@@ -24,7 +26,8 @@ exports.create = (req, res) ->
       throw err if err 
       if isMatch
         req.session.user = user
-        res.redirect '/'
+        redirectPath = req.query.next || '/'
+        res.redirect redirectPath
       else
         res.render 'sessions/new', notices: ["password do not match"]
 

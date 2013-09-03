@@ -8,7 +8,11 @@ exports.requiredLogined = (req, res, next) ->
       res.json { success: 0, message: "please_signin" }
     else
       req.flash 'notices', ["Please Signin"]
-      res.redirect '/login'
+      if req.header 'Referer'
+        res.redirect "/login?next=#{req.path}"
+      else
+        res.redirect "/login"
+
 
 exports.notifications = (req, res, next) ->
   if req.session && req.session.user

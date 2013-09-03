@@ -8,7 +8,11 @@ block content
       .row-fluid
         .span9.left
           .container-box
-            form.form-horizontal(action='/login', method='POST')
+            if next
+              - action = "/login?next=" + next
+            else
+              - action = "/login"
+            form.form-horizontal(action="#{action}", method='POST')
               fieldset
                 #legend.mb50
                   legend 登录
