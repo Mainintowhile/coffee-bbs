@@ -3,14 +3,14 @@ app = module.parent.exports.app
 mongoose = require 'mongoose'
 Settings = require('./settings')(app.get("env"))
 
-require './models/user'
-require './models/topic'
-require './models/plane'
-require './models/node'
-require './models/counter'
-require './models/reply'
-require './models/site'
-require './models/notification'
+require '../app/models/user'
+require '../app/models/topic'
+require '../app/models/plane'
+require '../app/models/node'
+require '../app/models/counter'
+require '../app/models/reply'
+require '../app/models/site'
+require '../app/models/notification'
 
 mongoose.connect "mongodb://#{Settings.host}/#{Settings.db}", (err) ->
   console.log err

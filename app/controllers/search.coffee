@@ -1,5 +1,5 @@
 env = process.env.NODE_ENV or 'development'
-settings = require("../settings")(env)
+settings = require("../../config/settings")(env)
 
 # GET /search
 exports.index = (req, res) ->

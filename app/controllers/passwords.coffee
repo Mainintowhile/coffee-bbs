@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-mail = require '../services/mail'
+mail = require '../mailers/mail'
 bcrypt = require "bcrypt"
 sanitize = require('validator').sanitize
 

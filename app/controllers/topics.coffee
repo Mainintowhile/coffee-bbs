@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 async = require 'async'
-settings = require("../settings")(process.env.NODE_ENV or 'development')
+settings = require("../../config/settings")(process.env.NODE_ENV or 'development')
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
 

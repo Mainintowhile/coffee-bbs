@@ -1,13 +1,13 @@
-routes = require "./routes"
-users = require "./routes/users"
-topics = require "./routes/topics"
-sessions = require "./routes/sessions"
-passwords = require "./routes/passwords"
-nodes = require "./routes/nodes"
-replies = require "./routes/replies"
-notifications = require "./routes/notifications"
-filter = require "./routes/filter"
-search = require "./routes/search"
+routes = require "../app/controllers"
+users = require "../app/controllers/users"
+topics = require "../app/controllers/topics"
+sessions = require "../app/controllers/sessions"
+passwords = require "../app/controllers/passwords"
+nodes = require "../app/controllers/nodes"
+replies = require "../app/controllers/replies"
+notifications = require "../app/controllers/notifications"
+filter = require "../app/controllers/filter"
+search = require "../app/controllers/search"
 
 app = module.parent.exports.app
 

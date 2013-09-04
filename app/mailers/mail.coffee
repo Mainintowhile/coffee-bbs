@@ -1,10 +1,10 @@
 nodemailer = require "nodemailer"
 
 env = process.env.NODE_ENV or 'development'
-settings = require("../settings")(env)
+settings = require("../../config/settings")(env)
 
 #TODO move to settings
-mail_options = 
+mail_options =
   host: "smtp.gmail.com"
   secureConnection: true
   port: 465
@@ -26,8 +26,9 @@ exports.sendActiveMail = (user_email, token, name) ->
     to: to
     subject: subject
     html: content, (err, response) ->
-      if err 
-        console.log err 
+      if err
+        #TODO logger
+        console.log err
       else
         console.log response
 
@@ -43,8 +44,8 @@ exports.resetPasswordMail = (user_email, token, name) ->
     to: to
     subject: subject
     html: content, (err, response) ->
-      if err 
-        console.log err 
+      if err
+        console.log err
       else
         console.log response
 

@@ -2,7 +2,7 @@
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
 mongoose = require 'mongoose'
-mail = require '../services/mail'
+mail = require '../mailers/mail'
 bcrypt = require 'bcrypt'
 async = require 'async'
 
@@ -26,20 +26,20 @@ exports.show = (req, res, next) ->
   Reply = mongoose.model 'Reply'
 
   User.findOne username: req.params.username, (err, user) ->
-    throw err if err 
+    throw err if err
     return next() unless user
 
     async.parallel
       topics: (callback) ->
         Topic.getTopicListWithNode user.id, 10, (err, topics) ->
-          return callback err if err 
+          return callback err if err
           callback null, topics
       replies: (callback) ->
         Reply.findReplyByUserWithTopic user.id, 10, (err, replies) ->
           return callback err if err
           callback null, replies
       (err, results) ->
-        throw err if err 
+        throw err if err
         res.render 'users/show', user: user, topics: results.topics, replies: results.replies
 
 # GET '/register'
@@ -54,13 +54,13 @@ exports.create = (req, res) ->
   if notices.length == 0
     User = mongoose.model('User')
     User.find $or: [username: user.username, email: user.email], (err, docs) ->
-      throw err if err 
+      throw err if err
       if docs.length == 0
         async.waterfall [
           (next) ->
             bcrypt.genSalt 10, (err, salt) ->
               return next err if err
-              user = new User 
+              user = new User
                 username: user.username
                 email: user.email
                 password: user.password
@@ -167,7 +167,7 @@ exports.topics = (req, res, next) ->
     throw err if err 
     return next() unless user
     Topic.getTopicListWithNode user.id, 100, (err, topics) ->
-      throw err if err 
+      throw err if err
       res.render 'users/topics_list', topics: topics, user: user
 
 # GET /u/:username/replies
@@ -176,7 +176,7 @@ exports.replies = (req, res, next) ->
   User = mongoose.model 'User'
 
   User.findOne username: req.params.username, (err, user) ->
-    throw err if err 
+    throw err if err
     return next() unless user
     Reply.findReplyByUserWithTopic user.id, 100, (err, replies) ->
       throw err if err
@@ -199,14 +199,14 @@ exports.favorites = (req, res, next) ->
 exports.avatar = (req, res) ->
   User = mongoose.model 'User'
   User.findById req.session.user._id, (err, user) ->
-    throw err if err 
+    throw err if err
     res.render 'users/avatar', user: user
 
 # GET /setting/avatar/gravatar
 exports.gravatar = (req, res) ->
   User = mongoose.model 'User'
   User.findById req.session.user._id, (err, user) ->
-    throw err if err 
+    throw err if err
     user.gravatar_type = 1
     user.save()
     res.redirect '/setting/avatar'
