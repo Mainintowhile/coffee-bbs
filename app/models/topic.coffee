@@ -44,7 +44,7 @@ topicSchema.statics.getTopicListWithNodeUser = (conditions, options, callback) -
 topicSchema.statics.getTopicListWithUser = (node_id, count, callback) ->
   @find({node_id: node_id}).limit(count).select('-content').sort(last_replied_at: -1).exec (err, topics) ->
     async.map topics, getUser, (err, results) ->
-      return callback err if err 
+      return callback err if err
       callback null, topics
 
 # 通过 user_id 获取 topic 列表
@@ -52,7 +52,7 @@ topicSchema.statics.getTopicListWithUser = (node_id, count, callback) ->
 topicSchema.statics.getTopicListWithNode = (user_id, count, callback) ->
   @find({user_id: user_id}).limit(count).sort(created_at: -1).exec (err, topics) ->
     async.map topics, getNode, (err, results) ->
-      return callback err if err 
+      return callback err if err
       callback null, results
 
 getUser = (topic, callback) ->
@@ -73,9 +73,9 @@ getNode = (topic, callback) ->
 getUserIdByUsername = (username, callback) ->
   User = mongoose.model 'User'
   User.findOne username: username, (err, user) ->
-    return callback err if err 
+    return callback err if err
     return callback null, null unless user
-    callback null, user.id 
+    callback null, user.id
 
 # 获取topic提到的用户id，返回数组
 topicSchema.methods.getMentionUserIds = (callback) ->
@@ -89,7 +89,7 @@ topicSchema.methods.getMentionUserIds = (callback) ->
 # 将reply实例context绑定
 sendNotification = (who, callback) ->
   # user 不存在
-  return callback null unless who 
+  return callback null unless who
   # 排除自己
   return callback null if who.toString() == @user_id.toString()
 
@@ -102,14 +102,14 @@ sendNotification = (who, callback) ->
     content: @content_html
 
   notification.save (err, doc) ->
-    return callback err if err 
+    return callback err if err
     callback null
  
 # 文中提到的人发提醒
 topicSchema.methods.sendMentionNotification = (user_ids, callback) ->
   topic = @
   async.each user_ids, sendNotification.bind(topic), (err) ->
-    return callback err if err 
+    return callback err if err
     return callback null
 
 # topicSchema.methods.node = (callback) ->
@@ -120,7 +120,7 @@ topicSchema.methods.sendMentionNotification = (user_ids, callback) ->
 
 topicSchema.pre 'save', (next) ->
   @updated_at = new Date()
-  if @isModified 'content' 
+  if @isModified 'content'
     @content_html = lib.topicToHtml @content
   next()
 

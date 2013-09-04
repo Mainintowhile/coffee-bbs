@@ -24,11 +24,11 @@ exports.index = (req, res) ->
         callback null, hotNodes
     siteInfos: (callback) ->
       Site.siteInfo (err, infos) ->
-        return callback err if err 
+        return callback err if err
         callback null, infos
     (err, results) ->
       throw err if err
-      res.render "index", 
+      res.render "index",
         planes: results.nodes
         topics: results.topics
         hotNodes: results.hotNodes

@@ -9,7 +9,7 @@ mongoose.connect("mongodb://localhost/#{database}")
 Node = mongoose.model('Node')
 Plane = mongoose.model('Plane')
 
-planes = 
+planes =
   '语言':   [ { name: "JavaScript", key: "js"}, { name: "NodeJS", key: "nodejs"}, { name: "Ruby", key: "ruby"}, { name: "Python", key: "python"}]
   '分享':   [ { name: "开源项目", key: "open"}, { name: "算法", key: "algorithm"}, { name: "数学", key: "math"}, { name: "书籍", key: "book"}, { name: "分享", key: "share"}, { name: "问与答", key: "question"}]
   '编辑器': [ { name: "Sublime", key: "sublime"},  { name: "VIM", key: "vim"}, { name: "Notepad++", key: "notepadd"}]
@@ -38,8 +38,8 @@ saveToMongo = (planes) ->
               plane.nodes.push node_instance
               if plane_node_count <= 0
                 plane.save (err, doc) ->
-                  if err 
-                    console.log err 
+                  if err
+                    console.log err
                   else
                     console.log "=success save plane: #{doc.name}"
         ) node
@@ -53,10 +53,10 @@ showFromMongo = (plane_name) ->
       console.log doc
 
 showAllFromMongo = () ->
-  Plane.find().populate('nodes').exec (err, doc) -> 
+  Plane.find().populate('nodes').exec (err, doc) ->
     if err
       console.log err
-    else  
+    else
       console.log doc
 
 # showAllFromMongo()

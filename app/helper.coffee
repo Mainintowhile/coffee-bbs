@@ -18,14 +18,14 @@ module.exports =
     if gravatar_type == 1
       switch size
         when 'b'
-          "http://www.gravatar.com/avatar/#{email_md5}?size=96" 
+          "http://www.gravatar.com/avatar/#{email_md5}?size=96"
         when 'm'
-          "http://www.gravatar.com/avatar/#{email_md5}?size=48" 
+          "http://www.gravatar.com/avatar/#{email_md5}?size=48"
         else
-          "http://www.gravatar.com/avatar/#{email_md5}?size=32" 
+          "http://www.gravatar.com/avatar/#{email_md5}?size=32"
     else if gravatar_type == 2
       "/images/avatar/#{size}_#{email_md5}.png"
-    else 
+    else
       "/images/#{size}_default.png"
 
   markdown: (text) ->

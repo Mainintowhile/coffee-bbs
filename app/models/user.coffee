@@ -36,10 +36,10 @@ userSchema = Schema
 
 # encrypted password
 userSchema.pre 'save', (next) ->
-	user = @ 
+	user = @
 	return next() unless user.isModified('password')
 	
-	bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) -> 
+	bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) ->
     return next(err) if err
     bcrypt.hash user.password, salt, (err, hash) ->
       return next(err) if err
@@ -54,7 +54,7 @@ userSchema.pre 'save', (next) ->
 # 生成唯一的id
 # 用户是新创建的时候生成id
 userSchema.pre 'validate', (next) ->
-  if @isNew 
+  if @isNew
     user = @
     Counter = mongoose.model('Counter')
     Counter.incrementCounter "users", (err, res)->
@@ -80,13 +80,13 @@ userSchema.statics.newUsers = (count, callback) ->
 
 userSchema.statics.activeUsers = (count, callback) ->
   @find({}).limit(count).sort(topic_count: 'desc').exec (err, users) ->
-    return callback err if err 
+    return callback err if err
     callback null, users
 
 # auth password
 userSchema.methods.comparePassword = (candidatePassword, callback) ->
   bcrypt.compare candidatePassword, @password, (err, isMatch) ->
-    return callback(err) if err 
+    return callback(err) if err
     callback(null, isMatch)
 
 userSchema.methods.avatarUrl = (size = 'm') ->
@@ -94,16 +94,16 @@ userSchema.methods.avatarUrl = (size = 'm') ->
   if @gravatar_type == 1
     switch size
       when 'b'
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=96" 
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=96"
       when 'm'
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=48" 
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=48"
       else
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=32" 
+        "http://www.gravatar.com/avatar/#{@email_md5}?size=32"
   # upload 2
   else if @gravatar_type == 2
     "/images/avatar/#{size}_#{@email_md5}.png"
   # default 0 
-  else 
+  else
     "/images/#{size}_default.png"
 
 mongoose.model('User', userSchema)

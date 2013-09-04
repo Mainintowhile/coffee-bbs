@@ -5,7 +5,7 @@ async = require 'async'
 exports.index = (req, res) ->
   user_id = req.session.user._id
   Notification = mongoose.model 'Notification'
-  options = 
+  options =
     limit: 30
     sort: created_at: -1
 

@@ -19,7 +19,7 @@ exports.index = (req, res) ->
         return callback err if err
         callback null, nodes
     topics: (callback) ->
-      options = 
+      options =
         sort: { last_replied_at: -1 }
         skip: pageSize * (currentPage - 1)
         limit: pageSize
@@ -28,7 +28,7 @@ exports.index = (req, res) ->
         callback null, topics
     pages: (callback) ->
       Topic.count().exec (err, count) ->
-        callback err if err 
+        callback err if err
         callback null, Math.ceil(count / pageSize)
     hotNodes: (callback) ->
       Node.hotNodes 15, (err, hotNodes) ->
@@ -36,11 +36,11 @@ exports.index = (req, res) ->
         callback null, hotNodes
     siteInfos: (callback) ->
       Site.siteInfo (err, infos) ->
-        return callback err if err 
+        return callback err if err
         callback null, infos
     (err, results) ->
       throw err if err
-      res.render "index", 
+      res.render "index",
         planes: results.nodes
         topics: results.topics
         hotNodes: results.hotNodes
@@ -72,7 +72,7 @@ exports.show = (req, res, next) ->
           return callback err if err
           callback null, replies
       user: (callback) ->
-        User.findById topic.user_id, (err, user) -> 
+        User.findById topic.user_id, (err, user) ->
           return callback err if err
           callback null, user
       node: (callback) ->
@@ -110,7 +110,7 @@ exports.create = (req, res, next) ->
     User = mongoose.model('User')
 
     Node.findNodeByKey node_key, (err, node) ->
-      throw err if err 
+      throw err if err
       return next() unless node
 
       async.parallel
@@ -130,15 +130,15 @@ exports.create = (req, res, next) ->
             user.topic_count++
             user.reputation = user.reputation + 3
             user.save (err, doc) ->
-              return callback err if err 
+              return callback err if err
               callback null, doc
         node: (callback) ->
           node.topic_count++
           node.save (err, doc) ->
-            return callback err if err 
+            return callback err if err
             callback null, doc
         (err, results) ->
-          throw err if err 
+          throw err if err
           res.redirect "/topics/#{results.topic.id}"
 
 # POST /topics/:id/favorite
@@ -148,10 +148,10 @@ exports.favorite = (req, res) ->
   Topic = mongoose.model 'Topic'
 
   User.findById req.session.user._id, (err, user) ->
-    throw err if err 
+    throw err if err
 
     Topic.findById topic_id, (err, topic) ->
-      throw err if err 
+      throw err if err
       unless topic
         return res.json { success: 0, message: 'topic_not_exist' }
       if topic.id.toString() in user.favorite_topics.map((id) -> id.toString())
@@ -161,7 +161,7 @@ exports.favorite = (req, res) ->
 
       user.favorite_topics.push topic.id
       user.save (err, doc) ->
-        throw err if err 
+        throw err if err
         res.json { success: 1 }
 
 # POST /topics/:id/unfavorite
@@ -170,13 +170,13 @@ exports.unfavorite = (req, res) ->
   User = mongoose.model 'User'
 
   User.findById req.session.user._id, (err, user) ->
-    throw err if err 
+    throw err if err
     if topic_id in user.favorite_topics.map((id) -> id.toString())
       user.favorite_topics.remove(topic_id)
       user.save (err, doc) ->
-        throw err if err 
+        throw err if err
         res.json { success: 1 }
-    else 
+    else
       res.json { success: 0, message: 'topic_not_exist' }
 
 #  POST /topics/:id/vote
@@ -187,7 +187,7 @@ exports.vote = (req, res) ->
   User = mongoose.model 'User'
 
   Topic.findById topic_id, (err, topic) ->
-    throw err if err 
+    throw err if err
     unless topic
       return res.json { success: 0, message: 'topic_not_exist' }
     if user_id in topic.vote_users.map((id) -> id.toString())
@@ -197,23 +197,23 @@ exports.vote = (req, res) ->
       
     topic.vote_users.push user_id
     topic.save (err, doc) ->
-      throw err if err 
+      throw err if err
       User.findById topic.user_id, (err, user) ->
         user.reputation = user.reputation + 2
         user.save (err, user) ->
-          throw err if err 
+          throw err if err
           res.json { success: 1 }
 
 # 
 exports.update = (req, res) ->
-	res.render "topics/show", 
+	res.render "topics/show",
 		title : "show page"
 
 exports.edit = (req, res) ->
-	res.render "topics/show", 
+	res.render "topics/show",
 		title : "show page"
 
 exports.destroy = (req, res) ->
-	res.render "topics/show", 
+	res.render "topics/show",
 		title : "show page"
 

@@ -16,14 +16,14 @@ exports.create = (req, res) ->
 
   User = mongoose.model('User')
   User.findOne {email: email}, (err, user) ->
-    throw err if err 
+    throw err if err
     return res.render 'sessions/new', notices: ["user #{email} do not exist"] unless user
     #TODO send mail
     unless user.active
-      return res.render 'sessions/new', notices: ["the account did't active"] 
+      return res.render 'sessions/new', notices: ["the account did't active"]
 
     user.comparePassword password, (err, isMatch) ->
-      throw err if err 
+      throw err if err
       if isMatch
         req.session.user = user
         redirectPath = req.query.next || '/'

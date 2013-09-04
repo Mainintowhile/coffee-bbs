@@ -18,7 +18,7 @@ replySchema = new Schema(
 replySchema.statics.findRepliesByTopicId = (topic_id, callback) ->
   @find(topic_id: topic_id).sort(created_at: 'asc').exec (err, replies) ->
     return callback err if err
-    async.map replies, getUser, (err, results) -> 
+    async.map replies, getUser, (err, results) ->
       return callback err if err
       callback null, results
 
@@ -27,7 +27,7 @@ replySchema.statics.findRepliesByTopicId = (topic_id, callback) ->
 # replies list 
 replySchema.statics.findReplyByUserWithTopic = (user_id, count, callback) ->
   @find(user_id: user_id).limit(count).sort(created_at: -1).exec (err, replies) ->
-    return callback err if err 
+    return callback err if err
     async.map replies, getTopic, (err, results) ->
       return callback err if err
       callback null, results
@@ -36,7 +36,7 @@ replySchema.statics.findReplyByUserWithTopic = (user_id, count, callback) ->
 getUser = (reply, callback) ->
   User = mongoose.model 'User'
   User.findById reply.user_id, (err, user) ->
-    return callback err if err 
+    return callback err if err
     reply.user = user
     callback null, reply
 
@@ -67,7 +67,7 @@ replySchema.methods.sendReplyNotification = (who, callback) ->
   Notification = mongoose.model 'Notification'
 
   # 回复提醒
-  notification = new Notification 
+  notification = new Notification
     user_id: who
     notifiable_id: @topic_id
     action: 'reply'
@@ -76,7 +76,7 @@ replySchema.methods.sendReplyNotification = (who, callback) ->
     # content: lib.replyToHtml(@content)
 
   notification.save (err, doc) ->
-    return callback err if err 
+    return callback err if err
     callback null, doc
 
 # 获取回复中提到的用户名，返回数组
@@ -86,9 +86,9 @@ replySchema.methods.sendReplyNotification = (who, callback) ->
 getUserIdByUsername = (username, callback) ->
   User = mongoose.model 'User'
   User.findOne username: username, (err, user) ->
-    return callback err if err 
+    return callback err if err
     return callback null, null unless user
-    callback null, user.id 
+    callback null, user.id
 
 replySchema.methods.getMentionUserIds = (callback) ->
   # 获取回复中提到的用户名，返回数组
@@ -103,7 +103,7 @@ replySchema.methods.getMentionUserIds = (callback) ->
 # 将reply实例context绑定
 sendNotification = (who, callback) ->
   # user 不存在
-  return callback null unless who 
+  return callback null unless who
   # 排除自己
   return callback null if who.toString() == @user_id.toString()
 
@@ -116,14 +116,14 @@ sendNotification = (who, callback) ->
     content: @content_html
 
   notification.save (err, doc) ->
-    return callback err if err 
+    return callback err if err
     callback null
 
 # 回复中提到的发送提醒
 replySchema.methods.sendReplyMentionNotification = (user_ids, callback) ->
   reply = @
   async.each user_ids, sendNotification.bind(reply), (err) ->
-    return callback err if err 
+    return callback err if err
     return callback null
 
 
@@ -131,7 +131,7 @@ replySchema.methods.sendReplyMentionNotification = (user_ids, callback) ->
 replySchema.pre 'save', (next) ->
   @updated_at = new Date()
 
-  if @isModified 'content' 
+  if @isModified 'content'
     @content_html = lib.replyToHtml(@content)
   next()
 

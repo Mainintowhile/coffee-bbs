@@ -22,7 +22,7 @@ notificationSchema = new mongoose.Schema
 # 获取用户未读提醒数
 notificationSchema.statics.unreadCount = (user_id, callback) ->
   @count status: false, user_id: user_id, (err, count) ->
-    return callback err if err 
+    return callback err if err
     callback null, count
 
 # 获取用户提醒
@@ -33,22 +33,22 @@ notificationSchema.statics.getByUser =  (conditions, options, callback) ->
     async.waterfall [
       (next) ->
         async.map  notifications, getActionUser, (err, results) ->
-          return next err if err 
+          return next err if err
           next null, results
-      (notifications, next) -> 
+      (notifications, next) ->
         async.map notifications, getMentionTopic, (err, results) ->
-          return next err if err 
+          return next err if err
           next null, results
-    ], 
+    ],
     (err, results) ->
-      return callback err if err 
+      return callback err if err
       callback null, results
 
 # 获取提醒主题信息
 getMentionTopic = (notification, callback) ->
   Topic = mongoose.model 'Topic'
   Topic.findById notification.notifiable_id, 'title content_html', (err, topic) ->
-    return callback err if err 
+    return callback err if err
     notification.topic = topic
     callback null, notification
 
@@ -57,7 +57,7 @@ getActionUser = (notification, callback) ->
   User = mongoose.model 'User'
   #TODO 部分field
   User.findById notification.action_user_id, (err, user) ->
-    return callback err if err 
+    return callback err if err
     notification.user = user
     callback null, notification
 
