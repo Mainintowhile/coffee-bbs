@@ -1,6 +1,7 @@
-# check = require('validator').check
+check = require('validator').check
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
+
 mongoose = require 'mongoose'
 mail = require '../mailers/mail'
 bcrypt = require 'bcrypt'
@@ -68,11 +69,11 @@ exports.create = (req, res) ->
               next null, user
           (user, next) ->
             user.save (err, user) ->
-              throw err if err 
+              throw err if err
               next null, user
         ],
         (err, user) ->
-          throw err if err 
+          throw err if err
           mail.sendActiveMail(user.email, user.confirmation_token, user.username)
           req.flash 'success', ['register success, a mail has send, Please check your email']
           res.redirect '/login'
@@ -103,6 +104,33 @@ exports.activeAccount = (req, res) ->
       throw err if err
       req.flash 'success', ["account actived, Please login"]
       res.redirect '/login'
+
+# GET '/resend_active_mail'
+exports.activeMail = (req, res) ->
+  res.render 'users/resend_active_mail', notices: req.flash('notices')
+
+# POST '/resend_active_mail'
+exports.sendActiveMail = (req, res) ->
+  email = req.body.email
+  try
+    check(email).notNull().isEmail()
+  catch e
+    return res.render 'users/resend_active_mail',email: email, notices: ['email format error']
+
+  User = mongoose.model 'User'
+  User.findOne email: email, (err, user) ->
+    throw err if err
+    unless user
+      return res.render 'users/resend_active_mail', notices: ['the user not exists']
+
+    bcrypt.genSalt 10, (err, salt) ->
+      throw err if err
+      user.confirmation_token = salt
+      user.save (err, doc) ->
+        throw err if err
+        mail.sendActiveMail(user.email, salt, user.username)
+        req.flash 'success', ['a mail has send, Please check your email']
+        res.redirect '/login'
 
 # GET /setting
 exports.getSetting = (req, res) ->
@@ -164,7 +192,7 @@ exports.topics = (req, res, next) ->
   User = mongoose.model 'User'
 
   User.findOne username: req.params.username, (err, user) ->
-    throw err if err 
+    throw err if err
     return next() unless user
     Topic.getTopicListWithNode user.id, 100, (err, topics) ->
       throw err if err

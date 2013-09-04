@@ -27,14 +27,18 @@ app.get  "/u/:username/replies", users.replies
 app.get  "/u/:username/favorites", users.favorites
 app.get  "/register", users.new
 app.post "/users/create", users.create
+
 app.get  "/active_account", users.activeAccount
+app.get  "/resend_active_mail", users.activeMail
+app.post "/resend_active_mail", users.sendActiveMail
+
 app.get  "/setting", filter.requiredLogined, users.getSetting
 app.post "/setting", filter.requiredLogined, users.setting
 app.get  "/setting/avatar", filter.requiredLogined, users.avatar
 app.get  "/setting/avatar/gravatar", filter.requiredLogined, users.gravatar
 app.get  "/setting/password", filter.requiredLogined, users.getSettingPass
 app.post "/setting/password", filter.requiredLogined, users.settingPass
-app.get "/notifications", filter.requiredLogined, notifications.index
+app.get  "/notifications", filter.requiredLogined, notifications.index
 
 # passwords 
 app.get  "/forgot", passwords.new
@@ -48,7 +52,7 @@ app.post "/login", sessions.create
 app.get  "/logout", filter.requiredLogined, sessions.destroy
 
 # nodes 
-app.get "/nodes/:key", nodes.show
+app.get  "/nodes/:key", nodes.show
 
 # topcis
 app.get  "/topics", topics.index

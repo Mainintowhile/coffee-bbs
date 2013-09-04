@@ -10,7 +10,7 @@ exports.new = (req, res) ->
 # POST '/forgot'
 exports.create = (req, res) ->
   username = sanitize(req.body.username).trim()
-  email = sanitize(req.body.email).trim().toLowerCase()
+  email = sanitize(req.body.email).trim()
   notices = []
   notices.push "username can not blank" unless username
   notices.push "email can not blank" unless email
@@ -20,6 +20,7 @@ exports.create = (req, res) ->
 
   User = mongoose.model('User')
   User.findOne email: email, username: username, (err, user) ->
+    throw err if err
     unless user
       return res.render 'passwords/new', username: username, email: email, notices: ["the user not exists"]
     # save reset token and reset time 
@@ -27,7 +28,7 @@ exports.create = (req, res) ->
     user.reset_password_token = token
     user.reset_password_sent_at = new Date()
     user.save (err) ->
-      console.log err if err
+      throw err if err
       # send mail
       mail.resetPasswordMail(user.email, token, user.username)
       req.flash 'success', ['a mail send for you, Please check']

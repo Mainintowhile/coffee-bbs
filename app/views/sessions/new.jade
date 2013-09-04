@@ -43,12 +43,14 @@ block content
                   // Button
                   .controls
                     button.btn.btn-success 登录
-                    a.ml10.mr10.btn(href='/register') 注册账号
-                    a.btn(href='/forgot') 忘记密码了
+                    a.ml10.mr10.btn(href='/forgot') 忘记密码了
+                    a.btn(href='/resend_active_mail') 未收到确认邮件
         .span3.right
           .sidenav.container-box
             ul
-              li.current
+              li
+                a(href='#')
+              li
                 a(href='/setting') 用户中心
               li
                 a(href='/setting/avatar') 设置头像
