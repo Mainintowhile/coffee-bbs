@@ -19,7 +19,7 @@ exports.sendActiveMail = (user_email, token, name) ->
   to = user_email
   subject = "Active Your Account"
   content = "<p>  hello #{name}</p>
-  <a href=#{settings.root_url}/active_account?name=#{name}&token=#{token}>Active Account links </a> "
+  <a href=http://#{settings.domain_name}/active_account?name=#{name}&token=#{token}>Active Account links </a> "
 
   smtpTransport.sendMail
     from: from
@@ -37,7 +37,7 @@ exports.resetPasswordMail = (user_email, token, name) ->
   to = user_email
   subject = "reset your password"
   content = " Please click link to reset your password 
-    <a href=#{settings.root_url}/reset?name=#{name}&token=#{token}>reset password</a> "
+    <a href=http://#{settings.domain_name}/reset?name=#{name}&token=#{token}>reset password</a> "
 
   smtpTransport.sendMail
     from: from
