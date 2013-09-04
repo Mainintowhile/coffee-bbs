@@ -67,7 +67,7 @@ exports.update = (req, res) ->
 
   User = mongoose.model 'User'
   User.findOne username: username, reset_password_token: token,  (err, user) ->
-    throw err if err 
+    throw err if err
     unless user
       req.flash 'notices', ['link errors, can not reset password, please repeat']
       req.redirect '/forgot'
@@ -75,6 +75,6 @@ exports.update = (req, res) ->
     user.reset_password_sent_at = null
     user.password = password
     user.save (err) ->
-      throw err if err 
+      throw err if err
       req.flash 'success', ['you password has reset']
       res.redirect '/login'

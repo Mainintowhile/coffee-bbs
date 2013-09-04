@@ -10,7 +10,7 @@ mail_options =
   port: 465
   auth:
     user: "lidash156@gmail.com"
-    pass: "524778989"
+    pass: "example.com"
 
 smtpTransport = nodemailer.createTransport "SMTP", mail_options
 
