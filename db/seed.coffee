@@ -1,10 +1,10 @@
 mongoose = require 'mongoose'
-require './models/plane'
-require './models/node'
-
-database = "world"
-
-mongoose.connect("mongodb://localhost/#{database}")
+#require './models/plane'
+#require './models/node'
+#
+#database = "world"
+#
+#mongoose.connect("mongodb://localhost/#{database}")
 
 Node = mongoose.model('Node')
 Plane = mongoose.model('Plane')
@@ -61,6 +61,10 @@ showAllFromMongo = () ->
 
 # showAllFromMongo()
 
-saveToMongo(planes)
 
 # showFromMongo('语言')
+
+init = () ->
+  saveToMongo(planes)
+
+exports.init = init
