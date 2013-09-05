@@ -1,6 +1,8 @@
 mongoose = require 'mongoose'
 bcrypt = require 'bcrypt'
 crypto = require 'crypto'
+env = process.env.NODE_ENV or 'development'
+settings = require('../../config/settings')(env)
 
 Schema = mongoose.Schema
 SALT_WORK_FACTOR = 10
@@ -90,18 +92,19 @@ userSchema.methods.comparePassword = (candidatePassword, callback) ->
     callback(null, isMatch)
 
 userSchema.methods.avatarUrl = (size = 'm') ->
+  switch size 
+    when 'b'
+      image_size = 96
+    when 'm'
+      image_size = 48
+    else 
+      image_size = 32
   # gravatar 服务
   if @gravatar_type == 1
-    switch size
-      when 'b'
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=96"
-      when 'm'
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=48"
-      else
-        "http://www.gravatar.com/avatar/#{@email_md5}?size=32"
+    "http://www.gravatar.com/avatar/#{@email_md5}?size=#{image_size}"
   # upload 2
   else if @gravatar_type == 2
-    "/images/avatar/#{size}_#{@email_md5}.png"
+    "http://#{settings.qiniu.bucket}.qiniudn.com/#{@email_md5}?imageView/1/w/#{image_size}/h/#{image_size}/q/85"
   # default 0 
   else
     "/images/#{size}_default.png"

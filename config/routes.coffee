@@ -35,7 +35,7 @@ app.post "/resend_active_mail", users.sendActiveMail
 app.get  "/setting", filter.requiredLogined, users.getSetting
 app.post "/setting", filter.requiredLogined, users.setting
 app.get  "/setting/avatar", filter.requiredLogined, users.avatar
-app.post "/setting/avatar", users.uploadAvatar
+# app.post "/setting/avatar", users.uploadAvatar
 app.get  "/setting/avatar/gravatar", filter.requiredLogined, users.gravatar
 app.get  "/setting/password", filter.requiredLogined, users.getSettingPass
 app.post "/setting/password", filter.requiredLogined, users.settingPass
