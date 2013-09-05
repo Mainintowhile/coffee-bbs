@@ -9,9 +9,9 @@ flash = require "connect-flash"
 
 app = express()
 module.exports.app = app
-
 #get settings 
-Settings = require('./config/settings')(app.get("env"))
+Settings = require('./config/settings')(app.get('env'))
+RedisStore = require('connect-redis')(express)
 
 # all environments
 app.set "port", process.env.PORT or Settings.port
@@ -19,7 +19,12 @@ app.set "views", __dirname + "/app/views"
 app.set "view engine", "jade"
 app.use express.cookieParser()
 # app.use express.session(cookie: { maxAge: 60000 }, secret: Settings.cookieSecret)
-app.use express.session(secret: Settings.cookieSecret)
+redisOptions = require('./config/redis')(app.get('env'))
+app.use express.session(
+  store: new RedisStore redisOptions
+  secret: Settings.cookieSecret
+  cookie: { maxAge: 60000 }
+)
 app.use flash()
 app.use express.favicon()
 app.use express.logger("dev")
@@ -51,7 +56,7 @@ app.use (err, req, res, next) ->
     next()
 
 routes = require './config/routes'
-db = require './config/db'
+db = require './config/mongodb'
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")

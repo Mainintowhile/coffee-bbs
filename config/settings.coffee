@@ -3,6 +3,10 @@ settings =
     mongo:
       db: 'world'
       host: 'localhost'
+    redis:
+      host: 'localhost'
+      port: 6379
+      db: 2
     port: 3000
     domain_name: 'localhost:3000'
     cookieSecret: "hello world"
@@ -16,6 +20,10 @@ settings =
     mongo:
       db: 'world'
       host: 'localhost'
+    redis:
+      host: 'localhost'
+      port: 6379
+      db: 2
     port: 3000
     domain_name: 'localhost:3000'
     page_size: 20
@@ -29,6 +37,10 @@ settings =
     mongo:
       db: 'world'
       host: 'localhost'
+    redis:
+      host: 'localhost'
+      port: 6379
+      db: 2
     port: 3000
     domain_name: 'node-bbs.ap01.aws.af.cm'
     page_size: 20
