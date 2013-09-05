@@ -1,6 +1,7 @@
 check = require('validator').check
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
+qiniu = require '../../lib/qiniu'
 
 mongoose = require 'mongoose'
 mail = require '../mailers/mail'
@@ -228,7 +229,14 @@ exports.avatar = (req, res) ->
   User = mongoose.model 'User'
   User.findById req.session.user._id, (err, user) ->
     throw err if err
-    res.render 'users/avatar', user: user
+    uptoken = qiniu.upToken(user.email_md5)
+    res.render 'users/avatar', user: user, uploadToken: uptoken, key: user.email_md5
+
+# # POST /setting/avatar
+exports.uploadAvatar = (req, res) ->
+  console.log "form qiniu"
+  console.log "email_md5 is: #{req.body.callbackBody}"
+  res.json { success: 'success' }
 
 # GET /setting/avatar/gravatar
 exports.gravatar = (req, res) ->
@@ -256,3 +264,4 @@ validate = (user) ->
   if user.password != user.password_confirm
     errors.push "password do not match"
   return errors
+

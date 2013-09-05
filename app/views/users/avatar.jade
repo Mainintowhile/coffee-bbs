@@ -8,7 +8,7 @@ block content
     .row-fluid
       .span9.left
         .container-box
-          form.form-horizontal(action='', method='POST', enctype='multipart/form-data')
+          form.form-horizontal(action='http://up.qiniu.com/', method='POST', enctype='multipart/form-data')
             fieldset
               #legend
                 legend 用户头像设置
@@ -22,7 +22,9 @@ block content
               .control-group
                 label.control-label(for='avatar') 上传
                 .controls
-                  input#avatar.input-xlarge(type='file', name='avatar', placeholder='')
+                  input(name='key', type='hidden', value="#{key}")
+                  input(name='token', type='hidden', value="#{uploadToken}")
+                  input#avatar.input-xlarge(type='file', name='file', placeholder='')
                   p.help-block 请选择要上传的头像文件
               .control-group
                 .controls

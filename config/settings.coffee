@@ -7,8 +7,12 @@ settings =
       host: 'localhost'
       port: 6379
       db: 2
+    qiniu: 
+      access_key: ''
+      secret_key: ''
+      bucket: 'sdut'
     port: 3000
-    domain_name: 'localhost:3000'
+    domain_name: '127.0.0.1:3000'
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'
     page_size: 10
@@ -24,6 +28,10 @@ settings =
       host: 'localhost'
       port: 6379
       db: 2
+    qiniu: 
+      access_key: ''
+      secret_key: ''
+      bucket: ''
     port: 3000
     domain_name: 'localhost:3000'
     page_size: 20
@@ -41,6 +49,10 @@ settings =
       host: 'localhost'
       port: 6379
       db: 2
+    qiniu: 
+      access_key: ''
+      secret_key: ''
+      bucket: 'sdut'
     port: 3000
     domain_name: 'node-bbs.ap01.aws.af.cm'
     page_size: 20
