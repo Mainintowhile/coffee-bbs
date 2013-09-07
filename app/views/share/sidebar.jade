@@ -4,12 +4,20 @@
     include ./user_info
   else
     include ./login_box
+
+  .intro.container-box.sidebox.mt10
+    .ui-header
+      span.title 关于
+    .ui-content
+      p= locals.about
+
   .sidebox.container-box.mt10.hot-nodes
     .ui-header
       span.title 最热节点
     .ui-content
       for node in hotNodes 
         a(href='/nodes/#{node.key}')= node.name
+
   
   //- .sidebox.container-box.mt10.friends
   //-   .ui-header
