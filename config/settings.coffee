@@ -1,13 +1,13 @@
-settings =  
+settings =
   development:
     mongo:
       db: 'world'
       host: 'localhost'
-    redis:      
-      host: 'ocalhost'
+    redis:
+      host: 'localhost'
       port: 6379
       db: 2
-    qiniu: 
+    qiniu:
       access_key: ''
       secret_key: ''
       bucket: 'sdut'
@@ -26,9 +26,9 @@ settings =
       host: 'localhost'
     redis:
       host: 'localhost'
-      port:6379    
+      port:6379
       db: 2
-    qiniu: 
+    qiniu:
       access_key: ''
       secret_key: ''
       bucket: ''
@@ -49,7 +49,7 @@ settings =
       host: 'localhost'
       port: 6379
       db: 2
-    qiniu: 
+    qiniu:
       access_key: ''
       secret_key: ''
       bucket: 'sdut'
