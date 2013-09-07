@@ -2,6 +2,8 @@
 crypto = require 'crypto'
 moment = require "moment"
 marked = require 'marked'
+env = process.env.NODE_ENV or 'development'
+settings = require('../config/settings')(env)
 
 moment.lang('zh-cn')
 
