@@ -1,10 +1,10 @@
-settings =
+settings =  
   development:
     mongo:
       db: 'world'
       host: 'localhost'
-    redis:
-      host: 'localhost'
+    redis:      
+      host: 'ocalhost'
       port: 6379
       db: 2
     qiniu: 
@@ -26,7 +26,7 @@ settings =
       host: 'localhost'
     redis:
       host: 'localhost'
-      port: 6379
+      port:6379    
       db: 2
     qiniu: 
       access_key: ''
@@ -61,5 +61,5 @@ settings =
     site_name: "Pro"
     copyleft: "©2013-2014 Coffee"
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
- 
+
 module.exports =  (env) -> settings[env]
