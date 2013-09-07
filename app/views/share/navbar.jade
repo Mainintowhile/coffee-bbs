@@ -29,7 +29,7 @@
           if current_user
             li
               a.avatar(href='/u/#{current_user.username}')
-                img(src="#{userAvatarUrl(current_user.gravatar_type, current_user.email_md5, 'm')}", width='20', height='20')
+                img(src="#{userAvatarUrl(current_user.gravatar_type, current_user.email_md5, 's')}", width='20', height='20')
             li
               a(href='/u/#{current_user.username}')= current_user.username
             li

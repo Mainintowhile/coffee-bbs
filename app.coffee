@@ -37,7 +37,7 @@ app.use (req, res, next) ->
   next()
 
 # view helpers
-helper = require("./app/helper")
+helper = require("./lib/helper")
 app.locals(helper)
 app.locals(Settings)
 app.locals.runEnv = app.get('env')
