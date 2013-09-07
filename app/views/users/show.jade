@@ -36,7 +36,7 @@ block content
                     dd= user.company
                 dl
                   dt Email
-                  dd= user.email
+                  dd= locals.hiddenEmail(user.email)
                 if user.twitter
                   dl
                     dt Twitter

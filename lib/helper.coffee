@@ -33,3 +33,6 @@ module.exports =
 
   # markdown: (text) ->
   #   marked(text)
+  hiddenEmail: (email) ->
+    email.substring(0, 2) + "**" + email.substring(4, email.length)
+
