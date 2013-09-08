@@ -11,6 +11,13 @@ settings =
       access_key: ''
       secret_key: ''
       bucket: 'sdut'
+    mail_options =
+      host: "smtp.gmail.com"
+      secureConnection: true
+      port: 465
+      auth:
+    user: "lidash156@gmail.com"
+    pass: "example.com"
     port: 3000
     domain_name: '127.0.0.1:3000'
     cookieSecret: "hello world"
@@ -32,6 +39,11 @@ settings =
       access_key: ''
       secret_key: ''
       bucket: ''
+    mail_options =
+      host: "smtp.gmail.com"
+      secureConnection: true
+      port: 465
+      auth:
     port: 3000
     domain_name: 'localhost:3000'
     page_size: 20
@@ -53,6 +65,11 @@ settings =
       access_key: ''
       secret_key: ''
       bucket: 'sdut'
+    mail_options =
+      host: "smtp.gmail.com"
+      secureConnection: true
+      port: 465
+      auth:
     port: 3000
     domain_name: 'node-bbs.ap01.aws.af.cm'
     page_size: 20

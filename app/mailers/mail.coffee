@@ -3,16 +3,8 @@ nodemailer = require "nodemailer"
 env = process.env.NODE_ENV or 'development'
 settings = require("../../config/settings")(env)
 
-#TODO move to settings
-mail_options =
-  host: "smtp.gmail.com"
-  secureConnection: true
-  port: 465
-  auth:
-    user: "lidash156@gmail.com"
-    pass: "example.com"
 
-smtpTransport = nodemailer.createTransport "SMTP", mail_options
+smtpTransport = nodemailer.createTransport "SMTP", settings.mail_options
 
 exports.sendActiveMail = (user_email, token, name, host_name) ->
   from = mail_options.auth.user
@@ -27,7 +19,6 @@ exports.sendActiveMail = (user_email, token, name, host_name) ->
     subject: subject
     html: content, (err, response) ->
       if err
-        #TODO logger
         console.log err
       else
         console.log response
