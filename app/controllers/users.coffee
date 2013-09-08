@@ -55,7 +55,7 @@ exports.create = (req, res) ->
 
   if notices.length == 0
     User = mongoose.model('User')
-    User.find $or: [username: user.username, email: user.email], (err, docs) ->
+    User.find $or: [{username: user.username}, {email: user.email}], (err, docs) ->
       throw err if err
       if docs.length == 0
         async.waterfall [
