@@ -258,7 +258,7 @@ validate = (user) ->
   v.error = (msg) ->
     errors.push msg
 
-  v.check(user.username, 'Please enter your name').len(3, 20)
+  v.check(user.username, 'Please enter your name').len(4, 20)
   v.check(user.username, 'Please check your username format').isAlphanumeric()
   v.check(user.email, 'Please enter a valid email address').isEmail()
   v.check(user.password, 'Please check your password').len(4, 20)

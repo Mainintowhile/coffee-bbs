@@ -26,13 +26,13 @@ block content
                       li= suc
                 .control-group
                   // E-mail
-                  label.control-label(for='email') E-mail
+                  label.control-label(for='username') 用户名
                   .controls
-                    if email
-                      input#email.input-xlarge(type='text', name='email', placeholder='', value="#{email}")
+                    if username
+                      input#email.input-xlarge(type='text', name='username', placeholder='', value="#{username}")
                     else 
-                      input#email.input-xlarge(type='text', name='email', placeholder='')
-                    p.help-block 请输入您注册时所填邮箱
+                      input#email.input-xlarge(type='text', name='username', placeholder='')
+                    p.help-block 请输入您注册时所填用户名
                 .control-group
                   // Password
                   label.control-label(for='password') 密码

@@ -8,17 +8,17 @@ exports.new = (req, res) ->
 
 # POST '/login'
 exports.create = (req, res) ->
-  email = sanitize(req.body.email).trim().toLowerCase()
+  username = sanitize(req.body.username).trim().toLowerCase()
   password = sanitize(req.body.password).trim()
 
-  unless email && password
-    return res.render 'sessions/new', email: email, notices: ["Please check Your email or password"]
+  unless username && password
+    return res.render 'sessions/new', username: username, notices: ["Please check Your username or password"]
 
   User = mongoose.model('User')
-  User.findOne {email: email}, (err, user) ->
+  User.findOne {username: username}, (err, user) ->
     throw err if err
-    return res.render 'sessions/new', notices: ["user #{email} do not exist"] unless user
-    #TODO send mail
+    return res.render 'sessions/new', notices: ["user #{username} do not exist"] unless user
+    # 未确认邮件
     unless user.active
       return res.render 'sessions/new', notices: ["the account did't active"]
 
