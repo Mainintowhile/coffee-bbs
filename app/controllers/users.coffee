@@ -139,7 +139,7 @@ exports.getSetting = (req, res) ->
   
   User.findOne username: req.session.user.username, (err, user) ->
     throw err if err
-    res.render 'users/setting', user: user if user
+    res.render 'users/setting', user: user, success: req.flash('success')
 
 # POST /setting
 exports.setting = (req, res) ->
