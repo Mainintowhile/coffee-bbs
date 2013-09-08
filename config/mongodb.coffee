@@ -20,7 +20,7 @@ if process.env.VCAP_SERVICES
     console.log err
     process.exit(1) if err
 else
-  mongoose.connect "mongodb://#{settings.mongo.host}/#{settings.mongo.db}", (err) ->
+  mongoose.connect settings.mongo, (err) ->
     console.log err
     process.exit(1) if err
 

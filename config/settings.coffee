@@ -1,8 +1,6 @@
 settings =
   development:
-    mongo:
-      db: 'world'
-      host: 'localhost'
+    mongo: "mongodb://localhost/world"
     redis:
       host: 'localhost'
       port: 6379
@@ -28,9 +26,7 @@ settings =
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   test:
-    mongo:
-      db: 'world'
-      host: 'localhost'
+    mongo: "mongodb://username:password@hostname:port/db"
     redis:
       host: 'localhost'
       port:6379
@@ -56,9 +52,7 @@ settings =
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   production:
-    mongo:
-      db: 'world'
-      host: 'localhost'
+    mongo: "mongodb://username:password@hostname:port/db"
     redis:
       host: 'localhost'
       port: 6379
