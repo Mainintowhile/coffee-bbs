@@ -75,7 +75,7 @@ exports.create = (req, res) ->
         ],
         (err, user) ->
           throw err if err
-          mail.sendActiveMail(user.email, user.confirmation_token, user.username)
+          mail.sendActiveMail(user.email, user.confirmation_token, user.username, req.headers.host)
           req.flash 'success', ['register success, a mail has send, Please check your email']
           res.redirect '/login'
       else
@@ -129,7 +129,7 @@ exports.sendActiveMail = (req, res) ->
       user.confirmation_token = salt
       user.save (err, doc) ->
         throw err if err
-        mail.sendActiveMail(user.email, salt, user.username)
+        mail.sendActiveMail(user.email, salt, user.username, req.headers.host)
         req.flash 'success', ['a mail has send, Please check your email']
         res.redirect '/login'
 
@@ -232,7 +232,7 @@ exports.avatar = (req, res) ->
     if req.query.upload_ret
       user.gravatar_type = 2
       user.save()
-    uptoken = qiniu.upToken(user.email_md5)
+    uptoken = qiniu.upToken(user.email_md5, req.headers.host)
     res.render 'users/avatar', user: user, uploadToken: uptoken, key: user.email_md5
 
 # # POST /setting/avatar
