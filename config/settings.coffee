@@ -29,7 +29,7 @@ settings =
     mongo: "mongodb://username:password@hostname:port/db"
     redis:
       host: 'localhost'
-      port:6379
+      port: 6379
       db: 2
     qiniu:
       access_key: ''
