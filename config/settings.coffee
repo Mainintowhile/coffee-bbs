@@ -22,7 +22,7 @@ settings =
     root: 'ldshuang@gmail.com'
     page_size: 10
     site_name: "Demo"
-    copyleft: "©2013-2014 Coffee"
+    copyleft: "©2013-2014 Coffee@<a href='http://github.com/lidashuang/coffeecup'>github</a>"
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   test:
@@ -48,7 +48,7 @@ settings =
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'
     site_name: "Coffee"
-    copyleft: "©2013-2014 Coffee"
+    copyleft: "©2013-2014 Coffee@<a href='http://github.com/lidashuang/coffeecup'>github</a>"
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
   production:
@@ -74,7 +74,7 @@ settings =
     cookieSecret: "hello world"
     root: 'ldshuang@gmail.com'
     site_name: "Pro"
-    copyleft: "©2013-2014 Coffee"
+    copyleft: "©2013-2014 Coffee@<a href='http://github.com/lidashuang/coffeecup'>github</a>"
     about: "Ember.js is a JavaScript framework that does all of the heavy lifting that you'd normally have to do by hand. There are tasks that are common to every web app; Ember.js does those things for you, so you can focus on building killer features and UI."
 
 module.exports =  (env) -> settings[env]
