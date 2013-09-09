@@ -104,7 +104,7 @@ userSchema.methods.avatarUrl = (size = 'm') ->
     "http://www.gravatar.com/avatar/#{@email_md5}?size=#{image_size}"
   # upload 2
   else if @gravatar_type == 2
-    "http://#{settings.qiniu.bucket}.qiniudn.com/#{@email_md5}?imageView/1/w/#{image_size}/h/#{image_size}/q/85"
+    "http://#{settings.qiniu.bucket}.qiniudn.com/#{@reg_id}?imageView/1/w/#{image_size}/h/#{image_size}/q/85"
   # default 0 
   else
     "/images/#{size}_default.png"

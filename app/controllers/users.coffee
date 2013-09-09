@@ -232,8 +232,8 @@ exports.avatar = (req, res) ->
     if req.query.upload_ret
       user.gravatar_type = 2
       user.save()
-    uptoken = qiniu.upToken(user.email_md5, req.headers.host)
-    res.render 'users/avatar', user: user, uploadToken: uptoken, key: user.email_md5
+    uptoken = qiniu.upToken(user.reg_id, req.headers.host)
+    res.render 'users/avatar', user: user, uploadToken: uptoken, key: user.reg_id
 
 # # POST /setting/avatar
 # exports.uploadAvatar = (req, res) ->
