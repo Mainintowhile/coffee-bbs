@@ -53,11 +53,15 @@ exports.create = (req, res) ->
   user = req.body.user
   notices = validate(user)
 
-  if notices.length == 0
+  if notices.length != 0
+    res.render 'users/new', notices: notices, username: user.username, email: user.email
+  else
     User = mongoose.model('User')
     User.find $or: [{username: user.username}, {email: user.email}], (err, docs) ->
       throw err if err
-      if docs.length == 0
+      if docs.length > 0
+        res.render 'users/new', notices: ["username or email has exists"], username: user.username, email: user.email
+      else
         async.waterfall [
           (next) ->
             bcrypt.genSalt 10, (err, salt) ->
@@ -78,10 +82,6 @@ exports.create = (req, res) ->
           mail.sendActiveMail(user.email, user.confirmation_token, user.username, req.headers.host)
           req.flash 'success', ['register success, a mail has send, Please check your email']
           res.redirect '/login'
-      else
-        res.render 'users/new', notices: ["username or email has exists"], username: user.username, email: user.email
-  else
-    res.render 'users/new', notices: notices, username: user.username, email: user.email
 
 exports.activeAccount = (req, res) ->
   token = req.query.token

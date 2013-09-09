@@ -7,7 +7,7 @@ settings = require("../../config/settings")(env)
 smtpTransport = nodemailer.createTransport "SMTP", settings.mail_options
 
 exports.sendActiveMail = (user_email, token, name, host_name) ->
-  from = mail_options.auth.user
+  from = settings.mail_options.auth.user
   to = user_email
   subject = "Active Your Account"
   content = "<p>  hello #{name}</p>
@@ -24,7 +24,7 @@ exports.sendActiveMail = (user_email, token, name, host_name) ->
         console.log response
 
 exports.resetPasswordMail = (user_email, token, name, host_name) ->
-  from = mail_options.auth.user
+  from = settings.mail_options.auth.user
   to = user_email
   subject = "reset your password"
   content = " Please click link to reset your password 
