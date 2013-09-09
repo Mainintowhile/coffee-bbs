@@ -977,6 +977,7 @@ form .controls .avatar {
   -webkit-border-radius: first-value-of(3px) first-value-of(3px);
   -moz-border-radius: 3px / 3px;
   border-radius: 3px / 3px;
+  margin-right: 4px;
   vertical-align: text-bottom; }
 form .controls p {
   padding: 7px 0 0; }
