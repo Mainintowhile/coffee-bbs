@@ -6,9 +6,10 @@ qiniu.conf.ACCESS_KEY = settings.qiniu.access_key
 qiniu.conf.SECRET_KEY = settings.qiniu.secret_key
 
 # upload token for qiniu
-exports.upToken = (email_md5, host_name) ->
+exports.upToken = (reg_id, host_name) ->
   #config token
-  putPolicy = new qiniu.rs.PutPolicy(settings.qiniu.bucket)
+  scope = "#{settings.qiniu.bucket}:#{reg_id}"
+  putPolicy = new qiniu.rs.PutPolicy(scope)
   # putPolicy.callbackUrl = "http://#{host_name}/setting/avatar"
   # putPolicy.callbackBody = "email_md5=#{email_md5}"
   putPolicy.returnUrl = "http://#{host_name}/setting/avatar"

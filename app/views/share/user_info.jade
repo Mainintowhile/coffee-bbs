@@ -1,7 +1,7 @@
 .usercard.container-box
   .ui-header
     a(href='/u/#{user.username}')
-      img.avatar(src="#{locals.userAvatarUrl(user.gravatar_type, user.email_md5, 'm')}", alt='')
+      img.avatar(src="#{locals.userAvatarUrl(user, 'm')}", alt='')
     .username= user.username
     .website
       if user.website
