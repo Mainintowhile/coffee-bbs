@@ -99,8 +99,8 @@ exports.create = (req, res, next) ->
   content = sanitize(req.body.content).xss()
   # content = req.body.content
   notices = []
-  notices.push "Please input title" unless title
-  notices.push "Please input content" unless content
+  notices.push "标题不能为空" unless title
+  notices.push "内容不能为空" unless content
 
   unless notices.length == 0
     res.render "topics/new", node_key: node_key, title: title, content: content, notices: notices

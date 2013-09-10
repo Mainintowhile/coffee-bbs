@@ -80,7 +80,7 @@ exports.create = (req, res) ->
         (err, user) ->
           throw err if err
           mail.sendActiveMail(user.email, user.confirmation_token, user.username, req.headers.host)
-          req.flash 'success', ['register success, a mail has send, Please check your email']
+          req.flash 'success', ['注册成功，确认邮件发到你邮件，请确认你的邮箱']
           res.redirect '/login'
 
 exports.activeAccount = (req, res) ->
@@ -92,18 +92,18 @@ exports.activeAccount = (req, res) ->
     throw err if err
 
     if !user || user.confirmation_token != token
-      req.flash 'notices', ["message wrong, Please repeat"]
+      req.flash 'notices', ["信息有错，请重新激活"]
       return res.redirect '/forgot'
 
     if user.active
-      req.flash 'success', ["account has active, Please login"]
+      req.flash 'success', ["帐号已经激活，请登录"]
       return res.redirect '/login'
 
     user.active = true
     user.confirmed_at = new Date()
     user.save (err) ->
       throw err if err
-      req.flash 'success', ["account actived, Please login"]
+      req.flash 'success', ["激活成功，请登录"]
       res.redirect '/login'
 
 # GET '/resend_active_mail'
@@ -116,13 +116,17 @@ exports.sendActiveMail = (req, res) ->
   try
     check(email).notNull().isEmail()
   catch e
-    return res.render 'users/resend_active_mail',email: email, notices: ['email format error']
+    return res.render 'users/resend_active_mail',email: email, notices: ['请输入正确的邮箱格式']
 
   User = mongoose.model 'User'
   User.findOne email: email, (err, user) ->
     throw err if err
     unless user
-      return res.render 'users/resend_active_mail', notices: ['the user not exists']
+      return res.render 'users/resend_active_mail', notices: ['用户不存在']
+
+    if user.active
+      req.flash 'success', ['用户已经激活，请登录']
+      return res.redirect '/login'
 
     bcrypt.genSalt 10, (err, salt) ->
       throw err if err
@@ -130,7 +134,7 @@ exports.sendActiveMail = (req, res) ->
       user.save (err, doc) ->
         throw err if err
         mail.sendActiveMail(user.email, salt, user.username, req.headers.host)
-        req.flash 'success', ['a mail has send, Please check your email']
+        req.flash 'success', ['确认邮件发送成功']
         res.redirect '/login'
 
 # GET /setting
@@ -153,7 +157,7 @@ exports.setting = (req, res) ->
     user[field] = params[field] for field in fields
     user.save (err) ->
       throw err if err
-      req.flash 'success', ['save setting success']
+      req.flash 'success', ['保存设置成功']
       res.redirect '/setting'
       
 # GET /setting/password
@@ -168,11 +172,11 @@ exports.settingPass = (req, res) ->
   User = mongoose.model('User')
 
   unless oldPass && password && password_confirm
-    return res.render 'users/update_pass', notices: ["Please check your info"]
+    return res.render 'users/update_pass', notices: ["输入不能为空"]
 
   # check password_confirm 
   if password != password_confirm
-    return res.render 'users/update_pass', notices: ['password and password_confirm not equal']
+    return res.render 'users/update_pass', notices: ['密码不匹配']
 
   # get user  and check old password
   User.findById req.session.user._id, (err, user) ->
@@ -182,10 +186,10 @@ exports.settingPass = (req, res) ->
       if isMath
         user.password = password
         user.save (err, doc) ->
-          req.flash 'success', ['update password success']
+          req.flash 'success', ['更改密码成功']
           res.redirect '/setting/password'
       else
-        res.render 'users/update_pass', notices: ['old password not match']
+        res.render 'users/update_pass', notices: ['旧密码不正确']
 
 # GET /u/:username/topics
 exports.topics = (req, res, next) ->
@@ -258,13 +262,13 @@ validate = (user) ->
   v.error = (msg) ->
     errors.push msg
 
-  v.check(user.username, 'Please enter your name').len(4, 20)
-  v.check(user.username, 'Please check your username format').isAlphanumeric()
-  v.check(user.email, 'Please enter a valid email address').isEmail()
-  v.check(user.password, 'Please check your password').len(4, 20)
-  v.check(user.password_confirm, 'Please check your password_confirm').len(4, 20)
+  v.check(user.username, '用户名不能为空').len(4, 20)
+  v.check(user.username, '用户名格式不正确').isAlphanumeric()
+  v.check(user.email, '邮件地址不可用').isEmail()
+  v.check(user.password, '密码不能为空').len(4, 20)
+  v.check(user.password_confirm, '确认密码不能为空').len(4, 20)
 
   if user.password != user.password_confirm
-    errors.push "password do not match"
+    errors.push "两次密码不一致"
   return errors
 
