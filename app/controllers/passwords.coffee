@@ -12,8 +12,8 @@ exports.create = (req, res) ->
   username = sanitize(req.body.username).trim()
   email = sanitize(req.body.email).trim()
   notices = []
-  notices.push "username can not blank" unless username
-  notices.push "email can not blank" unless email
+  notices.push "用户名不能为空" unless username
+  notices.push "邮箱不能为空" unless email
 
   if notices.length > 0
      return res.render 'passwords/new', username: username, email: email, notices: notices
@@ -31,7 +31,7 @@ exports.create = (req, res) ->
       throw err if err
       # send mail
       mail.resetPasswordMail(user.email, token, user.username, req.headers.host)
-      req.flash 'success', ['a mail send for you, Please check']
+      req.flash 'success', ['确认邮件发送成功']
       res.redirect '/forgot'
 
 # GET 'reset'

@@ -7,7 +7,7 @@ exports.requiredLogined = (req, res, next) ->
     if req.xhr
       res.json { success: 0, message: "please_signin" }
     else
-      req.flash 'notices', ["Please Signin"]
+      req.flash 'notices', ["请登录"]
       if req.header 'Referer'
         res.redirect "/login?next=#{req.path}"
       else
