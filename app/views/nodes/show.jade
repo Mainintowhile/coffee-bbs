@@ -7,7 +7,7 @@ block content
           .topics.container-box.node-topics
             .ui-header
               a.btn.btn-small.fr(type='button', href='/nodes/#{node.key}/new') 创建新主题
-              span.bread-nav #{locals.site_name} › #{node.name}
+              span.bread-nav #{locals.site_name} › #{node.name} (#{topicsCount})
             .ui-content
               if topics.length != 0
                 for topic in topics

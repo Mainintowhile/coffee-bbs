@@ -20,4 +20,11 @@ nodeSchema.statics.hotNodes = (count,  callback) ->
     return callback err if err
     callback null, nodes
 
+nodeSchema.methods.topicsCount = (callback) ->
+  self = @
+  Topic = mongoose.model 'Topic'
+  Topic.count node_id: self.id, (err, count) ->
+    return callback err if err
+    callback null, count
+
 mongoose.model("Node", nodeSchema)
