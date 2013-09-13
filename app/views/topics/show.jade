@@ -134,6 +134,7 @@ block content
             a(href='#', onclick='window.open("http://service.weibo.com/share/share.php?url=http://#{domain_name}/topics/#{topic.id}&title=#{topic.title}", "_blank", "width=550, height=370");') 新浪微博
             a.J_topicVote(href='/topics/#{topic.id}/vote') 喜欢
             span.hits.fr.mr10 #{topic.hit} 次点击
+            span.fr.mr10 #{topic.vote_users.length} 个喜欢
         if topic.replies.length == 0
           .alert.mt20.no-replies 暂无回复，说出你的观点吧
         unless topic.replies.length == 0
