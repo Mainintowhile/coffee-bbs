@@ -9,6 +9,7 @@ block content
             span.title 创建新主题
           .ui-content
             form.mt10(action='/nodes/#{node_key}/topics', method='post')
+              input.csrf(type='hidden', name='_csrf', value="#{locals.csrf_token}")
               if notices && notices.length != 0
                 ul.errors.alert.alert-error
                   each notice in notices

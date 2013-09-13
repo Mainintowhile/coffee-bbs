@@ -24,3 +24,8 @@ exports.notifications = (req, res, next) ->
       next()
   else
     next()
+
+exports.csrf = (req, res, next) ->
+  res.locals.csrf_token = req.session._csrf
+  next()
+

@@ -11,6 +11,10 @@ block scripts
 
   script.
     $(document).ready(function(){
+      // 处理csrf token 
+      $('')
+
+
       $('.ui-footer').on('click', '.J_topicFavorite', function(e) {
         var _node = $(this);
         var _type = $(this).attr('data-type');
@@ -24,6 +28,9 @@ block scripts
         $.ajax({
           type: "POST",
           url: _node.attr('href'),
+          beforeSend: function(req) {
+            req.setRequestHeader('X-CSRF-Token', "#{csrf_token}")
+          },
           success: function(data) {
             if(data.success) {
               if(_type == 'favorite'){
@@ -54,6 +61,9 @@ block scripts
           $.ajax({
             type: "POST",
             url: _node.attr('href'),
+            beforeSend: function(req) {
+              req.setRequestHeader('X-CSRF-Token', "#{csrf_token}")
+            },
             success: function(data) {
               if(data.success) {
                 _node.html('<span class="f11 gray" style="text-shadow: 0px 1px 0px #fff;">感谢已表示</span>');
@@ -157,6 +167,7 @@ block content
                     for notice in notices
                       li= notice
                 textarea.content.mt5.smart-code-support.J_replyContent(rows='3', placeholder='回复内容', name='content')
+                input#csrf(type='hidden', name='_csrf', value="#{locals.csrf_token}")
                 input#checkall.btn.btn-small(type='submit', value='立即回复')
             else
               a.btn.btn-small.mt5.mr10(type='button', href='/login') 登录

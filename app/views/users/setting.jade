@@ -110,7 +110,8 @@ block content
                     p.help-block 可以稍微详细的介绍自己。
                 .control-group
                   // Button
-                  .controls
+                  .controls 
+                    input.csrf(type='hidden', name='_csrf', value="#{locals.csrf_token}")
                     button.btn.btn-success 保存改动
                     a.ml10.btn(href='/setting/password') 设置密码
        .span3.right

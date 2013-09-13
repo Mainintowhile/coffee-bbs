@@ -38,6 +38,7 @@ block content
               .control-group
                 // Button
                 .controls
+                  input.csrf(type='hidden', name='_csrf', value="#{locals.csrf_token}")
                   button.btn.btn-success 保存改动
                   a.ml10.btn(href='/setting') 返回设置页
 
