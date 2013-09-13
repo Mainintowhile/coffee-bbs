@@ -47,6 +47,7 @@ block content
                     p.help-block 请再次输入密码
                 .control-group
                   // Button
+                  input.csrf(type='hidden', name='_csrf', value="#{locals.csrf_token}")
                   .controls
                     button.btn.btn-success 注册
         .span3.right

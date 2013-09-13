@@ -1,7 +1,5 @@
 mongoose = require 'mongoose'
-
-# exports.index = (req, res) ->
-#   res.send "#{req.params.name}"
+async = require 'async'
 
 # GET /nodes/:key 
 exports.show = (req, res, next) ->
@@ -11,6 +9,18 @@ exports.show = (req, res, next) ->
   Node.findNodeByKey req.params.key, (err, node) ->
     throw err if err
     return next() unless node
-    Topic.getTopicListWithUser node.id, 100, (err, topics) ->
-      throw err if err
-      res.render 'nodes/show', node: node, topics: topics
+
+    async.parallel
+      # 主题数
+      topicsCount: (callback) ->
+        node.topicsCount (err, count) ->
+          return callback err if err
+          callback null, count
+      # 主题列表
+      topics: (callback) ->
+        Topic.getTopicListWithUser node.id, 100, (err, topics) ->
+          return callback err if err
+          callback null, topics
+      (err, results) ->
+        throw err if err
+        res.render 'nodes/show', node: node, topics: results.topics, topicsCount: results.topicsCount

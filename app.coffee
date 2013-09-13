@@ -30,6 +30,7 @@ app.use express.favicon()
 app.use express.logger("dev")
 app.use express.bodyParser()
 app.use express.methodOverride()
+app.use express.csrf()
 
 # current user
 app.use (req, res, next) ->
@@ -49,11 +50,16 @@ app.use app.router
 # error handle
 app.use (err, req, res, next) ->
   if err
-    #TODO loger
+    throw err if "development" is app.get("env")
     console.error(err)
     res.send(500, 'Something broke!')
   else
     next()
+
+# csrf token
+# app.use (req, res, next) ->
+#   res.locals.token = req.session._csrf
+#   next()
 
 routes = require './config/routes'
 db = require './config/mongodb'
