@@ -26,6 +26,8 @@ exports.create = (req, res) ->
       throw err if err
       if isMatch
         req.session.user = user
+        user.reputation++
+        user.save()
         redirectPath = req.query.next || '/'
         res.redirect redirectPath
       else

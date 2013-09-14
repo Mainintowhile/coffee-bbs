@@ -81,7 +81,7 @@ userSchema.statics.newUsers = (count, callback) ->
     callback null, users
 
 userSchema.statics.activeUsers = (count, callback) ->
-  @find({}).limit(count).sort(topic_count: 'desc').exec (err, users) ->
+  @find({}).limit(count).sort(reputation: 'desc').exec (err, users) ->
     return callback err if err
     callback null, users
 
