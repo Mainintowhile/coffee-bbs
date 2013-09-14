@@ -23,7 +23,7 @@ redisOptions = require('./config/redis')(app.get('env'))
 app.use express.session(
   store: new RedisStore redisOptions
   secret: Settings.cookieSecret
-  cookie: { maxAge: 60 * 60 * 1000}
+  cookie: { maxAge: Settings.session_time }
 )
 app.use flash()
 app.use express.favicon()
