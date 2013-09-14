@@ -23,7 +23,8 @@ topicSchema = new mongoose.Schema
 # 获取 topic 列表, 并获取 user 和 node 信息
 # 参数 conditions:查询条件, options: 选项, callback:回调
 topicSchema.statics.getTopicListWithNodeUser = (conditions, options, callback) ->
-  @find conditions, '-content', options, (err, topics) ->
+  fields= 'user_id node_id title replies_count last_replied_by created_at'
+  @find conditions, fields, options, (err, topics) ->
     return callback err if err
     async.waterfall [
       (next) ->
@@ -42,7 +43,11 @@ topicSchema.statics.getTopicListWithNodeUser = (conditions, options, callback) -
 # 通过 node_id 获取 topic 列表 
 # 并获取 topic 用户信息, ex: node/show 页面
 topicSchema.statics.getTopicListWithUser = (node_id, count, callback) ->
-  @find({node_id: node_id}).limit(count).select('-content').sort(last_replied_at: -1).exec (err, topics) ->
+  fields= 'user_id node_id title replies_count last_replied_by created_at'
+  options = 
+    limit: count
+    sort: last_replied_at: -1
+  @find {node_id: node_id}, fields, options, (err, topics) ->
     async.map topics, getUser, (err, results) ->
       return callback err if err
       callback null, topics
@@ -50,21 +55,27 @@ topicSchema.statics.getTopicListWithUser = (node_id, count, callback) ->
 # 通过 user_id 获取 topic 列表
 # 并获取 topic 节点信息 ex: user/topic 页面
 topicSchema.statics.getTopicListWithNode = (user_id, count, callback) ->
-  @find({user_id: user_id}).limit(count).sort(created_at: -1).exec (err, topics) ->
+  fields= 'user_id node_id title replies_count last_replied_by created_at'
+  options = 
+    limit: count
+    sort: created_at: -1
+  @find {user_id: user_id}, fields, options, (err, topics) ->
     async.map topics, getNode, (err, results) ->
       return callback err if err
       callback null, results
 
 getUser = (topic, callback) ->
   User = mongoose.model 'User'
-  User.findById topic.user_id, (err, user) ->
+  fields = 'username reg_id gravatar_type email_md5'
+  User.findById topic.user_id, fields, (err, user) ->
     return callback err if err
     topic.user = user
     callback null, topic
 
 getNode = (topic, callback) ->
   Node = mongoose.model 'Node'
-  Node.findById topic.node_id, (err, node) ->
+  fields = 'name key'
+  Node.findById topic.node_id, fields, (err, node) ->
     return callback err if err
     topic.node = node
     callback null, topic
@@ -72,7 +83,7 @@ getNode = (topic, callback) ->
 # 获取用户的id, async map中迭代用
 getUserIdByUsername = (username, callback) ->
   User = mongoose.model 'User'
-  User.findOne username: username, (err, user) ->
+  User.findOne(username: username).select('_id').exec (err, user) ->
     return callback err if err
     return callback null, null unless user
     callback null, user.id

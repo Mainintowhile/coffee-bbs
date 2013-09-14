@@ -76,12 +76,14 @@ userSchema.pre 'validate', (next) ->
     next()
 
 userSchema.statics.newUsers = (count, callback) ->
-  @find({}).limit(count).sort(created_at: 'desc').exec (err, users) ->
+  fields = 'username reg_id gravatar_type email_md5'
+  @find({}).limit(count).select(fields).sort(created_at: 'desc').exec (err, users) ->
     return callback err if err
     callback null, users
 
 userSchema.statics.activeUsers = (count, callback) ->
-  @find({}).limit(count).sort(reputation: 'desc').exec (err, users) ->
+  fields = 'username reg_id gravatar_type email_md5'
+  @find({}).limit(count).select(fields).sort(reputation: 'desc').exec (err, users) ->
     return callback err if err
     callback null, users
 
