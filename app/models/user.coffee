@@ -93,6 +93,24 @@ userSchema.methods.comparePassword = (candidatePassword, callback) ->
     return callback(err) if err
     callback(null, isMatch)
 
+
+# 用户最近主题列表
+userSchema.methods.recentTopicsList = (limit, callback) ->
+  Topic = mongoose.model 'Topic'
+  skip = 0
+
+  Topic.getTopicListWithNode @id, limit, skip, (err, topics) ->
+    return callback err if err
+    callback null, topics
+
+# 用户最近回复列表
+userSchema.methods.recentRepliesList = (limit, callback) ->
+  Reply = mongoose.model 'Reply'
+
+  Reply.findReplyByUserWithTopic @id, limit, (err, replies) ->
+    return callback err if err
+    callback null, replies
+
 userSchema.methods.avatarUrl = (size = 'm') ->
   switch size 
     when 'b'

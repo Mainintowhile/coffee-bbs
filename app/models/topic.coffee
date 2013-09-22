@@ -1,6 +1,7 @@
 mongoose = require 'mongoose'
 async = require 'async'
 lib = require './lib'
+# settings = require("../../config/settings")(process.env.NODE_ENV or 'development')
 
 Schema = mongoose.Schema
 ObjectId = Schema.Types.ObjectId
@@ -54,11 +55,12 @@ topicSchema.statics.getTopicListWithUser = (node_id, count, callback) ->
 
 # 通过 user_id 获取 topic 列表
 # 并获取 topic 节点信息 ex: user/topic 页面
-topicSchema.statics.getTopicListWithNode = (user_id, count, callback) ->
+topicSchema.statics.getTopicListWithNode = (user_id, limit, skip, callback) ->
   fields= 'user_id node_id title replies_count last_replied_by created_at'
   options = 
-    limit: count
+    limit: limit
     sort: created_at: -1
+    skip: skip
   @find {user_id: user_id}, fields, options, (err, topics) ->
     async.map topics, getNode, (err, results) ->
       return callback err if err

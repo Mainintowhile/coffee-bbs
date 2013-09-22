@@ -18,7 +18,7 @@ exports.show = (req, res, next) ->
           callback null, count
       # 主题列表
       topics: (callback) ->
-        Topic.getTopicListWithUser node.id, 100, (err, topics) ->
+        node.topicsList 100, (err, topics) ->
           return callback err if err
           callback null, topics
       (err, results) ->

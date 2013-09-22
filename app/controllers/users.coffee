@@ -2,6 +2,7 @@ check = require('validator').check
 sanitize = require('validator').sanitize
 Validator = require('validator').Validator
 qiniu = require '../../lib/qiniu'
+settings = require("../../config/settings")(process.env.NODE_ENV or 'development')
 
 mongoose = require 'mongoose'
 mail = require '../mailers/mail'
@@ -33,11 +34,11 @@ exports.show = (req, res, next) ->
 
     async.parallel
       topics: (callback) ->
-        Topic.getTopicListWithNode user.id, 10, (err, topics) ->
+        user.recentTopicsList 10, (err, topics) ->
           return callback err if err
           callback null, topics
       replies: (callback) ->
-        Reply.findReplyByUserWithTopic user.id, 10, (err, replies) ->
+        user.recentRepliesList 10, (err, replies) ->
           return callback err if err
           callback null, replies
       (err, results) ->
@@ -195,11 +196,14 @@ exports.settingPass = (req, res) ->
 exports.topics = (req, res, next) ->
   Topic = mongoose.model 'Topic'
   User = mongoose.model 'User'
+  currentPage = parseInt(req.query.p, 10) || 1
+  pageSize = settings.page_size
+  skip = pageSize * (currentPage - 1)
 
   User.findOne username: req.params.username, (err, user) ->
     throw err if err
     return next() unless user
-    Topic.getTopicListWithNode user.id, 100, (err, topics) ->
+    Topic.getTopicListWithNode user.id, pageSize, skip, (err, topics) ->
       throw err if err
       res.render 'users/topics_list', topics: topics, user: user
 

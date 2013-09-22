@@ -15,7 +15,7 @@ nodeSchema.statics.findNodeByKey = (key, callback) ->
     return callback err if err
     callback null, node
 
-nodeSchema.statics.hotNodes = (count,  callback) ->
+nodeSchema.statics.hotNodes = (count, callback) ->
   @find({}).limit(count).sort(topic_count: 'desc').exec (err, nodes) ->
     return callback err if err
     callback null, nodes
@@ -26,5 +26,15 @@ nodeSchema.methods.topicsCount = (callback) ->
   Topic.count node_id: self.id, (err, count) ->
     return callback err if err
     callback null, count
+
+nodeSchema.methods.topicsList = (limit, callback) ->
+  Topic = mongoose.model 'Topic'
+
+  Topic.getTopicListWithUser @id, limit, (err, topics) ->
+    return callback err if err
+    callback null, topics
+
+
+
 
 mongoose.model("Node", nodeSchema)
