@@ -5,34 +5,29 @@ sanitize = require('validator').sanitize
 
 # GET '/forgot'
 exports.new = (req, res) ->
-  res.render 'passwords/new', success: req.flash('success'), notices: req.flash('notices')
+  res.render 'passwords/forgot', success: req.flash('success'), notices: req.flash('notices')
 
 # POST '/forgot'
 exports.create = (req, res) ->
-  username = sanitize(req.body.username).trim()
   email = sanitize(req.body.email).trim()
-  notices = []
-  notices.push "用户名不能为空" unless username
-  notices.push "邮箱不能为空" unless email
 
-  if notices.length > 0
-     return res.render 'passwords/new', username: username, email: email, notices: notices
+  unless email
+    return res.render 'passwords/forgot', email: email, notices: ["邮箱不能为空"] 
 
   User = mongoose.model('User')
-  User.findOne email: email, username: username, (err, user) ->
+  User.findOne email: email, (err, user) ->
     throw err if err
     unless user
-      return res.render 'passwords/new', username: username, email: email, notices: ["the user not exists"]
-    # save reset token and reset time 
-    token = bcrypt.genSaltSync(10)
-    user.reset_password_token = token
-    user.reset_password_sent_at = new Date()
-    user.save (err) ->
-      throw err if err
-      # send mail
-      mail.resetPasswordMail(user.email, token, user.username, req.headers.host)
-      req.flash 'success', ['确认邮件发送成功']
-      res.redirect '/forgot'
+      return res.render 'passwords/forgot', email: email, notices: ["用户不存在"]
+    bcrypt.genSalt 10, (err, token) ->
+      user.reset_password_token = token
+      user.reset_password_sent_at = new Date()
+      user.save (err) ->
+        throw err if err
+        # send mail
+        mail.resetPasswordMail(user.email, token, user.username, req.headers.host)
+        req.flash 'success', ['确认邮件发送成功']
+        res.redirect '/forgot'
 
 # GET 'reset'
 exports.edit = (req, res) ->

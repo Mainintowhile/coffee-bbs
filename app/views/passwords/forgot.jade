@@ -18,15 +18,6 @@ block content
                     each notice in notices
                       li= notice
                 .control-group
-                  // Username
-                  label.control-label(for='username') 用户名
-                  .controls
-                    if username
-                      input#username.input-xlarge(type='text', name='username', placeholder='', value="#{username}")
-                    else
-                      input#username.input-xlarge(type='text', name='username', placeholder='')
-                    p.help-block 用户名由字母开头，只能含有字母、数字或者下划线
-                .control-group
                   // E-mail
                   label.control-label(for='email') E-mail
                   .controls
