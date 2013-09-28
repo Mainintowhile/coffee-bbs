@@ -38,8 +38,8 @@ userSchema = Schema
 
 # encrypted password
 userSchema.pre 'save', (next) ->
-	user = @
-	return next() unless user.isModified('password')
+  user = @
+  return next() unless user.isModified('password')
 	
 	bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) ->
     return next(err) if err
@@ -112,7 +112,7 @@ userSchema.methods.recentRepliesList = (limit, callback) ->
     callback null, replies
 
 userSchema.methods.avatarUrl = (size = 'm') ->
-  switch size 
+  switch size
     when 'b'
       image_size = 96
     when 'm'
