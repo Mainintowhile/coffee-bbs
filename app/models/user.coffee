@@ -41,7 +41,7 @@ userSchema.pre 'save', (next) ->
   user = @
   return next() unless user.isModified('password')
 	
-	bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) ->
+  bcrypt.genSalt SALT_WORK_FACTOR, (err, salt) ->
     return next(err) if err
     bcrypt.hash user.password, salt, (err, hash) ->
       return next(err) if err
