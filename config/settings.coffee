@@ -14,7 +14,7 @@ settings =
       secureConnection: true
       port: 465
       auth:
-        user: "lidash156@gmail.com"
+        user: "aaa@gmail.com"
         pass: "example.com"
     port: 3000
     session_time: 60 * 60 * 1000
@@ -41,7 +41,7 @@ settings =
       secureConnection: true
       port: 465
       auth:
-        user: "lidash156@gmail.com"
+        user: "aaa@gmail.com"
         pass: "example.com"
     port: 3000
     session_time: 60 * 60 * 1000
@@ -68,7 +68,7 @@ settings =
       secureConnection: true
       port: 465
       auth:
-        user: "lidash156@gmail.com"
+        user: "aaa@gmail.com"
         pass: "example.com"
     port: 3000
     session_time: 24 * 60 * 60 * 1000
